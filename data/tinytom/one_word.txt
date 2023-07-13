@@ -1,0 +1,10 @@
+
+
+
+{'noun': '', 'verb': '', 'adj': '', 'word': 'wait', 'features': []}
+{'noun': '', 'verb': '', 'adj': '', 'word': 'tea', 'features': []}
+{'noun': '', 'verb': '', 'adj': '', 'word': 'dough', 'features': []}
+{'noun': '', 'verb': '', 'adj': '', 'word': 'hoop', 'features': []}
+{'noun': '', 'verb': '', 'adj': '', 'word': 'jar', 'features': []}
+{'noun': '', 'verb': '', 'adj': '', 'word': 'cooler', 'features': []}
+{'noun': '', 'verb': '', 'adj': '', 'word': 'reveal', 'features': []}

@@ -1,0 +1,10 @@
+
+
+
+{'noun': 'cabinet', 'verb': 'dance', 'adj': 'thoughtful', 'word': '', 'features': ['the story has some form of conflict in it']}
+{'noun': 'lawyer', 'verb': 'search', 'adj': 'important', 'word': '', 'features': ['the story has a moral value', 'something unexpected happens / there is a plot twist']}
+{'noun': 'ocean', 'verb': 'enjoy', 'adj': 'stubborn', 'word': '', 'features': ['the story has a bad ending', 'the narrative uses foreshadowing or setup and payoff']}
+{'noun': 'mountain', 'verb': 'match', 'adj': 'patient', 'word': '', 'features': []}
+{'noun': 'yogurt', 'verb': 'vanish', 'adj': 'naughty', 'word': '', 'features': ['the narrative uses foreshadowing or setup and payoff', 'the story should contain at least one dialogue', 'the story has a moral value']}
+{'noun': 'zip', 'verb': 'warn', 'adj': 'friendly', 'word': '', 'features': []}
+{'noun': 'wave', 'verb': 'welcome', 'adj': 'miserable', 'word': '', 'features': []}
