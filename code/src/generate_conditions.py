@@ -1,12 +1,16 @@
 import os
 import csv
+import argparse
 
 DATA_DIR = '../../data'
-CONDITION_DIR = os.path.join(DATA_DIR, 'conditions')
-CSV_NAME = os.path.join(DATA_DIR, 'bigtom/bigtom.csv')
+CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/')
+CSV_NAME = os.path.join(DATA_DIR, 'tinytom/tinytom_')
 INITIAL_BELIEF = [0, 1] # 0 hide initial belief, 1 show initial belief
 VARIABLES = ['forward_belief', 'forward_action', 'backward_belief', 'percept_to_belief']
 CONDITIONS = ['true_belief', 'false_belief', 'true_control', 'false_control']
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--method', type=str, default="three_words", help="generate conditions for which set of words/features")
 
 def get_completions():
     with open(CSV_NAME, "r") as f:
@@ -172,5 +176,10 @@ def generate_conditions(completions):
 
 
 if __name__ == "__main__":  
+    args = parser.parse_args()
+    if args.method in ["three_words", "three_words_plus_features", "one_word", "no_forced_vocab"]:
+        CONDITION_DIR += args.method
+        CSV_NAME = CSV_NAME + args.method + ".csv"
+    else: raise Exception("invalid method argument")
     completions = get_completions()
     generate_conditions(completions)
