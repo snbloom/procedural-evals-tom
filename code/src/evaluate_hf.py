@@ -18,19 +18,18 @@ parser.add_argument('--offset', '-o', type=int, default=0, help='offset')
 parser.add_argument('--verbose', action='store_true', help='verbose')
 
 # data args
-parser.add_argument('--data_dir', type=str, default='../data/three_words', help='data directory')
-parser.add_argument('--variable', type=str, default='belief')
+parser.add_argument('--data_dir', type=str, default='../../data/conditions/three_words', help='data directory')
+parser.add_argument('--variable', type=str, default='action')
 parser.add_argument('--condition', type=str, default='true_belief')
-parser.add_argument('--init_belief', type=str, default="0_backward")
+parser.add_argument('--init_belief', type=str, default="0_forward")
 
 args = parser.parse_args()
 
-api_key = os.environ['HUGGINGFACE_API_KEY']
 if args.model == '33':
     repo_id = "roneneldan/TinyStories-33M"
 elif args.model == '28':
     repo_id = "roneneldan/TinyStories-28M"
-llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":0.0, "max_length":1000}, api_key=api_key)
+llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":0.0, "max_length":1})
 
 DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
 CONVERTED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
@@ -43,7 +42,7 @@ with open(CONVERTED_FILE, 'r') as f:
     converted = f.readlines()
 
 score = 0
-for i in range(args.evaluations):
+for i in range(args.num):
     _, question, correct_answer, wrong_answer = data[i + args.offset]
     story = converted[i + args.offset]
 
