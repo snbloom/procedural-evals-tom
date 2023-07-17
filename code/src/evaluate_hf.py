@@ -18,7 +18,7 @@ parser.add_argument('--offset', '-o', type=int, default=0, help='offset')
 parser.add_argument('--verbose', action='store_true', help='verbose')
 
 # data args
-parser.add_argument('--data_dir', type=str, default='data', help='data directory')
+parser.add_argument('--data_dir', type=str, default='../data/three_words', help='data directory')
 parser.add_argument('--variable', type=str, default='belief')
 parser.add_argument('--condition', type=str, default='true_belief')
 parser.add_argument('--init_belief', type=str, default="0_backward")
@@ -45,7 +45,7 @@ with open(CONVERTED_FILE, 'r') as f:
 score = 0
 for i in range(args.evaluations):
     _, question, correct_answer, wrong_answer = data[i + args.offset]
-    converted_story = converted[i + args.offset]
+    story = converted[i + args.offset]
 
     # hacky way to elicit answers
     # start with first two words of correct answer
