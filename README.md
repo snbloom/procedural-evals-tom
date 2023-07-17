@@ -53,3 +53,8 @@ We provide code to run Human experiments of 3 kinds:
 
 #### Evaluating Models
 We provide code to evaluate models on BigToM in `code/src/evaluate_conditions.py`. More specific experiment scripts are available in `code/scripts`.
+
+#### Process to Generate 
+1. Run tinytom.py
+2. Run generate_conditions.py
+3. Run generate_tinytom_stories.py

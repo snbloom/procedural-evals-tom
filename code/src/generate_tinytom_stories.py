@@ -54,12 +54,9 @@ def convert_trimmed_stories(args):
                 template = template.split(";")
                 story = template[0].strip()
                 ending = " ".join(template[2].strip().split()[:2])
+
                 instructions = get_formatted_instructions(story)
                 system_message = SystemMessage(content=instructions)
-
-                # print(instructions)
-                # print("ending:", ending)
-
                 messages = [system_message]
                 responses = llm.generate([messages])
 
@@ -69,16 +66,11 @@ def convert_trimmed_stories(args):
                     generated_story = generated_story + " " + ending
                     print(generated_story)
 
-                    # write to csv file
+                    # write to file
                     with open(folder_p + '/converted.txt', 'a') as f_w:
                         f_w.write(generated_story)
                         f_w.write("\n")
-                        # writer = csv.writer(f_w)
-                        # writer.writerow(generated_story)
-                    
     
-
-
 
 if __name__ == "__main__":  
     args = parser.parse_args()
