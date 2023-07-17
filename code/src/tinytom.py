@@ -46,6 +46,42 @@ def get_llm(args):
     )
     return llm
 
+def get_formatted_instructions(instruction_text, args):
+    noun, verb, adj, word, features = "", "", "", "", []
+
+    if args.features:
+        features = random.sample(["the story should contain at least one dialogue","the story has a bad ending","the story has a moral value", "the narrative uses foreshadowing or setup and payoff", "something unexpected happens / there is a plot twist", "the story has some form of conflict in it"], random.randint(0,3))
+        instruction_text = instruction_text.replace("[features]", ", ".join(features))
+    else: instruction_text = instruction_text.replace("The story has the following features: [features]. ", "")
+
+    if args.three_words:
+        # random noun
+        with open(f'{WORDS_DIR}/nouns.txt', 'r') as f_noun:
+            nouns = ast.literal_eval(f_noun.readline())
+            noun = random.choice(nouns)
+            instruction_text = instruction_text.replace("[noun]", noun)
+        # random verb
+        with open(f'{WORDS_DIR}/verbs.txt', 'r') as f_verb:
+            verbs = ast.literal_eval(f_verb.readline())
+            verb = random.choice(verbs)
+            instruction_text = instruction_text.replace("[verb]", verb)
+        # random adj
+        with open(f'{WORDS_DIR}/adj.txt', 'r') as f_adj:
+            adjs = ast.literal_eval(f_adj.readline())
+            adj = random.choice(adjs)
+            instruction_text = instruction_text.replace("[adj]", adj)
+    else:
+        word = ""
+        with open(f'{WORDS_DIR}/all_words.txt', 'r') as f_all:
+            words = ast.literal_eval(f_all.readline())
+            word = random.choice(words)
+            sentence = 'the word "' + word + '"' 
+            instruction_text = instruction_text.replace('verb "[verb]", the noun "[noun]" and the adjective "[adj]"', sentence)
+    with open(f'{DATA_DIR}/{LOG_NAME}.txt', 'a') as f_settings:
+        f_settings.write(str({"noun": noun, "verb": verb, "adj": adj, "word": word, "features": features}) + "\n")
+
+    return instruction_text
+
 def gen_chat(args):
     response_template = """Here is the story:
 Story: {story}
@@ -68,41 +104,11 @@ Not aware of random event: {not_aware_of_random_event}"""
     llm = get_llm(args)
     with(open(f'{PROMPT_DIR}/tinytom.txt', 'r')) as f:
         instruction_text = f.read()
-        noun, verb, adj, word, features = "", "", "", "", []
+    
+    # instruction_text = get_formatted_instructions(instruction_text, args)
+    # system_message = SystemMessage(content=instruction_text)
+    # print(instruction_text[:1000])
 
-        if args.features:
-            features = random.sample(["the story should contain at least one dialogue","the story has a bad ending","the story has a moral value", "the narrative uses foreshadowing or setup and payoff", "something unexpected happens / there is a plot twist", "the story has some form of conflict in it"], random.randint(0,3))
-            instruction_text = instruction_text.replace("[features]", ", ".join(features))
-        else: instruction_text = instruction_text.replace("The story has the following features: [features]. ", "")
-
-        if args.three_words:
-            # random noun
-            with open(f'{WORDS_DIR}/nouns.txt', 'r') as f_noun:
-                nouns = ast.literal_eval(f_noun.readline())
-                noun = random.choice(nouns)
-                instruction_text = instruction_text.replace("[noun]", noun)
-            # random verb
-            with open(f'{WORDS_DIR}/verbs.txt', 'r') as f_verb:
-                verbs = ast.literal_eval(f_verb.readline())
-                verb = random.choice(verbs)
-                instruction_text = instruction_text.replace("[verb]", verb)
-            # random adj
-            with open(f'{WORDS_DIR}/adj.txt', 'r') as f_adj:
-                adjs = ast.literal_eval(f_adj.readline())
-                adj = random.choice(adjs)
-                instruction_text = instruction_text.replace("[adj]", adj)
-        else:
-            word = ""
-            with open(f'{WORDS_DIR}/all_words.txt', 'r') as f_all:
-                words = ast.literal_eval(f_all.readline())
-                word = random.choice(words)
-                sentence = 'the word "' + word + '"' 
-                instruction_text = instruction_text.replace('verb "[verb]", the noun "[noun]" and the adjective "[adj]"', sentence)
-        with open(f'{DATA_DIR}/{LOG_NAME}.txt', 'a') as f_settings:
-            f_settings.write(str({"noun": noun, "verb": verb, "adj": adj, "word": word, "features": features}) + "\n")
-
-        # print(instruction_text)
-    system_message = SystemMessage(content=instruction_text)
     # 2-shots by default
     human_message_0 = HumanMessage(content='Generate a story')
     letter = random.choice(letters)
@@ -122,6 +128,9 @@ Not aware of random event: {not_aware_of_random_event}"""
 
     # run loop with n stories, increase by num_completions
     for n_story in tqdm.tqdm(range(0, args.num_stories, args.num_completions)):
+        instruction_text = get_formatted_instructions(instruction_text, args)
+        print(instruction_text[:1000])
+        system_message = SystemMessage(content=instruction_text)
         letter = random.choice(letters)
         human_message_1 = HumanMessage(content=f'Generate another story, using a different context, object states, and names than the examples did. The name must start with {letter}.') 
 
@@ -136,11 +145,11 @@ Not aware of random event: {not_aware_of_random_event}"""
                 examples.append(example)
         random.shuffle(examples)
 
-        # 2-shots by default
+        # 3-shots by default
         messages = [system_message, human_message_0]
         for i in range(args.num_shots):
             messages.append(AIMessage(content=response_template.format(**examples[i])))
-            messages.append(human_message_1)
+            messages.append(human_message_0)
 
         if args.verbose:
             print(f"------ messages ------")

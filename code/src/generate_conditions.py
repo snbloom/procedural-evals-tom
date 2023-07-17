@@ -4,7 +4,7 @@ import argparse
 
 DATA_DIR = '../../data'
 CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/')
-CSV_NAME = os.path.join(DATA_DIR, 'tinytom/tinytom_')
+CSV_NAME = os.path.join(DATA_DIR, 'tinytom/')
 INITIAL_BELIEF = [0, 1] # 0 hide initial belief, 1 show initial belief
 VARIABLES = ['forward_belief', 'forward_action', 'backward_belief', 'percept_to_belief']
 CONDITIONS = ['true_belief', 'false_belief', 'true_control', 'false_control']
@@ -133,8 +133,12 @@ def generate_conditions(completions):
                             if not os.path.exists(os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}')):
                                 os.makedirs(os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}'))
                             new_csv_file = os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}/stories.csv')
+                            new_csv_file_trimmed = os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}/stories_trimmed.csv')
                             
                             with open(new_csv_file, "a" if completion_idx > 0 else "w", newline='') as csvfile:
+                                writer = csv.writer(csvfile, delimiter=";")
+                                writer.writerow([f"{story}", question, answers[0], answers[1]])
+                            with open(new_csv_file_trimmed, "a" if completion_idx > 0 else "w", newline='') as csvfile:
                                 writer = csv.writer(csvfile, delimiter=";")
                                 writer.writerow([f"{story}", question, answers[0], answers[1]])
                           
@@ -143,6 +147,7 @@ def generate_conditions(completions):
                         if not os.path.exists(os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}')):
                             os.makedirs(os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}'))
                         new_csv_file = os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}/stories.csv')
+                        new_csv_file_trimmed = os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}/stories_trimmed.csv')
                         with open(new_csv_file, "a" if completion_idx > 0 else "w", newline='') as csvfile:
                             writer = csv.writer(csvfile, delimiter=";")
                             if condition == "true_belief":
@@ -173,13 +178,46 @@ def generate_conditions(completions):
                                     writer.writerow([f"{story_control} {actions[1]}", question, answers[1], answers[0]])
                                 else:
                                     writer.writerow([f"{story_control} {awareness_random[1]}", question, answers[1], answers[0]])
+                        with open(new_csv_file_trimmed, "a" if completion_idx > 0 else "w", newline='') as csvfile:
+                            writer = csv.writer(csvfile, delimiter=";")
+                            if condition == "true_belief":
+                                if variable == "backward_desire":
+                                    writer.writerow([f"{story} {awareness[0]} {actions[0]}"])
+                                elif variable == "backward_belief":
+                                    writer.writerow([f"{story} {actions[0]}"])
+                                else:
+                                    writer.writerow([f"{story} {awareness[0]}"])
+                            elif condition == "false_belief":
+                                if variable == "backward_desire":
+                                    writer.writerow([f"{story} {awareness[1]} {actions[1]}"])
+                                elif variable == "backward_belief":
+                                    writer.writerow([f"{story} {actions[1]}"])
+                                else:
+                                    writer.writerow([f"{story} {awareness[1]}"])
+                            elif condition == "true_control":
+                                if variable == "backward_desire":
+                                    writer.writerow([f"{story_control} {awareness_random[0]} {actions[1]}"])
+                                elif variable == "backward_belief":
+                                    writer.writerow([f"{story_control} {actions[1]}"])
+                                else:
+                                    writer.writerow([f"{story_control} {awareness_random[0]}"])
+                            elif condition == "false_control":
+                                if variable == "backward_desire":
+                                    writer.writerow([f"{story_control} {awareness_random[1]} {actions[1]}"])
+                                elif variable == "backward_belief":
+                                    writer.writerow([f"{story_control} {actions[1]}"])
+                                else:
+                                    writer.writerow([f"{story_control} {awareness_random[1]}"])
 
 
 if __name__ == "__main__":  
     args = parser.parse_args()
     if args.method in ["three_words", "three_words_plus_features", "one_word", "no_forced_vocab"]:
         CONDITION_DIR += args.method
-        CSV_NAME = CSV_NAME + args.method + ".csv"
+        CSV_NAME = CSV_NAME + "tinytom_" + args.method + ".csv"
+    elif args.method == "bigtom":
+        CONDITION_DIR += args.method
+        CSV_NAME = os.path.join(DATA_DIR, 'bigtom/bigtom.csv')
     else: raise Exception("invalid method argument")
     completions = get_completions()
     generate_conditions(completions)

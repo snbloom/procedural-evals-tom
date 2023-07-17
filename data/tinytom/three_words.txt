@@ -10,3 +10,6 @@
 {'noun': 'stamp', 'verb': 'yawn', 'adj': 'flexible', 'word': '', 'features': []}
 {'noun': 'motor', 'verb': 'unlock', 'adj': 'graceful', 'word': '', 'features': []}
 {'noun': 'mist', 'verb': 'want', 'adj': 'enthusiastic', 'word': '', 'features': []}
+{'noun': 'steam', 'verb': 'slip', 'adj': 'excited', 'word': '', 'features': []}
+{'noun': 'motion', 'verb': 'drop', 'adj': 'orange', 'word': '', 'features': []}
+{'noun': 'whale', 'verb': 'clap', 'adj': 'loyal', 'word': '', 'features': []}
