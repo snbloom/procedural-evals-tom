@@ -42,12 +42,11 @@ score = 0
 for i in range(args.evaluations):
     story, question, correct_answer, wrong_answer = data[i + args.offset]
 
-    # TODO: Make this more robust
     # hacky way to elicit answers
     # start with first two words of correct answer
-    prompt = correct_answer.split()[:2]
-    prompt = " ".join(prompt)
-    story = f"{story} {prompt}"
+    # prompt = correct_answer.split()[:2]
+    # prompt = " ".join(prompt)
+    # story = f"{story} {prompt}"
     
     # predict answer
     prediction = llm(story, stop=[".", "?", "!", "\n"])
