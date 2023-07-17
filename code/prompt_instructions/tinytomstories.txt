@@ -1,0 +1,6 @@
+[tinytom_story]
+
+Rewrite this story so that it only uses very simple words that a 3 year old child would likely understand. Remember to only use simple words, don't introduce new words!
+
+Make it of the following form:
+[random_tinystory]
