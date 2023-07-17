@@ -32,15 +32,20 @@ elif args.model == '28':
     repo_id = "roneneldan/TinyStories-28M"
 llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":0.0, "max_length":1000}, api_key=api_key)
 
-DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}.csv"
+DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
+CONVERTED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
 
 with open(DATA_FILE, 'r') as f:
     reader = csv.reader(f, delimiter=';')
     data = list(reader)
 
+with open(CONVERTED_FILE, 'r') as f:
+    converted = f.readlines()
+
 score = 0
 for i in range(args.evaluations):
-    story, question, correct_answer, wrong_answer = data[i + args.offset]
+    _, question, correct_answer, wrong_answer = data[i + args.offset]
+    converted_story = converted[i + args.offset]
 
     # hacky way to elicit answers
     # start with first two words of correct answer
