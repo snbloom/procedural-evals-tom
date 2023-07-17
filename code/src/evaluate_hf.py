@@ -1,5 +1,6 @@
 import argparse
 import csv
+import os
 
 from langchain import HuggingFaceHub
 
@@ -24,11 +25,12 @@ parser.add_argument('--init_belief', type=str, default="0_backward")
 
 args = parser.parse_args()
 
+api_key = os.environ['HUGGINGFACE_API_KEY']
 if args.model == '33':
     repo_id = "roneneldan/TinyStories-33M"
 elif args.model == '28':
     repo_id = "roneneldan/TinyStories-28M"
-llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":0.0, "max_length":1000})
+llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":0.0, "max_length":1000}, api_key=api_key)
 
 DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}.csv"
 
