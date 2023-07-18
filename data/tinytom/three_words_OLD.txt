@@ -1,0 +1,15 @@
+
+
+
+{'noun': 'fireplace', 'verb': 'whistle', 'adj': 'chubby', 'word': '', 'features': []}
+{'noun': 'island', 'verb': 'tie', 'adj': 'popular', 'word': '', 'features': []}
+{'noun': 'violin', 'verb': 'welcome', 'adj': 'clean', 'word': '', 'features': []}
+{'noun': 'gun', 'verb': 'support', 'adj': 'careful', 'word': '', 'features': []}
+{'noun': 'monster', 'verb': 'love', 'adj': 'white', 'word': '', 'features': []}
+{'noun': 'cake', 'verb': 'ask', 'adj': 'thin', 'word': '', 'features': []}
+{'noun': 'stamp', 'verb': 'yawn', 'adj': 'flexible', 'word': '', 'features': []}
+{'noun': 'motor', 'verb': 'unlock', 'adj': 'graceful', 'word': '', 'features': []}
+{'noun': 'mist', 'verb': 'want', 'adj': 'enthusiastic', 'word': '', 'features': []}
+{'noun': 'steam', 'verb': 'slip', 'adj': 'excited', 'word': '', 'features': []}
+{'noun': 'motion', 'verb': 'drop', 'adj': 'orange', 'word': '', 'features': []}
+{'noun': 'whale', 'verb': 'clap', 'adj': 'loyal', 'word': '', 'features': []}

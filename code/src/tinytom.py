@@ -28,7 +28,7 @@ parser.add_argument('--temperature', type=float, default=0.5, help='temperature'
 parser.add_argument('--max_tokens', type=int, default=450, help='max tokens')
 # change num completions to 10
 parser.add_argument('--num_completions', type=int, default=1, help='number of completions')
-parser.add_argument('--num_shots', type=int, default=3, help='number of shots')
+parser.add_argument('--num_shots', type=int, default=1, help='number of shots')
 parser.add_argument('--num_stories', type=int, default=1, help='number of stories to generate')
 parser.add_argument('--verbose', action='store_true', help='verbose')
 
@@ -46,41 +46,44 @@ def get_llm(args):
     )
     return llm
 
-def get_formatted_instructions(instruction_text, args):
-    noun, verb, adj, word, features = "", "", "", "", []
+def get_human_message1(args):
+    noun, verb, adj, word, features, letter = "", "", "", "", [], random.choice(letters)
+    with(open(f'{PROMPT_DIR}/human_message1.txt', 'r')) as f:
+        msg = f.read().strip()
 
+    msg = msg.replace("[letter]", letter)
     if args.features:
         features = random.sample(["the story should contain at least one dialogue","the story has a bad ending","the story has a moral value", "the narrative uses foreshadowing or setup and payoff", "something unexpected happens / there is a plot twist", "the story has some form of conflict in it"], random.randint(0,3))
-        instruction_text = instruction_text.replace("[features]", ", ".join(features))
-    else: instruction_text = instruction_text.replace("The story has the following features: [features]. ", "")
+        msg = msg.replace("[features]", ", ".join(features))
+    else: msg = msg.replace("The story has the following features: [features].", "")
 
     if args.three_words:
         # random noun
         with open(f'{WORDS_DIR}/nouns.txt', 'r') as f_noun:
             nouns = ast.literal_eval(f_noun.readline())
             noun = random.choice(nouns)
-            instruction_text = instruction_text.replace("[noun]", noun)
+            msg = msg.replace("[noun]", noun)
         # random verb
         with open(f'{WORDS_DIR}/verbs.txt', 'r') as f_verb:
             verbs = ast.literal_eval(f_verb.readline())
             verb = random.choice(verbs)
-            instruction_text = instruction_text.replace("[verb]", verb)
+            msg = msg.replace("[verb]", verb)
         # random adj
         with open(f'{WORDS_DIR}/adj.txt', 'r') as f_adj:
             adjs = ast.literal_eval(f_adj.readline())
             adj = random.choice(adjs)
-            instruction_text = instruction_text.replace("[adj]", adj)
+            msg = msg.replace("[adj]", adj)
     else:
         word = ""
         with open(f'{WORDS_DIR}/all_words.txt', 'r') as f_all:
             words = ast.literal_eval(f_all.readline())
             word = random.choice(words)
             sentence = 'the word "' + word + '"' 
-            instruction_text = instruction_text.replace('verb "[verb]", the noun "[noun]" and the adjective "[adj]"', sentence)
+            msg = msg.replace('verb "[verb]", the noun "[noun]" and the adjective "[adj]"', sentence)
     with open(f'{DATA_DIR}/{LOG_NAME}.txt', 'a') as f_settings:
         f_settings.write(str({"noun": noun, "verb": verb, "adj": adj, "word": word, "features": features}) + "\n")
 
-    return instruction_text
+    return msg
 
 def gen_chat(args):
     response_template = """Here is the story:
@@ -100,56 +103,55 @@ Desire not Aware: {desire_answer_not_aware}
 Action not Aware: {action_answer_not_aware}
 Random Event: {random_event}
 Aware of random event: {aware_of_random_event}
-Not aware of random event: {not_aware_of_random_event}"""
+Not aware of random event: {not_aware_of_random_event}
+Agent Name: {agent_name}
+Object: {object}"""
     llm = get_llm(args)
     with(open(f'{PROMPT_DIR}/tinytom.txt', 'r')) as f:
         instruction_text = f.read()
     
-    # instruction_text = get_formatted_instructions(instruction_text, args)
-    # system_message = SystemMessage(content=instruction_text)
-    # print(instruction_text[:1000])
-
-    # 2-shots by default
-    human_message_0 = HumanMessage(content='Generate a story')
-    letter = random.choice(letters)
-    human_message_1 = HumanMessage(content=f'Generate another story, using a different context, object states, and names than the examples did. The name must start with {letter}.') 
-    
-    
     examples = []
     template_var = ["story", "awarenes", "not_aware", "action_new", "action_init", "belief_question", "desire_question", "action_question", 
                     "belief_answer_aware", "desire_answer_aware", "action_answer_aware", "belief_answer_not_aware", "desire_answer_not_aware", 
-                    "action_answer_not_aware", "random_event", "aware_of_random_event", "not_aware_of_random_event"]
+                    "action_answer_not_aware", "random_event", "aware_of_random_event", "not_aware_of_random_event", "agent_name", "object"]
     
     csv_file = f'{DATA_DIR}/{CSV_NAME}.csv'
-
 
     prompt_tokens_used = 0
     completion_tokens_used = 0
 
     # run loop with n stories, increase by num_completions
     for n_story in tqdm.tqdm(range(0, args.num_stories, args.num_completions)):
-        instruction_text = get_formatted_instructions(instruction_text, args)
-        print(instruction_text[:1000])
         system_message = SystemMessage(content=instruction_text)
-        letter = random.choice(letters)
-        human_message_1 = HumanMessage(content=f'Generate another story, using a different context, object states, and names than the examples did. The name must start with {letter}.') 
 
         # read examples from csv file every iteration to add generated samples to the pool of seed examples
-        if args.verbose:
-            print(f"Reading examples from {csv_file} with existing {get_num_items(csv_file)} examples")
-        # read a few examples from the csv file
-        with open(csv_file, 'r') as f:
-            for line in f.readlines():
-                params = line.split(';')
-                example = {k: params[v].strip() for v, k in enumerate(template_var)}
-                examples.append(example)
-        random.shuffle(examples)
+        # if args.verbose:
+        #     print(f"Reading examples from {csv_file} with existing {get_num_items(csv_file)} examples")
+        # # read a few examples from the csv file
+        # with open(csv_file, 'r') as f:
+        #     for line in f.readlines():
+        #         params = line.split(';')
+        #         example = {k: params[v].strip() for v, k in enumerate(template_var)}
+        #         examples.append(example)
+        # random.shuffle(examples)
 
-        # 3-shots by default
-        messages = [system_message, human_message_0]
-        for i in range(args.num_shots):
-            messages.append(AIMessage(content=response_template.format(**examples[i])))
-            messages.append(human_message_0)
+        # get hand-picked example (at zeroeth position in csv)
+        with open(csv_file, "r") as f:
+            l = f.readline()
+            params = l.split(';')
+            example_story = {k: params[v].strip() for v, k in enumerate(template_var)}
+            examples.append(example_story)
+
+        human_message0 = HumanMessage(content='Generate a story. The name must start with D. The story should use the verb "jump", the noun "cake" and the adjective "thin".')        
+        ai_message = AIMessage(content=response_template.format(**examples[0]))
+        human_message_1 = HumanMessage(content=get_human_message1(args))
+
+        # 1-shot
+        messages = [system_message, human_message0, ai_message, human_message_1]
+
+        # for i in range(args.num_shots):
+        #     messages.append(AIMessage(content=response_template.format(**examples[i])))
+        #     messages.append(human_message_0)
 
         if args.verbose:
             print(f"------ messages ------")
@@ -171,7 +173,7 @@ Not aware of random event: {not_aware_of_random_event}"""
                 print("------------ Fin --------------")
             list_var = ["Story", "Aware of event", "Not aware of event", "Action given new state", "Action given initial state", "Belief Question", "Desire Question", "Action Question",
                         "Belief Aware", "Desire Aware", "Action Aware", "Belief not Aware",
-                        "Desire not Aware", "Action not Aware", "Random Event", "Aware of random event", "Not aware of random event"]
+                        "Desire not Aware", "Action not Aware", "Random Event", "Aware of random event", "Not aware of random event", "Agent Name", "Object"]
             out_vars = get_vars_from_out(generation.text, list_var)
             data = [out_vars[k] for k in list_var]
             data += ["auto", 0]

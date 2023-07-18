@@ -21,7 +21,7 @@ def get_completions():
 def generate_conditions(completions):
     list_var = ["Story", "Aware of event", "Not Aware of event", "Action aware", "Action not aware", "Belief Question", "Desire Question", "Action Question",
                 "Belief Answer Aware", "Desire Answer Aware", "Action Answer Aware", "Belief Answer not Aware",
-                "Desire Answer not Aware", "Action Answer not Aware", "Random Event", "Aware of random event", "Not aware of random event"]
+                "Desire Answer not Aware", "Action Answer not Aware", "Random Event", "Aware of random event", "Not aware of random event", "Agent name", "Object"]
 
     for completion_idx, completion in enumerate(completions):
 
@@ -137,10 +137,10 @@ def generate_conditions(completions):
                             
                             with open(new_csv_file, "a" if completion_idx > 0 else "w", newline='') as csvfile:
                                 writer = csv.writer(csvfile, delimiter=";")
-                                writer.writerow([f"{story}", question, answers[0], answers[1]])
+                                writer.writerow([f"{story}", question, answers[0], answers[1], dict_var["Object"]])
                             with open(new_csv_file_trimmed, "a" if completion_idx > 0 else "w", newline='') as csvfile:
                                 writer = csv.writer(csvfile, delimiter=";")
-                                writer.writerow([f"{story}", question, answers[0], answers[1]])
+                                writer.writerow([f"{story}", question, answers[0], answers[1], dict_var["Object"]])
                           
                     elif variable != "percept_to_belief":
                         # Check if the new file needs to be created or appended
@@ -152,62 +152,62 @@ def generate_conditions(completions):
                             writer = csv.writer(csvfile, delimiter=";")
                             if condition == "true_belief":
                                 if variable == "backward_desire":
-                                    writer.writerow([f"{story} {awareness[0]} {actions[0]}", question, answers[0], answers[1]])
+                                    writer.writerow([f"{story} {awareness[0]} {actions[0]}", question, answers[0], answers[1], dict_var["Object"]])
                                 elif variable == "backward_belief":
-                                    writer.writerow([f"{story} {actions[0]}", question, answers[0], answers[1]])
+                                    writer.writerow([f"{story} {actions[0]}", question, answers[0], answers[1], dict_var["Object"]])
                                 else:
-                                    writer.writerow([f"{story} {awareness[0]}", question, answers[0], answers[1]])
+                                    writer.writerow([f"{story} {awareness[0]}", question, answers[0], answers[1], dict_var["Object"]])
                             elif condition == "false_belief":
                                 if variable == "backward_desire":
-                                    writer.writerow([f"{story} {awareness[1]} {actions[1]}", question, answers[1], answers[0]])
+                                    writer.writerow([f"{story} {awareness[1]} {actions[1]}", question, answers[1], answers[0], dict_var["Object"]])
                                 elif variable == "backward_belief":
-                                    writer.writerow([f"{story} {actions[1]}", question, answers[1], answers[0]])
+                                    writer.writerow([f"{story} {actions[1]}", question, answers[1], answers[0], dict_var["Object"]])
                                 else:
-                                    writer.writerow([f"{story} {awareness[1]}", question, answers[1], answers[0]])
+                                    writer.writerow([f"{story} {awareness[1]}", question, answers[1], answers[0], dict_var["Object"]])
                             elif condition == "true_control":
                                 if variable == "backward_desire":
-                                    writer.writerow([f"{story_control} {awareness_random[0]} {actions[1]}", question, answers[1], answers[0]])
+                                    writer.writerow([f"{story_control} {awareness_random[0]} {actions[1]}", question, answers[1], answers[0], dict_var["Object"]])
                                 elif variable == "backward_belief":
-                                    writer.writerow([f"{story_control} {actions[1]}", question, answers[1], answers[0]])
+                                    writer.writerow([f"{story_control} {actions[1]}", question, answers[1], answers[0], dict_var["Object"]])
                                 else:
-                                    writer.writerow([f"{story_control} {awareness_random[0]}", question, answers[1], answers[0]])
+                                    writer.writerow([f"{story_control} {awareness_random[0]}", question, answers[1], answers[0], dict_var["Object"]])
                             elif condition == "false_control":
                                 if variable == "backward_desire":
-                                    writer.writerow([f"{story_control} {awareness_random[1]} {actions[1]}", question, answers[1], answers[0]])
+                                    writer.writerow([f"{story_control} {awareness_random[1]} {actions[1]}", question, answers[1], answers[0], dict_var["Object"]])
                                 elif variable == "backward_belief":
-                                    writer.writerow([f"{story_control} {actions[1]}", question, answers[1], answers[0]])
+                                    writer.writerow([f"{story_control} {actions[1]}", question, answers[1], answers[0], dict_var["Object"]])
                                 else:
-                                    writer.writerow([f"{story_control} {awareness_random[1]}", question, answers[1], answers[0]])
+                                    writer.writerow([f"{story_control} {awareness_random[1]}", question, answers[1], answers[0], dict_var["Object"]])
                         with open(new_csv_file_trimmed, "a" if completion_idx > 0 else "w", newline='') as csvfile:
                             writer = csv.writer(csvfile, delimiter=";")
                             if condition == "true_belief":
                                 if variable == "backward_desire":
-                                    writer.writerow([f"{story} {awareness[0]} {actions[0]}"])
+                                    writer.writerow([f"{story} {awareness[0]} {actions[0]}", dict_var["Object"]])
                                 elif variable == "backward_belief":
-                                    writer.writerow([f"{story} {actions[0]}"])
+                                    writer.writerow([f"{story} {actions[0]}", dict_var["Object"]])
                                 else:
-                                    writer.writerow([f"{story} {awareness[0]}"])
+                                    writer.writerow([f"{story} {awareness[0]}", dict_var["Object"]])
                             elif condition == "false_belief":
                                 if variable == "backward_desire":
-                                    writer.writerow([f"{story} {awareness[1]} {actions[1]}"])
+                                    writer.writerow([f"{story} {awareness[1]} {actions[1]}", dict_var["Object"]])
                                 elif variable == "backward_belief":
-                                    writer.writerow([f"{story} {actions[1]}"])
+                                    writer.writerow([f"{story} {actions[1]}", dict_var["Object"]])
                                 else:
-                                    writer.writerow([f"{story} {awareness[1]}"])
+                                    writer.writerow([f"{story} {awareness[1]}", dict_var["Object"]])
                             elif condition == "true_control":
                                 if variable == "backward_desire":
-                                    writer.writerow([f"{story_control} {awareness_random[0]} {actions[1]}"])
+                                    writer.writerow([f"{story_control} {awareness_random[0]} {actions[1]}", dict_var["Object"]])
                                 elif variable == "backward_belief":
-                                    writer.writerow([f"{story_control} {actions[1]}"])
+                                    writer.writerow([f"{story_control} {actions[1]}", dict_var["Object"]])
                                 else:
-                                    writer.writerow([f"{story_control} {awareness_random[0]}"])
+                                    writer.writerow([f"{story_control} {awareness_random[0]}", dict_var["Object"]])
                             elif condition == "false_control":
                                 if variable == "backward_desire":
-                                    writer.writerow([f"{story_control} {awareness_random[1]} {actions[1]}"])
+                                    writer.writerow([f"{story_control} {awareness_random[1]} {actions[1]}", dict_var["Object"]])
                                 elif variable == "backward_belief":
-                                    writer.writerow([f"{story_control} {actions[1]}"])
+                                    writer.writerow([f"{story_control} {actions[1]}", dict_var["Object"]])
                                 else:
-                                    writer.writerow([f"{story_control} {awareness_random[1]}"])
+                                    writer.writerow([f"{story_control} {awareness_random[1]}", dict_var["Object"]])
 
 
 if __name__ == "__main__":  

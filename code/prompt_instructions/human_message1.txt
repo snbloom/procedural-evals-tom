@@ -1,0 +1,1 @@
+Generate another story, using a different context, object states, and names than the example did. The name must start with [letter]. The story should use the verb "[verb]", the noun "[noun]" and the adjective "[adj]". The story has the following features: [features].

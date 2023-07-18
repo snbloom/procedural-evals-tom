@@ -11,20 +11,22 @@ from langchain.schema import (
     SystemMessage
 )
 
+MODEL = "gpt-3.5-turbo-16k-0613"
 DATA_DIR = '../../data'
 PROMPT_DIR = '../prompt_instructions'
 STORIES_FILE = '../tinystories_words/tinystories_rows.txt'
 CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/')
 CSV_NAME = os.path.join(DATA_DIR, 'tinytom/')
-FOLDER_NAMES = ["0_forward_action_false_belief", "0_forward_action_false_control", "0_forward_action_true_belief", "0_forward_action_true_control",
-                "0_forward_belief_false_belief", "0_forward_belief_false_control", "0_forward_belief_true_belief", "0_forward_belief_true_control"]
+# FOLDER_NAMES = ["0_forward_action_false_belief", "0_forward_action_false_control", "0_forward_action_true_belief", "0_forward_action_true_control",
+#                 "0_forward_belief_false_belief", "0_forward_belief_false_control", "0_forward_belief_true_belief", "0_forward_belief_true_control"]
+FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control", "0_forward_belief_true_belief", "0_forward_belief_true_control"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, default="three_words", help="generate conditions for which set of words/features")
 
 def get_llm():
     llm = ChatOpenAI(
-        model="gpt-3.5-turbo-16k-0613",
+        model=MODEL,
         temperature=0.5,
         max_tokens=450,
         n=1,
@@ -53,7 +55,9 @@ def convert_trimmed_stories(args):
             for template in f.readlines():
                 template = template.split(";")
                 story = template[0].strip()
+                obj = template[-1].strip().lower()
                 ending = " ".join(template[2].strip().split()[:2])
+                ending = ending + " that the " + obj + ""
 
                 instructions = get_formatted_instructions(story)
                 system_message = SystemMessage(content=instructions)
