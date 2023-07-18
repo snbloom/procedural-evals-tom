@@ -33,7 +33,7 @@ def get_stories(evaluator):
         idx = 0
     
     story_dict = {}
-    story_file = f'{DATA_DIR}/chat/story_v4.csv'
+    story_file = f'{DATA_DIR}/bigtom/bigtom.csv'
     if not os.path.exists(story_file):
         raise Exception('No context file found')
     with open(story_file, 'r') as f:
@@ -68,7 +68,7 @@ def load():
 def store():
     evaluator = request.form['evaluator']
     row = int(request.form['row'])
-    story_file = f'{DATA_DIR}/chat/story_v4.csv'
+    story_file = f'{DATA_DIR}/bigtom/bigtom.csv'
     with open(story_file, 'r') as f:
         stories = list(csv.reader(f, delimiter=';'))
         story = stories[row]
