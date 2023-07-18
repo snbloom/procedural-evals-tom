@@ -53,7 +53,7 @@ with open(CONVERTED_FILE, 'r') as f:
 
 score = 0
 for i in range(args.num):
-    story, question, correct_answer, wrong_answer = data[i + args.offset]
+    story, question, correct_answer, wrong_answer, _ = data[i + args.offset]
     converted_story = converted[i + args.offset].strip()
 
     # hacky way to elicit answers
