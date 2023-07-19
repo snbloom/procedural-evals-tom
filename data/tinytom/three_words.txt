@@ -1,10 +1,10 @@
-{'noun': 'cake', 'verb': 'jump', 'adj': 'thin', 'word': '', 'features': []}
+{'noun': 'refrigerator', 'verb': 'change', 'adj': 'spoiled', 'word': '', 'features': []}
 {'noun': 'leak', 'verb': 'offer', 'adj': 'uncomfortable', 'word': '', 'features': []}
 {'noun': 'triangle', 'verb': 'lay', 'adj': 'patient', 'word': '', 'features': []}
-{'noun': 'desk', 'verb': 'hear', 'adj': 'weird', 'word': '', 'features': []}
 {'noun': 'pastel', 'verb': 'glow', 'adj': 'calm', 'word': '', 'features': []}
-{'noun': 'log', 'verb': 'weigh', 'adj': 'shy', 'word': '', 'features': []}
-{'noun': 'refrigerator', 'verb': 'change', 'adj': 'spoiled', 'word': '', 'features': []}
-{'noun': 'mop', 'verb': 'stir', 'adj': 'busy', 'word': '', 'features': []}
-{'noun': 'pin', 'verb': 'stare', 'adj': 'easy', 'word': '', 'features': []}
-{'noun': 'giant', 'verb': 'examine', 'adj': 'persistent', 'word': '', 'features': []}
+{'noun': 'bathrobe', 'verb': 'restore', 'adj': 'creative', 'word': '', 'features': []}
+{'noun': 'spade', 'verb': 'splash', 'adj': 'dangerous', 'word': '', 'features': []}
+{'noun': 'case', 'verb': 'delay', 'adj': 'crazy', 'word': '', 'features': []}
+{'noun': 'mystery', 'verb': 'look', 'adj': 'smart', 'word': '', 'features': []}
+{'noun': 'fireman', 'verb': 'hug', 'adj': 'selfish', 'word': '', 'features': []}
+{'noun': 'bracelet', 'verb': 'increase', 'adj': 'mysterious', 'word': '', 'features': []}

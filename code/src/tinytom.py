@@ -142,7 +142,7 @@ Object: {object}"""
             example_story = {k: params[v].strip() for v, k in enumerate(template_var)}
             examples.append(example_story)
 
-        human_message0 = HumanMessage(content='Generate a story. The name must start with D. The story should use the verb "jump", the noun "cake" and the adjective "thin".')        
+        human_message0 = HumanMessage(content='Generate a story. The name must start with J. The story should use the verb "change", the noun "refrigerator" and the adjective "spoiled".')        
         ai_message = AIMessage(content=response_template.format(**examples[0]))
         human_message_1 = HumanMessage(content=get_human_message1(args))
 
