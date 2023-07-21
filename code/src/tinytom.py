@@ -33,8 +33,9 @@ parser.add_argument('--num_stories', type=int, default=1, help='number of storie
 parser.add_argument('--verbose', action='store_true', help='verbose')
 
 # tinytom generation
-parser.add_argument('--features', action='store_true', help='whether or not to add features constraint to stories instruction')
-parser.add_argument('--three_words', action='store_true', help='whether to force 3 words from vocab into instructions. if false, use 1 word')
+parser.add_argument('--features', action='store_true', default=False, help='whether or not to add features constraint to stories instruction')
+parser.add_argument('--three_words', action='store_true', default=True, help='whether to force 3 words from vocab into instructions. if false, use 1 word')
+parser.add_argument('--object_states', action='store_true', default=True, help='whether to force diversity in eval dataset using object state change specification')
 
 def get_llm(args):
     llm = ChatOpenAI(
@@ -80,9 +81,19 @@ def get_human_message1(args):
             word = random.choice(words)
             sentence = 'the word "' + word + '"' 
             msg = msg.replace('verb "[verb]", the noun "[noun]" and the adjective "[adj]"', sentence)
-    with open(f'{DATA_DIR}/{LOG_NAME}.txt', 'a') as f_settings:
-        f_settings.write(str({"noun": noun, "verb": verb, "adj": adj, "word": word, "features": features}) + "\n")
 
+    if args.object_states:
+        with open(f'{DATA_DIR}/tinytom/object_states_narrowed.csv', "r") as f:
+            states = f.readlines()
+        prop = random.choice(states).strip().lower()
+        msg = msg.replace('[object_property]', prop)
+    else:
+        msg = msg.replace(' If it makes sense with the story, the event should change the following property of the object: [object_property].', "")
+    
+    with open(f'{DATA_DIR}/{LOG_NAME}.txt', 'a') as f_settings:
+        f_settings.write(str({"noun": noun, "verb": verb, "adj": adj, "word": word, "features": features, "property": prop}) + "\n")
+
+    print(msg)
     return msg
 
 def gen_chat(args):
@@ -148,11 +159,7 @@ Object: {object}"""
 
         # 1-shot
         messages = [system_message, human_message0, ai_message, human_message_1]
-
-        # for i in range(args.num_shots):
-        #     messages.append(AIMessage(content=response_template.format(**examples[i])))
-        #     messages.append(human_message_0)
-
+        
         if args.verbose:
             print(f"------ messages ------")
             print(messages)

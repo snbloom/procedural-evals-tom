@@ -17,8 +17,6 @@ PROMPT_DIR = '../prompt_instructions'
 STORIES_FILE = '../tinystories_words/tinystories_rows.txt'
 CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/')
 CSV_NAME = os.path.join(DATA_DIR, 'tinytom/')
-# FOLDER_NAMES = ["0_forward_action_false_belief", "0_forward_action_false_control", "0_forward_action_true_belief", "0_forward_action_true_control",
-#                 "0_forward_belief_false_belief", "0_forward_belief_false_control", "0_forward_belief_true_belief", "0_forward_belief_true_control"]
 FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control", "0_forward_belief_true_belief", "0_forward_belief_true_control"]
 
 parser = argparse.ArgumentParser()
@@ -40,40 +38,57 @@ def get_random_tinystory():
         s = random.choice(stories).strip()
         return s
 
-def get_formatted_instructions(tinytom_story):
+def get_formatted_instructions(tinytom_story, obj):
     with open(PROMPT_DIR+"/tinytomstories.txt", "r") as f:
         instructions = f.read()
         instructions = instructions.replace("[tinytom_story]", tinytom_story)
         instructions = instructions.replace("[random_tinystory]", get_random_tinystory())
+        instructions = instructions.replace('[object]', obj)
+        print("instructions:", instructions)
     return instructions
 
 def convert_trimmed_stories(args):
     llm = get_llm()
+
     for folder_name in FOLDER_NAMES:
+        print("\nFOR CONDITION:", folder_name, "\n")
         folder_p = CONDITION_DIR + "/" + folder_name
+        print(folder_p)
+
+        # get number of existing stories
+        with open(folder_p + '/converted.txt', 'r') as f_r:
+            if f_r.readable():
+                print("readable")
+                lines = f_r.readlines()
+                print(lines)
+                start_idx = len(lines)
+            else: start_idx = 0
+        print("start_idx", start_idx)
+
         with open(folder_p + "/stories.csv", "r") as f:
-            for template in f.readlines():
-                template = template.split(";")
-                story = template[0].strip()
-                obj = template[-1].strip().lower()
-                ending = " ".join(template[2].strip().split()[:2])
-                ending = ending + " that the " + obj + ""
+            for i, template in enumerate(f.readlines()):
+                if i >= start_idx:
+                    template = template.split(";")
+                    story = template[0].strip()
+                    obj = template[-1].strip().lower()
+                    ending = " ".join(template[2].strip().split()[:2])
+                    ending = ending + " that the " + obj + " is"
 
-                instructions = get_formatted_instructions(story)
-                system_message = SystemMessage(content=instructions)
-                messages = [system_message]
-                responses = llm.generate([messages])
+                    instructions = get_formatted_instructions(story, obj)
+                    system_message = SystemMessage(content=instructions)
+                    messages = [system_message]
+                    responses = llm.generate([messages])
 
-                for g, generation in enumerate(responses.generations[0]):
-                    generated_story = generation.text.strip() 
-                    generated_story = generated_story.replace("\n", " ")
-                    generated_story = generated_story + " " + ending
-                    print(generated_story)
+                    for g, generation in enumerate(responses.generations[0]):
+                        generated_story = generation.text.strip() 
+                        generated_story = generated_story.replace("\n", " ")
+                        generated_story = generated_story + " " + ending
+                        print(generated_story)
 
-                    # write to file
-                    with open(folder_p + '/converted.txt', 'a') as f_w:
-                        f_w.write(generated_story)
-                        f_w.write("\n")
+                        # write to file
+                        with open(folder_p + '/converted.txt', 'a') as f_w:
+                            f_w.write(generated_story)
+                            f_w.write("\n")
     
 
 if __name__ == "__main__":  

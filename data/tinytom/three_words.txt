@@ -1,10 +1,15 @@
 {'noun': 'refrigerator', 'verb': 'change', 'adj': 'spoiled', 'word': '', 'features': []}
 {'noun': 'leak', 'verb': 'offer', 'adj': 'uncomfortable', 'word': '', 'features': []}
 {'noun': 'triangle', 'verb': 'lay', 'adj': 'patient', 'word': '', 'features': []}
-{'noun': 'pastel', 'verb': 'glow', 'adj': 'calm', 'word': '', 'features': []}
 {'noun': 'bathrobe', 'verb': 'restore', 'adj': 'creative', 'word': '', 'features': []}
 {'noun': 'spade', 'verb': 'splash', 'adj': 'dangerous', 'word': '', 'features': []}
 {'noun': 'case', 'verb': 'delay', 'adj': 'crazy', 'word': '', 'features': []}
 {'noun': 'mystery', 'verb': 'look', 'adj': 'smart', 'word': '', 'features': []}
 {'noun': 'fireman', 'verb': 'hug', 'adj': 'selfish', 'word': '', 'features': []}
 {'noun': 'bracelet', 'verb': 'increase', 'adj': 'mysterious', 'word': '', 'features': []}
+{'noun': 'stitch', 'verb': 'hide', 'adj': 'yummy', 'word': '', 'features': [], 'property': 'Scent (eg: what odor or fragrance does the object have);user'}
+{'noun': 'oven', 'verb': 'take', 'adj': 'foolish', 'word': '', 'features': [], 'property': 'broken or intact (eg: is a piece of equipment or object broken or intact);user'}
+{'noun': 'cane', 'verb': 'realize', 'adj': 'hairy', 'word': '', 'features': [], 'property': 'harmful or non-harmful (eg: is a chemical or substance harmful or non-harmful);user'}
+{'noun': 'cloth', 'verb': 'drive', 'adj': 'old', 'word': '', 'features': [], 'property': 'clean or dirty (eg: is a dish or surface clean or dirty);user'}
+{'noun': 'parent', 'verb': 'complete', 'adj': 'light', 'word': '', 'features': [], 'property': 'taste (eg: what taste or flavor does the object have);user'}
+{'noun': 'clock', 'verb': 'lift', 'adj': 'confused', 'word': '', 'features': [], 'property': 'color (eg: what color is the object);user'}

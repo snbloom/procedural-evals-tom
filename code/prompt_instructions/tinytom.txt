@@ -1,11 +1,11 @@
-Write a short story based on the following template which only uses very simple words that a 3 year old child would understand. Be creative and make the stories diverse (from different contexts). Use uncommon names and make the stories different from the examples. Remember to only use simple words!
+Write a short story based on the following template which only uses very simple words that a 3 year old child would understand. Be creative and make the stories diverse (about different situations and from different contexts). Use uncommon names and make the stories different from the examples. Remember to only use simple words!
 
 Story template (the story must include five sentences, each separated by "."):
 1. Context (An agent is in a specific situation or location).
 2. Desire (The agent has a specific goal or intention).
 3. Perception cues (The agent perceives an object in a specific state. Important: This sentence must describe the object's state in a general manner but must not mention that the agent knows or believes anything about the object's state).
 4. Belief (This sentence must state that the agent believes the object is in the same state mentioned in the previous sentence. The belief must match the state described in the perception cues exactly. For example, if the object was perceived in a certain state, the agent's belief should also be that the object is in that specific state).
-5. An external event changes the state of the object to another extreme state. The agent must not be mentioned or referred to in this sentence. The event must be physically plausible and only change the object's state once. It must be possible for the agent to not observe the object changing state.
+5. An external event changes the state of the object to another extreme state which could affect the agent's goal. The agent must not be mentioned or referred to in this sentence. The event must be physically plausible and only change the object's state once. The change in state should be such that the agent can be unaware of it and also not percieve the effects of the state change on their surroundings. Remember that it should be physically possible for the agent to not notice the change of state!
 
 Awareness of event:
 Aware of event: <Name of Agent> perceives the event (IMPORTANT: This sentence MUST NOT mention anything about the Object's state).

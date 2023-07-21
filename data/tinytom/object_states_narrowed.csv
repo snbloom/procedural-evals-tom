@@ -1,89 +1,25 @@
 Location (eg: where is the object);user
-Physical condition (eg: is the object damaged, intact, or in need of maintenance);user
 Ownership (eg: who owns the object);user
 Temperature (eg: is the object hot, cold, or at room temperature);user
-Power status (eg: is the object turned on or off);user
 Availability (eg: is the object available for use or currently in use);user
-Age (eg: how old is the object);user
 Color (eg: what color is the object);user
-Material (eg: what material is the object made of);user
 Size (eg: how big or small is the object);user
-Weight (eg: how heavy is the object);user
-Capacity (eg: how much can the object hold);user
 Physical orientation (eg: how is the object positioned or oriented);user
-Cleaning status (eg: how clean or dirty is the object);user
-Origin (eg: where did the object come from?);user
-Quality (eg: how good or bad is the object's performance);user
 Scent (eg: what odor or fragrance does the object have);user
 Sound (eg: what noise or sound does the object make);user
 Taste (eg: what taste or flavor does the object have);user
 Texture (eg: what is the object's surface texture);user
-Lifespan (eg: how long is the object expected to live or be useful);user
-Fragility (eg: how easily can the object be broken or damaged);user
-Growth stage (eg: what stage of growth is a plant or crop in);user
-Ripeness (eg: how ripe is a fruit or vegetable);user
-Style (eg: what style is a piece of clothing or furniture);user
 Level of freshness (eg: how fresh is a food item);user
-Level of completion (eg: how complete is a collection or set);user
 Level of being cooked (eg: Is the obejct, like an egg, cooked enough);user
-Level of seasoning (eg: how well-seasoned is a dish or cuisine, such as in Mexican or Indian cuisine);user
-Degree of fluffiness (eg: how fluffy or dense is a pillow or stuffed animal);user
-Degree of firmness (eg: how firm or soft is a mattress or cushion);user
-Level of flexibility (eg: how flexible is a material or object, such as in bendable plastics or rubber);user
-Degree of transparency (eg: how transparent or opaque is a material or object, such as in glass or plastics);user
-Brightness (eg: how bright is a light or display);user
-Stickiness (eg: how sticky or non-sticky is a substance or material);user
-Tenderness (eg: how tender or tough is a piece of meat or food);user
-Moisture (eg: how moist or dry is a material or object);user
-Ease of use (eg: how easy or difficult is an object to use or operate);user
-Comfort (eg: how comfortable or uncomfortable is a piece of furniture or clothing);user
-Open or closed (eg: is a door or window open or closed);user
 Locked or unlocked (eg: is a door or safe locked or unlocked);user
 Full or empty (eg: is a container full or empty);user
 On or off (eg: is a light or machine on or off);user
-Wet or dry (eg: is a surface or material wet or dry);user
-Clean or dirty (eg: is a dish or surface clean or dirty);user
 Sharp or dull (eg: is a knife or blade sharp or dull);user
 Working or not working (eg: is a device or machine working or not);user
 Broken or intact (eg: is a piece of equipment or object broken or intact);user
 Charged or discharged (eg: is a battery or device charged or discharged);user
-New or used (eg: is a product or item new or used);user
-Harmful or non-harmful (eg: is a chemical or substance harmful or non-harmful);user
-Fragile or sturdy (eg: is an object or material fragile or sturdy);user
-Flammable or non-flammable (eg: is a substance or material flammable or non-flammable);user
-Visible or invisible (eg: is a substance or object visible or invisible to the naked eye);user
-Perishable or non-perishable (eg: is a food or product perishable or non-perishable);user
-Indoor or outdoor (eg: is a product or item meant for indoor or outdoor use);user
 Alive or dead (eg: is a living organism alive or dead);user
-Genuine or counterfeit (eg: is a product or material genuine or counterfeit);user
-Porous or non-porous (eg: is a material or surface porous or non-porous);user
-Loud or quiet (eg: is a machine or device loud or quiet);user
-Smooth or rough (eg: is a surface or material smooth or rough to the touch);user
-Fast or slow (eg: is a device or machine fast or slow);user
-Harsh or gentle (eg: is a cleaning product or material harsh or gentle);user
-Solid or liquid (eg: is a substance or material solid or liquid);user
-Above or below (eg: is an object or material above or below a certain level or surface);user
 Visible or hidden (eg: is an object or material visible or hidden from view);user
-Disposable or non-disposable (eg: is a product or material disposable or non-disposable);user
-Fixed or adjustable (eg: is a product or item fixed or adjustable);user
-Oxidized or unoxidized (eg: is a material or substance oxidized or unoxidized);user
-Floating or sinking (eg: does an object or material float or sink in a liquid or gas);user
-Real or fake (eg: is an object or material real or fake);user
-Indoor or outdoor (eg: is an object or space located indoor or outdoor)State: Size (eg: what size is the object);user
-Mobility (eg: how easily can the object be moved or transported);user
 Price (eg: how much does an object cost);user
-Composition (eg: what components is the object made of);user
-Fire or water burning (eg: is a certain fuel burning with fire or water);userTemperature (eg: what is the temperature of a particular room or object);auto
-Size (eg: How big is the object);auto
-Accessible or restricted (eg: is an area or resource open to everyone or restricted to certain individuals);auto
-Physical state (eg: is an object solid, liquid, or gas);auto
-Color (eg: what color is the object);auto
-Level of flexibility (eg: how flexible or rigid is a material or object, such as in rubber or metal);auto
 Open or closed (eg: is a door, window, or container open or closed);auto
-Quality (eg: is the object of high quality or low quality);auto
-Level of health (eg: how healthy is a person);auto
 Safe or dangerous (eg: is an activity or product safe or dangerous);auto
-Weight (eg: how heavy or light is the object);auto
-Unopened or opened (eg: is a package or container unopened or opened);auto
-Clean or dirty (eg: is an object or surface clean or dirty);auto
-Color (eg: what color is the object);auto
