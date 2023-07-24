@@ -17,7 +17,9 @@ PROMPT_DIR = '../prompt_instructions'
 STORIES_FILE = '../tinystories_words/tinystories_rows.txt'
 CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/')
 CSV_NAME = os.path.join(DATA_DIR, 'tinytom/')
-FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control", "0_forward_belief_true_belief", "0_forward_belief_true_control"]
+FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control"]
+
+OTHER_FOLDERS = ["0_forward_belief_true_belief", "0_forward_belief_true_control"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, default="three_words", help="generate conditions for which set of words/features")
