@@ -1,6 +1,3 @@
 [tinytom_story]
 
-Rewrite this in the form of a short story appropriate for a 3 year old child. Include all the information from the story but be concise and do not add new information. Remember to only use simple words, don't introduce new words! Do not change the word used to refer to the main object of the story, continue to use the word "[object]". Use the same last sentence.
-
-Make it of the following form:
-[random_tinystory]
+Rewrite this in the form of a short story appropriate for a 3 year old child. Include all the information from the story and and do not add new information. Be concise but engaging. Remember to only use simple words, don't introduce new words! Do not change the word used to refer to the main object of the story, continue to use the word "[object]".
