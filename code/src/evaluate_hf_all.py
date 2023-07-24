@@ -39,10 +39,11 @@ LOG_FILE = f"../../data/evaluations.csv"
 # Evaluate using both tinystories models
 for repo_id in model_ids:
     if not args.local:
-        llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":0.0, "max_length":100})
+        llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":0.0, "max_length":120})
     else:
         model = AutoModelForCausalLM.from_pretrained(repo_id)
-        tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
+        # tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
+        tokenizer = AutoTokenizer.from_pretrained(repo_id)
 
 
     DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
@@ -62,19 +63,13 @@ for repo_id in model_ids:
     for i in range(len(converted)):
         story, question, correct_answer, wrong_answer, _ = data[i]
         converted_story = converted[i].strip()
-
-        # hacky way to elicit answers
-        # start with first two words of correct answer
-        # prompt = correct_answer.split()[:2]
-        # prompt = " ".join(prompt)
-        # story = f"{story} {prompt}"
         
         # predict answer
         if not args.local:
             prediction = llm(converted_story)
         else:
             input_ids = tokenizer.encode(converted_story, return_tensors="pt")
-            output = model.generate(input_ids, max_length=100, num_beams=1)
+            output = model.generate(input_ids, max_length=150, num_beams=1)
             prediction = tokenizer.decode(output[0], skip_special_tokens=True)
 
         # manual check for now
@@ -82,8 +77,10 @@ for repo_id in model_ids:
         # print(f"Question: {question}")
         # print(f"Correct Answer: {correct_answer}")
         # print(f"Wrong Answer: {wrong_answer}")
-        print(f"Converted Story: {repr(converted_story)}")
+        print()
+        # print(f"Converted Story: {repr(converted_story)}")
         print(f"Prediction: {prediction}")
+        print()
         while True:
             grade = input("Is the prediction correct? (y:yes/n:no/m:maybe)")
             if grade == 'y' or grade=='yes':
@@ -104,4 +101,4 @@ for repo_id in model_ids:
 
     with open(LOG_FILE, "a") as f_a:
         writer = csv.writer(f_a, delimiter=";")
-        writer.writerow([repo_id, score/len(converted), correct_answers, incorrect_answers, maybe_answers])
+        writer.writerow([repo_id, args.init_belief, args.variable, args.condition, score/len(converted), correct_answers, incorrect_answers, maybe_answers])
