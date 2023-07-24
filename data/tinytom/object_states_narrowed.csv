@@ -5,9 +5,6 @@ Availability (eg: is the object available for use or currently in use);user
 Color (eg: what color is the object);user
 Size (eg: how big or small is the object);user
 Physical orientation (eg: how is the object positioned or oriented);user
-Scent (eg: what odor or fragrance does the object have);user
-Sound (eg: what noise or sound does the object make);user
-Taste (eg: what taste or flavor does the object have);user
 Texture (eg: what is the object's surface texture);user
 Level of freshness (eg: how fresh is a food item);user
 Level of being cooked (eg: Is the obejct, like an egg, cooked enough);user

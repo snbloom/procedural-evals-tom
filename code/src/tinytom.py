@@ -13,7 +13,7 @@ from langchain.schema import (
 
 from utils import push_data, get_num_items, get_vars_from_out
 
-letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L'
+letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
            'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W','X', 'Y', 'Z']
 DATA_DIR = '../../data'
 PROMPT_DIR = '../prompt_instructions'
@@ -86,6 +86,7 @@ def get_human_message1(args):
         with open(f'{DATA_DIR}/tinytom/object_states_narrowed.csv', "r") as f:
             states = f.readlines()
         prop = random.choice(states).strip().lower()
+        prop = prop[0:prop.index(";")]
         msg = msg.replace('[object_property]', prop)
     else:
         msg = msg.replace(' If it makes sense with the story, the event should change the following property of the object: [object_property].', "")
