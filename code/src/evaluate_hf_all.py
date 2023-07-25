@@ -1,9 +1,6 @@
 import argparse
 import csv
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
-
-
-
 from langchain import HuggingFaceHub
 
 
@@ -48,9 +45,18 @@ for repo_id in model_ids:
 
     DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
     CONVERTED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
+
     correct_answers = []
     incorrect_answers = []
-    maybe_answers = []
+    unconsistent_unrelated_answers = []
+    consistent_unrelated_answers = []
+    partial_correct_answers = []
+
+    count_correct = 0
+    count_incorrect = 0
+    count_partial = 0
+    count_unrelated_consistent = 0
+    count_unrelated_inconsistent = 0
 
     with open(DATA_FILE, 'r') as f:
         reader = csv.reader(f, delimiter=';')
@@ -82,23 +88,29 @@ for repo_id in model_ids:
         print(f"Prediction: {prediction}")
         print()
         while True:
-            grade = input("Is the prediction correct? (y:yes/n:no/m:maybe)")
+            grade = input("Is the prediction correct? (y:yes/n:no/p:partial/u:unrelated-consistent/i:unrelated-inconsistent)")
             if grade == 'y' or grade=='yes':
-                score += 1
+                count_correct += 1
                 correct_answers.append(prediction)
-            elif grade == 'm' or grade=="maybe":
-                score += 0.5
-                maybe_answers.append(prediction)
             elif grade == 'n' or grade=='no':
-                score += 0
+                count_incorrect += 1
                 incorrect_answers.append(prediction)
+            elif grade == 'p' or grade=='partial':
+                count_partial += 1
+                partial_correct_answers.append(prediction)
+            elif grade == 'u' or grade=='unrelated-consistent':
+                count_unrelated_consistent += 1
+                count_unrelated_consistent.append(prediction)
+            elif grade == 'i' or grade=='unrelated-inconsistent':
+                count_unrelated_inconsistent += 1
+                count_unrelated_inconsistent.append(prediction)
             else:
                 continue
             break
-        print(f"(Average) Running Score: {score}/{i+1} = {score/(i+1)}")
+        print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, partial {count_partial}, unrelated-consistent {count_unrelated_consistent}, unrelated_inconsistent {count_unrelated_inconsistent}")
 
-    print(f"Final (Average) Score: {score}/{len(converted)}")
-
+    print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, partial {count_partial}, unrelated-consistent {count_unrelated_consistent}, unrelated_inconsistent {count_unrelated_inconsistent}")
+    print("LOGGING OUTPUTS FOR MODEL", repo_id)
     with open(LOG_FILE, "a") as f_a:
         writer = csv.writer(f_a, delimiter=";")
-        writer.writerow([repo_id, args.init_belief, args.variable, args.condition, score/len(converted), correct_answers, incorrect_answers, maybe_answers])
+        writer.writerow([repo_id, args.init_belief, args.variable, args.condition, count_correct, count_incorrect, count_partial, count_unrelated_consistent, count_unrelated_inconsistent, correct_answers, incorrect_answers, partial_correct_answers, consistent_unrelated_answers, count_unrelated_inconsistent])
