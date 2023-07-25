@@ -30,7 +30,7 @@ variables = ["belief", "action"]
 conditions = ["true_belief", "false_belief"]
 init_beliefs = ["0_forward", "0_backward", "1_forward", "1_backward"]
 
-model_ids = args.model_ids
+model_ids = ["roneneldan/TinyStories-28M"]
 
 LOG_FILE = f"../../data/evaluations.csv"
 
@@ -86,7 +86,7 @@ for repo_id in model_ids:
         # print(f"Wrong Answer: {wrong_answer}")
         print()
         # print(f"Converted Story: {repr(converted_story)}")
-        print(f"Prediction: {prediction}")
+        print(f"Prediction {i}: {prediction}")
         print()
         while True:
             grade = input("Is the prediction correct? (y:yes/n:no/p:partial/c:unrelated-consistent/i:unrelated-inconsistent)")
