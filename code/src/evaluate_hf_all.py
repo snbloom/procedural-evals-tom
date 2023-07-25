@@ -44,7 +44,7 @@ def get_llm():
     llm = ChatOpenAI(
         model="gpt-4",
         temperature=0.5,
-        max_tokens=450,
+        max_tokens=200,
         n=1,
         request_timeout=180
     )
