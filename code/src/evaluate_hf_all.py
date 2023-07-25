@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser()
 # model args
 # parser.add_argument('--model', type=str, default='33', help='model name')
 parser.add_argument('--temperature', type=float, default=0.0, help='temperature')
-parser.add_argument('--max_tokens', type=int, default=170, help='max tokens')
+parser.add_argument('--max_tokens', type=int, default=200, help='max tokens')
 
 # eval args
 # parser.add_argument('--num', '-n', type=int, default=1, help='number of evaluations')
@@ -75,7 +75,7 @@ for repo_id in model_ids:
             prediction = llm(converted_story)
         else:
             input_ids = tokenizer.encode(converted_story, return_tensors="pt")
-            output = model.generate(input_ids, max_length=150, num_beams=1)
+            output = model.generate(input_ids, max_length=args.max_tokens, num_beams=1)
             prediction = tokenizer.decode(output[0], skip_special_tokens=True)
 
         # manual check for now
