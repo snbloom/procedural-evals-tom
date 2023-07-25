@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser()
 # model args
 # parser.add_argument('--model', type=str, default='33', help='model name')
 parser.add_argument('--temperature', type=float, default=0.0, help='temperature')
-parser.add_argument('--max_tokens', type=int, default=100, help='max tokens')
+parser.add_argument('--max_tokens', type=int, default=170, help='max tokens')
 
 # eval args
 # parser.add_argument('--num', '-n', type=int, default=1, help='number of evaluations')
@@ -36,7 +36,7 @@ LOG_FILE = f"../../data/evaluations.csv"
 # Evaluate using both tinystories models
 for repo_id in model_ids:
     if not args.local:
-        llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":0.0, "max_length":120})
+        llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":args.temperature, "max_length":args.max_tokens})
     else:
         model = AutoModelForCausalLM.from_pretrained(repo_id)
         # tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
