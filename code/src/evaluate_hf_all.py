@@ -97,6 +97,7 @@ for i in range(len(converted)):
         for g, generation in enumerate(responses.generations[0]):
             prediction = generation.text.strip() 
             prediction = prediction.replace("\n", " ")
+            prediction = converted_story + " " + prediction
     else:
         if not args.local:
             prediction = llm(converted_story)
