@@ -98,7 +98,7 @@ for repo_id in model_ids:
             elif grade == 'p' or grade=='partial':
                 count_partial += 1
                 partial_correct_answers.append(prediction)
-            elif grade == 'u' or grade=='unrelated-consistent':
+            elif grade == 'c' or grade=='unrelated-consistent':
                 count_unrelated_consistent += 1
                 consistent_unrelated_answers.append(prediction)
             elif grade == 'i' or grade=='unrelated-inconsistent':
@@ -113,4 +113,4 @@ for repo_id in model_ids:
     print("LOGGING OUTPUTS FOR MODEL", repo_id)
     with open(LOG_FILE, "a") as f_a:
         writer = csv.writer(f_a, delimiter=";")
-        writer.writerow([repo_id, args.init_belief, args.variable, args.condition, count_correct, count_incorrect, count_partial, count_unrelated_consistent, count_unrelated_inconsistent, correct_answers, incorrect_answers, partial_correct_answers, consistent_unrelated_answers, count_unrelated_inconsistent])
+        writer.writerow([repo_id, args.init_belief, args.variable, args.condition, count_correct, count_incorrect, count_partial, count_unrelated_consistent, count_unrelated_inconsistent, correct_answers, incorrect_answers, partial_correct_answers, consistent_unrelated_answers, count_unrelated_inconsistent, args])
