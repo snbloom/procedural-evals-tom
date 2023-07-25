@@ -16,6 +16,7 @@ parser.add_argument('--max_tokens', type=int, default=200, help='max tokens')
 parser.add_argument('--offset', '-o', type=int, default=0, help='offset')
 parser.add_argument('--verbose', action='store_true', help='verbose')
 parser.add_argument('--local', action='store_true', default=True, help='local eval using transformers instead of huggingface hub')
+parser.add_argument("--model_ids", type=list, default=["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M"], help="model ids")
 
 # data args
 parser.add_argument('--data_dir', type=str, default='../../data/conditions/three_words', help='data directory')
@@ -29,7 +30,7 @@ variables = ["belief", "action"]
 conditions = ["true_belief", "false_belief"]
 init_beliefs = ["0_forward", "0_backward", "1_forward", "1_backward"]
 
-model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M"]
+model_ids = args.model_ids
 
 LOG_FILE = f"../../data/evaluations.csv"
 
@@ -75,7 +76,7 @@ for repo_id in model_ids:
             prediction = llm(converted_story)
         else:
             input_ids = tokenizer.encode(converted_story, return_tensors="pt")
-            output = model.generate(input_ids, max_length=args.max_tokens, num_beams=1)
+            output = model.generate(input_ids, max_length=args.max_tokens, num_beams=1, )
             prediction = tokenizer.decode(output[0], skip_special_tokens=True)
 
         # manual check for now
@@ -88,7 +89,7 @@ for repo_id in model_ids:
         print(f"Prediction: {prediction}")
         print()
         while True:
-            grade = input("Is the prediction correct? (y:yes/n:no/p:partial/u:unrelated-consistent/i:unrelated-inconsistent)")
+            grade = input("Is the prediction correct? (y:yes/n:no/p:partial/c:unrelated-consistent/i:unrelated-inconsistent)")
             if grade == 'y' or grade=='yes':
                 count_correct += 1
                 correct_answers.append(prediction)
