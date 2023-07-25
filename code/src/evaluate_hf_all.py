@@ -48,7 +48,7 @@ for repo_id in model_ids:
 
     correct_answers = []
     incorrect_answers = []
-    unconsistent_unrelated_answers = []
+    inconsistent_unrelated_answers = []
     consistent_unrelated_answers = []
     partial_correct_answers = []
 
@@ -100,10 +100,10 @@ for repo_id in model_ids:
                 partial_correct_answers.append(prediction)
             elif grade == 'u' or grade=='unrelated-consistent':
                 count_unrelated_consistent += 1
-                count_unrelated_consistent.append(prediction)
+                consistent_unrelated_answers.append(prediction)
             elif grade == 'i' or grade=='unrelated-inconsistent':
                 count_unrelated_inconsistent += 1
-                count_unrelated_inconsistent.append(prediction)
+                inconsistent_unrelated_answers.append(prediction)
             else:
                 continue
             break
