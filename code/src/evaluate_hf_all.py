@@ -43,7 +43,7 @@ LOG_FILE = f"../../data/evaluations.csv"
 def get_llm():
     llm = ChatOpenAI(
         model="gpt-4",
-        temperature=0.5,
+        temperature=0.0,
         max_tokens=args.max_tokens,
         n=1,
         request_timeout=180
@@ -71,6 +71,7 @@ incorrect_answers = []
 # consistent_unrelated_answers = []
 # partial_correct_answers = []
 unrelated_answers = []
+inconsistent_answers = []
 
 count_correct = 0
 count_incorrect = 0
@@ -78,6 +79,7 @@ count_incorrect = 0
 # count_unrelated_consistent = 0
 # count_unrelated_inconsistent = 0
 count_unrelated = 0
+count_inconsistent = 0
 
 with open(DATA_FILE, 'r') as f:
     reader = csv.reader(f, delimiter=';')
@@ -122,7 +124,7 @@ for i in range(len(converted)):
     print()
 
     while True:
-        grade = input("Is the prediction correct? (y:yes/n:no/u:unrelated) ")
+        grade = input("Is the prediction correct? (y:yes/n:no/u:unrelated/i:inconsistent) ")
         if grade == 'y' or grade=='yes':
             count_correct += 1
             correct_answers.append(converted_story + " " + prediction)
@@ -132,6 +134,9 @@ for i in range(len(converted)):
         elif grade == 'u' or grade=='unrelated':
             count_unrelated += 1
             unrelated_answers.append(converted_story + " " + prediction)
+        elif grade == 'i' or grade=='inconsistent':
+            count_inconsistent += 1
+            inconsistent_answers.append(converted_story + " " + prediction)
         else:
             continue
         break
