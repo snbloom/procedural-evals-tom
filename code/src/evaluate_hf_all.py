@@ -103,13 +103,12 @@ for i in range(len(converted)):
     else:
         if not args.local:
             prediction = llm(converted_story)
-            prediction = prediction[len(converted_story)+1:]
+            prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
         else:
             input_ids = tokenizer.encode(converted_story, return_tensors="pt")
             output = model.generate(input_ids, max_new_tokens=args.max_tokens, num_beams=1, )
             prediction = tokenizer.decode(output[0], skip_special_tokens=True)
-            len(converted_story)
-            prediction = prediction[len(converted_story)+1:]
+            prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
 
     # manual check for now
     # print(f"Story: {story}")
