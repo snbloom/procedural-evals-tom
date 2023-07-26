@@ -140,7 +140,7 @@ for i in range(len(converted)):
         else:
             continue
         break
-    print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}")
+    print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 
 print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 print("LOGGING OUTPUTS FOR MODEL", model_id)
