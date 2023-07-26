@@ -1,5 +1,4 @@
 Location (eg: where is the object);user
-Ownership (eg: who owns the object);user
 Temperature (eg: is the object hot, cold, or at room temperature);user
 Availability (eg: is the object available for use or currently in use);user
 Color (eg: what color is the object);user
@@ -12,7 +11,6 @@ Locked or unlocked (eg: is a door or safe locked or unlocked);user
 Full or empty (eg: is a container full or empty);user
 On or off (eg: is a light or machine on or off);user
 Sharp or dull (eg: is a knife or blade sharp or dull);user
-Working or not working (eg: is a device or machine working or not);user
 Broken or intact (eg: is a piece of equipment or object broken or intact);user
 Charged or discharged (eg: is a battery or device charged or discharged);user
 Alive or dead (eg: is a living organism alive or dead);user
