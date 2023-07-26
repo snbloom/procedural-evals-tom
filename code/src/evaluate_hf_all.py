@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser()
 # model args
 # parser.add_argument('--model', type=str, default='33', help='model name')
 parser.add_argument('--temperature', type=float, default=0.0, help='temperature')
-parser.add_argument('--max_tokens', type=int, default=50, help='max tokens')
+parser.add_argument('--max_tokens', type=int, default=20, help='max tokens')
 
 # eval args
 # parser.add_argument('--num', '-n', type=int, default=1, help='number of evaluations')
@@ -44,7 +44,7 @@ def get_llm():
     llm = ChatOpenAI(
         model="gpt-4",
         temperature=0.5,
-        max_tokens=200,
+        max_tokens=args.max_tokens,
         n=1,
         request_timeout=180
     )
