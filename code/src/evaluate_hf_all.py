@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser()
 # model args
 # parser.add_argument('--model', type=str, default='33', help='model name')
 parser.add_argument('--temperature', type=float, default=0.0, help='temperature')
-parser.add_argument('--max_tokens', type=int, default=200, help='max tokens')
+parser.add_argument('--max_tokens', type=int, default=50, help='max tokens')
 
 # eval args
 # parser.add_argument('--num', '-n', type=int, default=1, help='number of evaluations')
@@ -55,7 +55,7 @@ if model_id =="gpt-4":
     llm = get_llm()
 else:
     if not args.local:
-        llm = HuggingFaceHub(repo_id=model_id, model_kwargs={"temperature":args.temperature, "max_length":args.max_tokens})
+        llm = HuggingFaceHub(repo_id=model_id, model_kwargs={"temperature":args.temperature, "max_new_tokens":args.max_tokens})
     else:
         model = AutoModelForCausalLM.from_pretrained(model_id)
         # tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
@@ -67,15 +67,17 @@ CONVERTED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.cond
 
 correct_answers = []
 incorrect_answers = []
-inconsistent_unrelated_answers = []
-consistent_unrelated_answers = []
-partial_correct_answers = []
+# inconsistent_unrelated_answers = []
+# consistent_unrelated_answers = []
+# partial_correct_answers = []
+unrelated_answers = []
 
 count_correct = 0
 count_incorrect = 0
-count_partial = 0
-count_unrelated_consistent = 0
-count_unrelated_inconsistent = 0
+# count_partial = 0
+# count_unrelated_consistent = 0
+# count_unrelated_inconsistent = 0
+count_unrelated = 0
 
 with open(DATA_FILE, 'r') as f:
     reader = csv.reader(f, delimiter=';')
@@ -97,48 +99,47 @@ for i in range(len(converted)):
         for g, generation in enumerate(responses.generations[0]):
             prediction = generation.text.strip() 
             prediction = prediction.replace("\n", " ")
-            prediction = converted_story + " " + prediction
+            prediction = prediction.split(".")[0] + "."
     else:
         if not args.local:
             prediction = llm(converted_story)
+            prediction = prediction[len(converted_story)+1:]
         else:
             input_ids = tokenizer.encode(converted_story, return_tensors="pt")
             output = model.generate(input_ids, max_length=args.max_tokens, num_beams=1, )
             prediction = tokenizer.decode(output[0], skip_special_tokens=True)
+            len(converted_story)
+            prediction = prediction[len(converted_story)+1:]
 
     # manual check for now
     # print(f"Story: {story}")
     # print(f"Question: {question}")
-    # print(f"Correct Answer: {correct_answer}")
-    # print(f"Wrong Answer: {wrong_answer}")
     print()
-    # print(f"Converted Story: {repr(converted_story)}")
-    print(f"Prediction {i}: {prediction}")
+    print(f"Story {i}: {repr(converted_story)}")
+    print(f"Prediction: {prediction}")
     print()
+    print(f"Correct Answer: {correct_answer}")
+    print(f"Wrong Answer: {wrong_answer}")
+    print()
+
     while True:
-        grade = input("Is the prediction correct? (y:yes/n:no/p:partial/c:unrelated-consistent/i:unrelated-inconsistent)")
+        grade = input("Is the prediction correct? (y:yes/n:no/u:unrelated")
         if grade == 'y' or grade=='yes':
             count_correct += 1
             correct_answers.append(prediction)
         elif grade == 'n' or grade=='no':
             count_incorrect += 1
             incorrect_answers.append(prediction)
-        elif grade == 'p' or grade=='partial':
-            count_partial += 1
-            partial_correct_answers.append(prediction)
-        elif grade == 'c' or grade=='unrelated-consistent':
-            count_unrelated_consistent += 1
-            consistent_unrelated_answers.append(prediction)
-        elif grade == 'i' or grade=='unrelated-inconsistent':
-            count_unrelated_inconsistent += 1
-            inconsistent_unrelated_answers.append(prediction)
+        elif grade == 'u' or grade=='unrelated':
+            count_unrelated += 1
+            unrelated_answers.append(prediction)
         else:
             continue
         break
-    print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, partial {count_partial}, unrelated-consistent {count_unrelated_consistent}, unrelated_inconsistent {count_unrelated_inconsistent}")
+    print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}")
 
-print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, partial {count_partial}, unrelated-consistent {count_unrelated_consistent}, unrelated_inconsistent {count_unrelated_inconsistent}")
+print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}")
 print("LOGGING OUTPUTS FOR MODEL", model_id)
 with open(LOG_FILE, "a") as f_a:
     writer = csv.writer(f_a, delimiter=";")
-    writer.writerow([model_id, args.init_belief, args.variable, args.condition, count_correct, count_incorrect, count_partial, count_unrelated_consistent, count_unrelated_inconsistent, correct_answers, incorrect_answers, partial_correct_answers, consistent_unrelated_answers, count_unrelated_inconsistent, args])
+    writer.writerow([model_id, args.init_belief, args.variable, args.condition, count_correct, count_incorrect, count_unrelated, correct_answers, incorrect_answers, unrelated_answers, args])
