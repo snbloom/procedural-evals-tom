@@ -125,13 +125,13 @@ for i in range(len(converted)):
         grade = input("Is the prediction correct? (y:yes/n:no/u:unrelated) ")
         if grade == 'y' or grade=='yes':
             count_correct += 1
-            correct_answers.append(prediction)
+            correct_answers.append(converted_story + " " + prediction)
         elif grade == 'n' or grade=='no':
             count_incorrect += 1
-            incorrect_answers.append(prediction)
+            incorrect_answers.append(converted_story + " " + prediction)
         elif grade == 'u' or grade=='unrelated':
             count_unrelated += 1
-            unrelated_answers.append(prediction)
+            unrelated_answers.append(converted_story + " " + prediction)
         else:
             continue
         break
