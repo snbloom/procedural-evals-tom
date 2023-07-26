@@ -1,0 +1,17 @@
+{
+    "model": "33",
+    "context_length": 512,
+    "output_dir": "./training_output",
+    "batch_size": 32,
+    "eval_batch_size": 8,
+    "eval_steps": 500,
+    "log_steps": 500,
+    "gradient_accumulation_steps": 1,
+    "num_train_epochs": 3,
+    "weight_decay": 0.01,
+    "warmup_steps": 500,
+    "lr_scheduler_type": "cosine",
+    "lr": 5e-5,
+    "save_steps": 500,
+    "name": ""
+  }
