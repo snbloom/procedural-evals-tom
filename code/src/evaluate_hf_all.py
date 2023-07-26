@@ -142,8 +142,8 @@ for i in range(len(converted)):
         break
     print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}")
 
-print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}")
+print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 print("LOGGING OUTPUTS FOR MODEL", model_id)
 with open(LOG_FILE, "a") as f_a:
     writer = csv.writer(f_a, delimiter=";")
-    writer.writerow([model_id, args.init_belief, args.variable, args.condition, count_correct, count_incorrect, count_unrelated, correct_answers, incorrect_answers, unrelated_answers, args])
+    writer.writerow([model_id, args.init_belief, args.variable, args.condition, count_correct, count_incorrect, count_unrelated, count_inconsistent, correct_answers, incorrect_answers, unrelated_answers, inconsistent_answers, args])
