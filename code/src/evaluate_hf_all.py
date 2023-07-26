@@ -122,7 +122,7 @@ for i in range(len(converted)):
     print()
 
     while True:
-        grade = input("Is the prediction correct? (y:yes/n:no/u:unrelated")
+        grade = input("Is the prediction correct? (y:yes/n:no/u:unrelated) ")
         if grade == 'y' or grade=='yes':
             count_correct += 1
             correct_answers.append(prediction)
