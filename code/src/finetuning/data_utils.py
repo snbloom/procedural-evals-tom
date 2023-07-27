@@ -35,5 +35,6 @@ def get_tiny_stories(config, count):
                 if d['source'] != 'gpt-4':
                     continue
                 stories.append(d['story'].strip())
+    print(f"Number of tinystories stories: {len(stories)}, keeping {count}")
     stories = random.sample(stories, count)
     return stories
