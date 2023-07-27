@@ -1,7 +1,9 @@
+#ignore tiny stories data
+data/tinystories/
+
 .DS_Store
 *.pyc
-
-# Jupyter Notebook
+# Jupyter Notebuok
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 
