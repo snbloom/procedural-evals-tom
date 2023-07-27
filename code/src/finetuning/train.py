@@ -1,13 +1,14 @@
-import json 
+import json
 import random
 import torch
 import argparse
 
 
+import pandas as pd
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
-from datasets import Dataset
+from datasets import Dataset, DatasetDict
 
 from data_utils import get_tiny_tom, get_tiny_stories
 
@@ -50,18 +51,19 @@ raw_datasets = {'train': [], 'val_tom': [], 'val_stories': []}
 print("Loading tinytom")
 tinytom = get_tiny_tom(config)
 num_tiny_tom = sum([len(tinytom[cond]) for cond in config["conditions"]])
+print(tinytom[config["conditions"][0]][0])
 print(f"Number of tinytom stories: {num_tiny_tom}")
 
 # load tinystories and preprocess
 print("Loading tinystories")
 num_tiny_stories = num_tiny_tom * config["tinystories_ratio"]
 tinystories = get_tiny_stories(config, num_tiny_stories)
-print(f"Number of tinystories stories: {len(tinystories)}")
+print(tinystories[0])
 
 # split tinytom into train and val
 # 'train' (tinytom+tinystories)
 print("Splitting into train and val")
-for cond in config.conditions:
+for cond in config["conditions"]:
     num_train = int(len(tinytom[cond]) * config["train_ratio"])
     num_val = len(tinytom[cond]) - num_train
     raw_datasets['train'] += [{"content": s} for s in tinytom[cond][:num_train]]
@@ -71,10 +73,7 @@ for cond in config.conditions:
 raw_datasets['train'] += [{"content": s} for s in tinystories[:int(len(tinystories)*config["train_ratio"])]]
 raw_datasets['val_stories'] = [{"content": s} for s in tinystories[int(len(tinystories)*config["train_ratio"]):]]
 
-hf_datasets = {split: Dataset.from_dict(data) for split, data in raw_datasets.items()}
-del(raw_datasets)
-
-
+hf_datasets = DatasetDict({split: Dataset.from_pandas(pd.DataFrame(data=data)) for split, data in raw_datasets.items()})
 
 # prepare datasets
 print("Tokenizing datasets")
@@ -88,13 +87,14 @@ def tokenize(element):
         return_overflowing_tokens=True,
         return_length=True,
     )
+
     input_batch = []
     for length, input_ids in zip(outputs["length"], outputs["input_ids"]):
         if length == context_length:
             input_batch.append(input_ids)
     return {"input_ids": input_batch}
 
-tokenized_datasets = hf_datasets.map(tokenize, batched=True)
+tokenized_datasets = hf_datasets.map(tokenize, batched=True, remove_columns=hf_datasets["train"].column_names)
 tokenizer.pad_token = tokenizer.eos_token
 data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
 

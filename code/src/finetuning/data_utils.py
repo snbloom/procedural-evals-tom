@@ -26,13 +26,13 @@ def get_tiny_tom(config):
 
 def get_tiny_stories(config, count):
     stories = []
-    for i in range(50):
+    for i in range(1):
         filename = f'data{i:02}.json'
         with open(os.path.join(config["tinystories_data_dir"], filename), 'r') as f:
             data = json.load(f)
             for d in data:
                 # only select stories from gpt-4
-                if d['source'] != 'gpt-4':
+                if d['source'] != 'GPT-4':
                     continue
                 stories.append(d['story'].strip())
     print(f"Number of tinystories stories: {len(stories)}, keeping {count}")
