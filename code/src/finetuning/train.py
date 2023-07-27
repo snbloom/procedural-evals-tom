@@ -5,6 +5,7 @@ import argparse
 
 
 import pandas as pd
+import wandb
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
@@ -21,6 +22,8 @@ args = parser.parse_args()
 # read config from a json config file
 with open(args.config, "r") as f:
     config = json.load(f)
+
+wandb.init(project="tinytom", config=config)
 
 # set seeds
 random.seed(config["seed"])
@@ -51,14 +54,12 @@ raw_datasets = {'train': [], 'val_tom': [], 'val_stories': []}
 print("Loading tinytom")
 tinytom = get_tiny_tom(config)
 num_tiny_tom = sum([len(tinytom[cond]) for cond in config["conditions"]])
-print(tinytom[config["conditions"][0]][0])
 print(f"Number of tinytom stories: {num_tiny_tom}")
 
 # load tinystories and preprocess
 print("Loading tinystories")
 num_tiny_stories = num_tiny_tom * config["tinystories_ratio"]
 tinystories = get_tiny_stories(config, num_tiny_stories)
-print(tinystories[0])
 
 # split tinytom into train and val
 # 'train' (tinytom+tinystories)
@@ -126,7 +127,10 @@ trainer = Trainer(
     config=training_args,
     data_collator=data_collator,
     train_dataset=tokenized_datasets["train"],
-    eval_dataset=tokenized_datasets["valid"],
+    eval_dataset={
+    "valid_tom": tokenized_datasets["val_tom"],
+    "valid_stories": tokenized_datasets["val_stories"],
+    }
 )
 
 # train
