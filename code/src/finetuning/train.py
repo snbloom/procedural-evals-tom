@@ -13,7 +13,7 @@ from data_utils import get_tiny_tom, get_tiny_stories
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--config", type=str, default="../../configs/config.json")
+parser.add_argument("--config", type=str, default="../../configs/conf.json")
 
 args = parser.parse_args()
 
@@ -22,45 +22,54 @@ with open(args.config, "r") as f:
     config = json.load(f)
 
 # set seeds
-random.seed(config.seed)
-torch.manual_seed(config.seed)
+random.seed(config["seed"])
+torch.manual_seed(config["seed"])
 
 # load checkpoint for finetuning
-if config.model == '33':
+if config["model"] == '33':
     repo_id = "roneneldan/TinyStories-33M"
-elif config.model == '28':
+elif config["model"] == '28':
     repo_id = "roneneldan/TinyStories-28M"
 
+print(f"Loading model from {repo_id}")
 model = AutoModelForCausalLM.from_pretrained(repo_id)
+print("Model loaded")
+print(f"Number of parameters: {model.num_parameters()}")
 tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
 
 # load data
 # If the size of the new dataset is small,
 # sample some of the existing dataset to create a new dataset
 # this might help with overfitting
+print("Loading data")
 raw_datasets = {'train': [], 'val_tom': [], 'val_stories': []}
 
 # load tinytom and preprocess
 # NOTE: When the dataset is bigger, do this in a separate script,
 # and load using hf datasets directly
+print("Loading tinytom")
 tinytom = get_tiny_tom(config)
-num_tiny_tom = sum([len(tinytom[cond]) for cond in config.conditions])
+num_tiny_tom = sum([len(tinytom[cond]) for cond in config["conditions"]])
+print(f"Number of tinytom stories: {num_tiny_tom}")
 
 # load tinystories and preprocess
-num_tiny_stories = num_tiny_tom * config.tinystories_ratio
+print("Loading tinystories")
+num_tiny_stories = num_tiny_tom * config["tinystories_ratio"]
 tinystories = get_tiny_stories(config, num_tiny_stories)
+print(f"Number of tinystories stories: {len(tinystories)}")
 
 # split tinytom into train and val
 # 'train' (tinytom+tinystories)
+print("Splitting into train and val")
 for cond in config.conditions:
-    num_train = int(len(tinytom[cond]) * config.train_ratio)
+    num_train = int(len(tinytom[cond]) * config["train_ratio"])
     num_val = len(tinytom[cond]) - num_train
     raw_datasets['train'] += [{"content": s} for s in tinytom[cond][:num_train]]
     raw_datasets['val_tom'] += [{"content": s} for s in tinytom[cond][num_train:]]
 
 # split tinystories into train and val
-raw_datasets['train'] += [{"content": s} for s in tinystories[:int(len(tinystories)*config.train_ratio)]]
-raw_datasets['val_stories'] = [{"content": s} for s in tinystories[int(len(tinystories)*config.train_ratio):]]
+raw_datasets['train'] += [{"content": s} for s in tinystories[:int(len(tinystories)*config["train_ratio"])]]
+raw_datasets['val_stories'] = [{"content": s} for s in tinystories[int(len(tinystories)*config["train_ratio"]):]]
 
 hf_datasets = {split: Dataset.from_dict(data) for split, data in raw_datasets.items()}
 del(raw_datasets)
@@ -68,7 +77,8 @@ del(raw_datasets)
 
 
 # prepare datasets
-context_length = config.context_length
+print("Tokenizing datasets")
+context_length = config["context_length"]
 
 def tokenize(element):
     outputs = tokenizer(
@@ -91,23 +101,23 @@ data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
 
 # prepare training
 training_args = TrainingArguments(
-    output_dir=config.output_dir,
-    per_device_train_batch_size=config.batch_size,
-    per_device_eval_batch_size=config.eval_batch_size,
+    output_dir=config["output_dir"],
+    per_device_train_batch_size=config["batch_size"],
+    per_device_eval_batch_size=config["eval_batch_size"],
     evaluation_strategy="steps",
-    eval_steps=config.eval_steps,
-    logging_steps=config.log_steps,
-    gradient_accumulation_steps=config.gradient_accumulation_steps,
-    num_train_epochs=config.num_train_epochs,
-    weight_decay=config.weight_decay,
-    warmup_steps=config.warmup_steps,
-    lr_scheduler_type=config.lr_scheduler_type,
-    learning_rate=config.lr,
-    save_steps=config.save_steps,
+    eval_steps=config["eval_steps"],
+    logging_steps=config["log_steps"],
+    gradient_accumulation_steps=config["gradient_accumulation_steps"],
+    num_train_epochs=config["num_train_epochs"],
+    weight_decay=config["weight_decay"],
+    warmup_steps=config["warmup_steps"],
+    lr_scheduler_type=config["lr_scheduler_type"],
+    learning_rate=config["lr"],
+    save_steps=config["save_steps"],
     fp16=True,
     push_to_hub=False,
     report_to="wandb",
-    run_name=config.name,
+    run_name=config["name"],
 )
 
 trainer = Trainer(
