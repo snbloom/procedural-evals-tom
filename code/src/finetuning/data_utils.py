@@ -10,7 +10,7 @@ def get_tiny_tom(config):
         tinytom[cond] = []
         final_sentences = []
         with open(os.path.join(config["tom_data_dir"], cond, config["condition_file"]), 'r') as f:
-            reader = csv.reader(f)
+            reader = csv.reader(f, delimiter=';')
             for row in reader:
                 final_sentences.append(row[2])
         with open(os.path.join(config["tom_data_dir"], cond, config["story_file"]), 'r') as f:
