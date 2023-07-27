@@ -1,5 +1,6 @@
 #ignore tiny stories data
 data/tinystories/
+models/
 
 .DS_Store
 *.pyc

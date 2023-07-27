@@ -2,7 +2,7 @@
     "seed": 42,
     "model": "33",
     "context_length": 512,
-    "output_dir": "./training_output",
+    "output_dir": "../../../models/",
     "batch_size": 32,
     "eval_batch_size": 8,
     "eval_steps": 500,
