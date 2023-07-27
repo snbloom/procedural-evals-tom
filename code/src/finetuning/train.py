@@ -1,16 +1,24 @@
 import json 
+import os
+import csv
 import random
 import torch
+
 
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
+from datasets import Dataset
 
-
+from data_utils import get_tiny_tom, get_tiny_stories
 
 # read args from a json config file
 with open("config.json", "r") as f:
     args = json.load(f)
+
+# set seeds
+random.seed(args.seed)
+torch.manual_seed(args.seed)
 
 # load checkpoint for finetuning
 if args.model == '33':
@@ -24,11 +32,34 @@ tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
 # load data
 # If the size of the new dataset is small,
 # sample some of the existing dataset to create a new dataset
-# This might help with overfitting
+# this might help with overfitting
+raw_datasets = {'train': [], 'val_tom': [], 'val_stories': []}
+
+# load tinytom and preprocess
+# NOTE: When the dataset is bigger, do this in a separate script,
+# and load using hf datasets directly
+tinytom = get_tiny_tom(args)
+num_tiny_tom = sum([len(tinytom[cond]) for cond in args.conditions])
+
+# load tinystories and preprocess
+num_tiny_stories = num_tiny_tom * args.tinystories_ratio
+tinystories = get_tiny_stories(args, num_tiny_stories)
+
+# split tinytom into train and val
 # 'train' (tinytom+tinystories)
-# 'val1' (tinytom)
-# 'val2' (tinystories)
-raw_datasets = {} # TODO: load stories from data file, and split into train, val, test
+for cond in args.conditions:
+    num_train = int(len(tinytom[cond]) * args.train_ratio)
+    num_val = len(tinytom[cond]) - num_train
+    raw_datasets['train'] += [{"content": s} for s in tinytom[cond][:num_train]]
+    raw_datasets['val_tom'] += [{"content": s} for s in tinytom[cond][num_train:]]
+
+# split tinystories into train and val
+raw_datasets['train'] += [{"content": s} for s in tinystories[:int(len(tinystories)*args.train_ratio)]]
+raw_datasets['val_stories'] = [{"content": s} for s in tinystories[int(len(tinystories)*args.train_ratio):]]
+
+hf_datasets = {split: Dataset.from_dict(data) for split, data in raw_datasets.items()}
+del(raw_datasets)
+
 
 
 # prepare datasets
@@ -48,7 +79,7 @@ def tokenize(element):
             input_batch.append(input_ids)
     return {"input_ids": input_batch}
 
-tokenized_datasets = raw_datasets.map(tokenize, batched=True)
+tokenized_datasets = hf_datasets.map(tokenize, batched=True)
 tokenizer.pad_token = tokenizer.eos_token
 data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
 
