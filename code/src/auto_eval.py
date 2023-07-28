@@ -187,9 +187,10 @@ runs["evals"].append({
     "incorrect_stories":incorrect_answers,
     "unrelated_stories":unrelated_answers,
     "inconsistent_stories":inconsistent_answers,
-    "args":args
 })
 runs_json = json.dumps(runs)
+print(runs_json)
 
-with open(LOG_FILE, "w") as f:
-    f.write(runs_json)
+if runs_json != "":
+    with open(LOG_FILE, "w") as f:
+        f.write(runs_json)

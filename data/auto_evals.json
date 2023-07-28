@@ -1,3 +1,19 @@
 {
-  "evals": []
+  "evals": [
+    {
+      "model_id": "roneneldan/TinyStories-28M",
+      "method": "auto",
+      "init_belief": "0_forward",
+      "variable": "belief",
+      "condition": "true_belief",
+      "count_correct": 0,
+      "count_incorrect": 0,
+      "count_unrelated": 0,
+      "count_inconsistent": 0,
+      "correct_stories": [],
+      "incorrect_stories": [],
+      "unrelated_stories": [],
+      "inconsistent_stories": []
+    }
+  ]
 }
