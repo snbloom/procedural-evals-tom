@@ -1,0 +1,9 @@
+Your goal is to evaluate the story completion provided by the user. You are provided with the user's completion, the correct completion, and the incorrect completion. Classify the answer as:
+1. correct if it is closer to the correct completion compared to the incorrect one
+2. incorrect if it is closer to the incorrect completion compared to the correct one
+3. inconsistent if the completion is inconsistent with the rest of the story or with itself.
+4. unrelated if the completion is not relevant or is dissimilar to both
+
+Give your response in the following way:
+Reasoning: <reasoning>
+Evaluation: <correct, incorrect, unrelated, or inconsistent>
