@@ -132,7 +132,6 @@ for i in range(len(converted)):
     # use gpt4 to check for accuracy
     with open(f"{PROMPT_DIR}/auto_eval_user.txt", "r") as f:
         user_prompt = f.read() 
-        print("user_prompt direct from file", user_prompt) 
         user_prompt = user_prompt.replace("[story]", converted_story)
         user_prompt = user_prompt.replace("[user_completion]", prediction)
         user_prompt = user_prompt.replace("[correct_completion]", correct_answer)
@@ -165,6 +164,8 @@ for i in range(len(converted)):
             inconsistent_answers.append(converted_story + " " + prediction)
         else:
             raise Exception(f"Classification '{classification}' is not recognized")
+        print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
+
 
 print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 print("LOGGING OUTPUTS FOR MODEL", model_id)
@@ -182,6 +183,10 @@ runs["evals"].append({
     "count_incorrect":count_incorrect,
     "count_unrelated":count_unrelated,
     "count_inconsistent":count_inconsistent,
+    "correct_stories":correct_answers,
+    "incorrect_stories":incorrect_answers,
+    "unrelated_stories":unrelated_answers,
+    "inconsistent_stories":inconsistent_answers,
     "args":args
 })
 runs_json = json.dumps(runs)
