@@ -23,7 +23,7 @@ args = parser.parse_args()
 with open(args.config, "r") as f:
     config = json.load(f)
 
-wandb.init(project="tinytom", config=config)
+wandb.init(project="tinytom", dir='/scr/kanishkg/wandb/', config=config)
 
 # set seeds
 random.seed(config["seed"])
@@ -58,7 +58,7 @@ print(f"Number of tinytom stories: {num_tiny_tom}")
 
 # load tinystories and preprocess
 print("Loading tinystories")
-num_tiny_stories = num_tiny_tom * config["tinystories_ratio"]
+num_tiny_stories = int(num_tiny_tom * config["tinystories_ratio"])
 tinystories = get_tiny_stories(config, num_tiny_stories)
 
 # split tinytom into train and val
@@ -76,6 +76,8 @@ raw_datasets['val_stories'] = [{"content": s} for s in tinystories[int(len(tinys
 
 hf_datasets = DatasetDict({split: Dataset.from_pandas(pd.DataFrame(data=data)) for split, data in raw_datasets.items()})
 
+print(hf_datasets)
+
 # prepare datasets
 print("Tokenizing datasets")
 context_length = config["context_length"]
@@ -91,13 +93,14 @@ def tokenize(element):
 
     input_batch = []
     for length, input_ids in zip(outputs["length"], outputs["input_ids"]):
-        if length == context_length:
+        if length <= context_length:
             input_batch.append(input_ids)
     return {"input_ids": input_batch}
 
 tokenized_datasets = hf_datasets.map(tokenize, batched=True, remove_columns=hf_datasets["train"].column_names)
 tokenizer.pad_token = tokenizer.eos_token
 data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
+print("tokenized dataset", tokenized_datasets)
 
 
 # prepare training
@@ -114,7 +117,10 @@ training_args = TrainingArguments(
     warmup_steps=config["warmup_steps"],
     lr_scheduler_type=config["lr_scheduler_type"],
     learning_rate=config["lr"],
+    save_strategy="steps",
+    save_total_limit=config["save_total_limit"],
     save_steps=config["save_steps"],
+    seed=config["seed"],
     fp16=True,
     push_to_hub=False,
     report_to="wandb",

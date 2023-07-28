@@ -6,6 +6,7 @@ import random
 
 def get_tiny_tom(config):
     tinytom = {}
+
     for cond in config["conditions"]:
         tinytom[cond] = []
         final_sentences = []
@@ -21,7 +22,8 @@ def get_tiny_tom(config):
                 story = text[:last_period_index+1]
                 story = story + " " + final_sentences[i]
                 tinytom[cond].append(story)
-        random.shuffle(tinytom[cond])
+    # ensure all conditions are shuffled in the same order
+    # keeping unshuffled for now
     return tinytom
 
 def get_tiny_stories(config, count):
