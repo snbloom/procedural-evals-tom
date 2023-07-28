@@ -46,24 +46,24 @@ LOG_FILE = "../../data/auto_evals.json"
 PROMPT_DIR = "../prompt_instructions"
 
 def get_eval_llm():
-    llm = ChatOpenAI(
+    eval_llm = ChatOpenAI(
         model="gpt-4-0613",
         temperature=0.0,
         max_tokens=250,
         n=1,
         request_timeout=180
     )
-    return llm
+    return eval_llm
 
 def get_test_llm():
-    llm_t = ChatOpenAI(
+    test_llm = ChatOpenAI(
         model="gpt-4-0613",
         temperature=0.0,
         max_tokens=args.max_tokens,
         n=1,
         request_timeout=180
     )
-    return llm_t
+    return test_llm
 
 eval_llm = get_eval_llm()
 
@@ -131,7 +131,8 @@ for i in range(len(converted)):
 
     # use gpt4 to check for accuracy
     with open(f"{PROMPT_DIR}/auto_eval_user.txt", "r") as f:
-        user_prompt = f.read()  
+        user_prompt = f.read() 
+        print("user_prompt direct from file", user_prompt) 
         user_prompt.replace("[story]", converted_story)
         user_prompt.replace("[user_completion]", prediction)
         user_prompt.replace("[correct_completion]", correct_answer)
@@ -142,48 +143,48 @@ for i in range(len(converted)):
     system_message = SystemMessage(content=sys_prompt)
     user_msg = HumanMessage(content=user_prompt)
     messages = [system_message, user_msg]
-    responses = test_llm.generate([messages])
+#     responses = eval_llm.generate([messages])
 
-    for g, generation in enumerate(responses.generations[0]):
-        eval = generation.text.strip() 
-        print(eval)
-        classification = eval.split("Evaluation:")[1].strip().lower()
-        print(classification)
+#     for g, generation in enumerate(responses.generations[0]):
+#         eval = generation.text.strip() 
+#         print(eval)
+#         classification = eval.split("Evaluation:")[1].strip().lower()
+#         print(classification)
 
-        if classification=="correct":
-            count_correct += 1
-            correct_answers.append(converted_story + " " + prediction)
-        elif classification=="incorrect":
-            count_incorrect += 1
-            incorrect_answers.append(converted_story + " " + prediction)
-        elif classification=="unrelated":
-            count_unrelated += 1
-            unrelated_answers.append(converted_story + " " + prediction)
-        elif classification=="inconsistent":
-            count_inconsistent += 1
-            inconsistent_answers.append(converted_story + " " + prediction)
-        else:
-            raise Exception(f"Classification '{classification}' is not recognized")
+#         if classification=="correct":
+#             count_correct += 1
+#             correct_answers.append(converted_story + " " + prediction)
+#         elif classification=="incorrect":
+#             count_incorrect += 1
+#             incorrect_answers.append(converted_story + " " + prediction)
+#         elif classification=="unrelated":
+#             count_unrelated += 1
+#             unrelated_answers.append(converted_story + " " + prediction)
+#         elif classification=="inconsistent":
+#             count_inconsistent += 1
+#             inconsistent_answers.append(converted_story + " " + prediction)
+#         else:
+#             raise Exception(f"Classification '{classification}' is not recognized")
 
-print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
-print("LOGGING OUTPUTS FOR MODEL", model_id)
+# print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
+# print("LOGGING OUTPUTS FOR MODEL", model_id)
 
-with open(LOG_FILE, "r") as f:
-    runs = json.load(f)
+# with open(LOG_FILE, "r") as f:
+#     runs = json.load(f)
 
-runs["evals"].append({
-    "model_id":model_id,
-    "method":"auto",
-    "init_belief":args.init_belief,
-    "variable":args.variable,
-    "condition":args.condition,
-    "count_correct":count_correct,
-    "count_incorrect":count_incorrect,
-    "count_unrelated":count_unrelated,
-    "count_inconsistent":count_inconsistent,
-    "args":args
-})
-runs_json = json.dumps(runs)
+# runs["evals"].append({
+#     "model_id":model_id,
+#     "method":"auto",
+#     "init_belief":args.init_belief,
+#     "variable":args.variable,
+#     "condition":args.condition,
+#     "count_correct":count_correct,
+#     "count_incorrect":count_incorrect,
+#     "count_unrelated":count_unrelated,
+#     "count_inconsistent":count_inconsistent,
+#     "args":args
+# })
+# runs_json = json.dumps(runs)
 
-with open(LOG_FILE, "w") as f:
-    f.write(runs_json)
+# with open(LOG_FILE, "w") as f:
+#     f.write(runs_json)
