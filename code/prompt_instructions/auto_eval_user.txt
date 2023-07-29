@@ -1,0 +1,11 @@
+Story:
+[story]
+
+User completion:
+[user_completion]
+
+Correct completion:
+[correct_completion]
+
+Incorrect completion:
+[incorrect_completion]
