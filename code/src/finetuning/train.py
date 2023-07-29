@@ -23,7 +23,7 @@ args = parser.parse_args()
 with open(args.config, "r") as f:
     config = json.load(f)
 
-wandb.init(project="tiny-tom", dir='/scr/kanishkg/wandb/', config=config)
+wandb.init(project="tiny-tom", dir='/scr/kanishkg/wandb/', name=config["name"], config=config)
 
 # set seeds
 random.seed(config["seed"])
