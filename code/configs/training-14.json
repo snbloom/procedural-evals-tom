@@ -1,0 +1,27 @@
+{
+    "name": "llama-training-14-1",
+    "seed": 42,
+    "model": "14",
+    "tinystories_dir": "/scr/kanishkg/TinyStories/",
+    "test_ratio": 0.1,
+    "context_length": 256,
+    "output_dir": "/scr/kanishkg/models/llama-training-14-1",
+    "batch_size": 64,
+    "eval_batch_size": 64,
+    "eval_steps": 5000,
+    "log_steps": 5000,
+    "gradient_accumulation_steps": 2,
+    "num_train_epochs": 3,
+    "weight_decay": 0.01,
+    "warmup_steps": 1000,
+    "lr_scheduler_type": "cosine",
+    "lr": 1e-4,
+    "save_total_limit": 10,
+    "save_steps": 5000,
+    "sharded_ddp": "zero_dp_2"
+}
+
+
+
+
+

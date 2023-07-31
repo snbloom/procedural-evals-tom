@@ -114,7 +114,7 @@ training_args = TrainingArguments(
     report_to="wandb",
     run_name=config["name"],
     # check multi-gpu stage-2 if model fits, stage-3 if model doesn't fit
-    # sharded_ddp=config["sharded_ddp"],
+    sharded_ddp=config["sharded_ddp"],
     # check if deepspeed is needed
     # deepspeed=config["deepspeed"]
 )
@@ -126,10 +126,12 @@ trainer = Trainer(
     data_collator=data_collator,
     train_dataset=tokenized_datasets["train"],
     eval_dataset={
-    "valid_tom": tokenized_datasets["val_tom"],
-    "valid_stories": tokenized_datasets["val_stories"],
+    "valid": tokenized_datasets["val"],
     }
 )
 
 # train
 trainer.train()
+
+# eval
+trainer.predict(tokenized_datasets["test"])
