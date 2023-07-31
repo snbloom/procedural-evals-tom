@@ -45,7 +45,7 @@ else:
 # pass the config to llama config and load llama model
 model_config = LlamaConfig(**model_config) 
 model = LlamaForCausalLM(model_config)
-print(f"Number of parameters: {model.num_parameters()}")
+print(f"Number of parameters: {model.model.num_parameters()}")
 
 # load tokenizer
 tokenizer = LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
@@ -116,6 +116,7 @@ training_args = TrainingArguments(
     push_to_hub=False,
     report_to="wandb",
     run_name=config["name"],
+    ddp_find_unused_parameters=False
     # check multi-gpu stage-2 if model fits, stage-3 if model doesn't fit
     # sharded_ddp=config["sharded_ddp"],
 #     fsdp="full_shard"
