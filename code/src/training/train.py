@@ -3,9 +3,9 @@ import json
 import random
 import argparse
 
-# import wandb
+import wandb
 import torch
-from transformers import LlamaModel, LlamaConfig
+from transformers import LlamaModel, LlamaConfig, LlamaForCausalLM
 from transformers import LlamaTokenizerFast
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
@@ -44,7 +44,7 @@ else:
 
 # pass the config to llama config and load llama model
 model_config = LlamaConfig(**model_config) 
-model = LlamaModel(model_config)
+model = LlamaForCausalLM(model_config)
 print(f"Number of parameters: {model.num_parameters()}")
 
 # load tokenizer
@@ -54,12 +54,14 @@ tokenizer = LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokeni
 # load data
 data_files = []
 data_files += [f"{config['tinystories_dir']}/{f}" for f in os.listdir(config["tinystories_dir"]) if f.endswith(".json")]
+print(f"len data = {len(data_files)}")
 # TODO: add tinytom-pretrain here if needed
 
 # load data from jsons with hf datasets
 hf_dataset = load_dataset("json", data_files=data_files)
+print(hf_dataset)
 # split into train, val, test
-train_testval = hf_dataset.train_test_split(test_size=config["test_ratio"], seed=config["seed"])
+train_testval = hf_dataset["train"].train_test_split(test_size=config["test_ratio"], seed=config["seed"])
 test_val = train_testval["test"].train_test_split(test_size=0.5, seed=config["seed"])
 hf_datasets = DatasetDict({
     "train": train_testval["train"],
@@ -69,17 +71,18 @@ hf_datasets = DatasetDict({
 
 context_length = config["context_length"]
 def tokenize(element):
-    element["story"] = element["story"].strip()
+    stories = [e.strip() for e in element["story"]]
     outputs = tokenizer(
-        element["content"],
+        stories,
         truncation=True,
         max_length=context_length,
         return_overflowing_tokens=True,
         return_length=True,
     )
+
     input_batch = []
     for length, input_ids in zip(outputs["length"], outputs["input_ids"]):
-        if length == context_length:
+        if length <= context_length:
             input_batch.append(input_ids)
     return {"input_ids": input_batch}
 
@@ -114,7 +117,8 @@ training_args = TrainingArguments(
     report_to="wandb",
     run_name=config["name"],
     # check multi-gpu stage-2 if model fits, stage-3 if model doesn't fit
-    sharded_ddp=config["sharded_ddp"],
+    # sharded_ddp=config["sharded_ddp"],
+#     fsdp="full_shard"
     # check if deepspeed is needed
     # deepspeed=config["deepspeed"]
 )
