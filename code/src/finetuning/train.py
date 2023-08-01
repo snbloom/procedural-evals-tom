@@ -23,7 +23,7 @@ args = parser.parse_args()
 with open(args.config, "r") as f:
     config = json.load(f)
 
-wandb.init(project="tinytom", dir='/scr/kanishkg/wandb/', config=config)
+wandb.init(project="tiny-tom", dir='/scr/kanishkg/wandb/', name=config["name"], config=config)
 
 # set seeds
 random.seed(config["seed"])
@@ -58,7 +58,11 @@ print(f"Number of tinytom stories: {num_tiny_tom}")
 
 # load tinystories and preprocess
 print("Loading tinystories")
-num_tiny_stories = int(num_tiny_tom * config["tinystories_ratio"])
+if config["tinystories_ratio"] > 0:
+    num_tiny_stories = int(num_tiny_tom * config["tinystories_ratio"])
+else:
+    # still sample some stories for validation if none are used for training
+    num_tiny_stories = 100 
 tinystories = get_tiny_stories(config, num_tiny_stories)
 
 # split tinytom into train and val
@@ -71,8 +75,11 @@ for cond in config["conditions"]:
     raw_datasets['val_tom'] += [{"content": s} for s in tinytom[cond][num_train:]]
 
 # split tinystories into train and val
-raw_datasets['train'] += [{"content": s} for s in tinystories[:int(len(tinystories)*config["train_ratio"])]]
-raw_datasets['val_stories'] = [{"content": s} for s in tinystories[int(len(tinystories)*config["train_ratio"]):]]
+if config["tinystories_ratio"] > 0:
+    raw_datasets['train'] += [{"content": s} for s in tinystories[:int(len(tinystories)*config["train_ratio"])]]
+    raw_datasets['val_stories'] = [{"content": s} for s in tinystories[int(len(tinystories)*config["train_ratio"]):]]
+else:
+    raw_datasets['val_stories'] = [{"content": s} for s in tinystories]
 
 hf_datasets = DatasetDict({split: Dataset.from_pandas(pd.DataFrame(data=data)) for split, data in raw_datasets.items()})
 
