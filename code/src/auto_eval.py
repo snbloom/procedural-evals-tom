@@ -42,7 +42,7 @@ if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
 if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
 if args.model_id == "gpt4": model_id = "gpt-4-0613"
 
-LOG_FILE = "../../data/auto_evals.json"
+LOG_FILE = "../../data/evals.json"
 PROMPT_DIR = "../prompt_instructions"
 
 def get_eval_llm():
