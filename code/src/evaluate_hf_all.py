@@ -146,7 +146,7 @@ with open(LOG_FILE, "r") as f:
 
 runs["evals"].append({
     "model_id":model_id,
-    "method":"auto",
+    "method":"manual",
     "init_belief":args.init_belief,
     "variable":args.variable,
     "condition":args.condition,
