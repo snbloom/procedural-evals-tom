@@ -21,7 +21,7 @@ parser.add_argument('--max_tokens', type=int, default=20, help='max tokens')
 # parser.add_argument('--num', '-n', type=int, default=1, help='number of evaluations')
 parser.add_argument('--offset', '-o', type=int, default=0, help='offset')
 parser.add_argument('--verbose', action='store_true', help='verbose')
-parser.add_argument('--local', action='store_true', default=True, help='local eval using transformers instead of huggingface hub')
+parser.add_argument('--local', action='store_true', help='local eval using transformers instead of huggingface hub')
 parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M", help="gpt-4, roneneldan/TinyStories-33M, roneneldan/TinyStories-28M")
 
 # data args
