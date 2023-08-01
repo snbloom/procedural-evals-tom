@@ -148,7 +148,6 @@ for i in range(len(converted)):
         eval = generation.text.strip() 
         print(eval)
         classification = eval.split("Evaluation:")[1].strip().lower()
-        print(classification)
 
         if classification=="correct":
             count_correct += 1
@@ -191,6 +190,6 @@ runs["evals"].append({
 runs_json = json.dumps(runs)
 print(runs_json)
 
-if runs_json != "":
+if runs_json != "" and runs_json != "{}" and runs_json != "{'evals':[]}":
     with open(LOG_FILE, "w") as f:
         f.write(runs_json)

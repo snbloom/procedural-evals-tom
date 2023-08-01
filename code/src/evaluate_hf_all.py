@@ -1,5 +1,6 @@
 import argparse
 import csv
+import json
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
 from langchain import HuggingFaceHub
 from langchain.chat_models import ChatOpenAI
@@ -36,9 +37,12 @@ conditions = ["true_belief", "false_belief"]
 init_beliefs = ["0_forward", "0_backward", "1_forward", "1_backward"]
 
 all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M"]
-model_id = args.model_id
+model_id = args.model_id # or use the following shorthand:
+if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
+if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
+if args.model_id == "gpt4": model_id = "gpt-4-0613"
 
-LOG_FILE = f"../../data/evaluations.csv"
+LOG_FILE = f"../../data/evals.json"
 
 def get_llm():
     llm = ChatOpenAI(
@@ -67,17 +71,11 @@ CONVERTED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.cond
 
 correct_answers = []
 incorrect_answers = []
-# inconsistent_unrelated_answers = []
-# consistent_unrelated_answers = []
-# partial_correct_answers = []
 unrelated_answers = []
 inconsistent_answers = []
 
 count_correct = 0
 count_incorrect = 0
-# count_partial = 0
-# count_unrelated_consistent = 0
-# count_unrelated_inconsistent = 0
 count_unrelated = 0
 count_inconsistent = 0
 
@@ -112,9 +110,7 @@ for i in range(len(converted)):
             prediction = tokenizer.decode(output[0], skip_special_tokens=True)
             prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
 
-    # manual check for now
-    # print(f"Story: {story}")
-    # print(f"Question: {question}")
+    # manual check 
     print()
     print(f"Story {i}: {repr(converted_story)}")
     print(f"Prediction: {prediction}")
@@ -144,6 +140,28 @@ for i in range(len(converted)):
 
 print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 print("LOGGING OUTPUTS FOR MODEL", model_id)
-with open(LOG_FILE, "a") as f_a:
-    writer = csv.writer(f_a, delimiter=";")
-    writer.writerow([model_id, args.init_belief, args.variable, args.condition, "manual", count_correct, count_incorrect, count_unrelated, count_inconsistent, correct_answers, incorrect_answers, unrelated_answers, inconsistent_answers, args])
+
+with open(LOG_FILE, "r") as f:
+    runs = json.load(f)
+
+runs["evals"].append({
+    "model_id":model_id,
+    "method":"auto",
+    "init_belief":args.init_belief,
+    "variable":args.variable,
+    "condition":args.condition,
+    "count_correct":count_correct,
+    "count_incorrect":count_incorrect,
+    "count_unrelated":count_unrelated,
+    "count_inconsistent":count_inconsistent,
+    "correct_stories":correct_answers,
+    "incorrect_stories":incorrect_answers,
+    "unrelated_stories":unrelated_answers,
+    "inconsistent_stories":inconsistent_answers,
+})
+runs_json = json.dumps(runs)
+print(runs_json)
+
+if runs_json != "" and runs_json != "{}" and runs_json != "{'evals':[]}":
+    with open(LOG_FILE, "w") as f:
+        f.write(runs_json)
