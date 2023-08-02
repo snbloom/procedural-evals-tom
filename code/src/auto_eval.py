@@ -137,9 +137,8 @@ for i in range(len(converted)):
                 prediction = prediction.replace("\n", " ")
                 prediction = prediction.split(".")[0] + "."
         elif model_id in our_models_ids:
-            prediction = pipe(converted_story, max_new_tokens=args.max_tokens, num_return_sequences=1)[0]["generated_text"]
+            prediction = pipe(converted_story, max_new_tokens=300, num_return_sequences=1)[0]["generated_text"]
             prediction = prediction.replace("\n", " ")
-            prediction = prediction.split(".")[0] + "."
         else:
             if not args.local:
                 prediction = test_llm(converted_story)
