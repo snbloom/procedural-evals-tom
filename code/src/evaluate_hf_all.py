@@ -1,7 +1,8 @@
 import argparse
 import csv
 import json
-from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig
+import torch
+from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, pipeline
 from langchain import HuggingFaceHub
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import (
@@ -18,11 +19,11 @@ parser.add_argument('--temperature', type=float, default=0.0, help='temperature'
 parser.add_argument('--max_tokens', type=int, default=20, help='max tokens')
 
 # eval args
-# parser.add_argument('--num', '-n', type=int, default=1, help='number of evaluations')
+parser.add_argument('--num', '-n', type=int, default=50, help='number of evaluations')
 parser.add_argument('--offset', '-o', type=int, default=0, help='offset')
 parser.add_argument('--verbose', action='store_true', help='verbose')
 parser.add_argument('--local', action='store_true', help='local eval using transformers instead of huggingface hub')
-parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M", help="gpt-4, roneneldan/TinyStories-33M, roneneldan/TinyStories-28M")
+parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M", help="gpt-4-0613, roneneldan/TinyStories-33M, roneneldan/TinyStories-28M")
 
 # data args
 parser.add_argument('--data_dir', type=str, default='../../data/conditions/three_words', help='data directory')
@@ -36,13 +37,22 @@ variables = ["belief", "action"]
 conditions = ["true_belief", "false_belief"]
 init_beliefs = ["0_forward", "0_backward", "1_forward", "1_backward"]
 
-all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M"]
+all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", "gpt-4-0613", 
+                 "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
+                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"]
+our_models_ids = ["/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
+                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"]
 model_id = args.model_id # or use the following shorthand:
 if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
 if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
-if args.model_id == "gpt4": model_id = "gpt-4-0613"
+if args.model_id == "gpt4" or args.model_id == "gpt-4": model_id = "gpt-4-0613"
+if args.model_id == "finetuned_28": model_id = "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45"
+if args.model_id == "finetuned_33": model_id = "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45"
+if args.model_id == "llama": model_id = "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"
 
 LOG_FILE = f"../../data/evals.json"
+
+data_range = f"{args.offset}-{args.offset + args.num}"
 
 def get_llm():
     llm = ChatOpenAI(
@@ -57,6 +67,9 @@ def get_llm():
 # get model (gpt4 vesus huggingface model)
 if model_id =="gpt-4":
     llm = get_llm()
+elif model_id in our_models_ids:
+    device = torch.device(0) if torch.cuda.is_available() else torch.device("cpu")
+    pipe = pipeline( "text-generation", model=args.model, device=device )
 else:
     if not args.local:
         llm = HuggingFaceHub(repo_id=model_id, model_kwargs={"temperature":args.temperature, "max_new_tokens":args.max_tokens})
@@ -86,57 +99,65 @@ with open(DATA_FILE, 'r') as f:
 with open(CONVERTED_FILE, 'r') as f:
     converted = f.readlines()
 
+counter = 0
 for i in range(len(converted)):
-    story, question, correct_answer, wrong_answer, _ = data[i]
-    converted_story = converted[i].strip()
-    
-    # predict answer
-    if model_id =="gpt-4":
-        system_message = SystemMessage(content=converted_story)
-        messages = [system_message]
-        responses = llm.generate([messages])
+    if i >= args.o and counter < args.n:
+        print(i)
+        story, question, correct_answer, wrong_answer, _ = data[i]
+        converted_story = converted[i].strip()
+        
+        # predict answer
+        if model_id =="gpt-4":
+            system_message = SystemMessage(content=converted_story)
+            messages = [system_message]
+            responses = llm.generate([messages])
 
-        for g, generation in enumerate(responses.generations[0]):
-            prediction = generation.text.strip() 
+            for g, generation in enumerate(responses.generations[0]):
+                prediction = generation.text.strip() 
+                prediction = prediction.replace("\n", " ")
+                prediction = prediction.split(".")[0] + "."
+        elif model_id in our_models_ids:
+            prediction = pipe(converted_story, max_new_tokens=args.max_tokens, num_return_sequences=1)[0]["generated_text"]
             prediction = prediction.replace("\n", " ")
             prediction = prediction.split(".")[0] + "."
-    else:
-        if not args.local:
-            prediction = llm(converted_story)
-            prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
         else:
-            input_ids = tokenizer.encode(converted_story, return_tensors="pt")
-            output = model.generate(input_ids, max_new_tokens=args.max_tokens, num_beams=1, )
-            prediction = tokenizer.decode(output[0], skip_special_tokens=True)
-            prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
+            if not args.local:
+                prediction = llm(converted_story)
+                prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
+            else:
+                input_ids = tokenizer.encode(converted_story, return_tensors="pt")
+                output = model.generate(input_ids, max_new_tokens=args.max_tokens, num_beams=1, )
+                prediction = tokenizer.decode(output[0], skip_special_tokens=True)
+                prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
 
-    # manual check 
-    print()
-    print(f"Story {i}: {repr(converted_story)}")
-    print(f"Prediction: {prediction}")
-    print()
-    print(f"Correct Answer: {correct_answer}")
-    print(f"Wrong Answer: {wrong_answer}")
-    print()
+        # manual check 
+        print()
+        print(f"Story {i}: {repr(converted_story)}")
+        print(f"Prediction: {prediction}")
+        print()
+        print(f"Correct Answer: {correct_answer}")
+        print(f"Wrong Answer: {wrong_answer}")
+        print()
 
-    while True:
-        grade = input("Is the prediction correct? (y:yes/n:no/u:unrelated/i:inconsistent) ")
-        if grade == 'y' or grade=='yes':
-            count_correct += 1
-            correct_answers.append(converted_story + " " + prediction)
-        elif grade == 'n' or grade=='no':
-            count_incorrect += 1
-            incorrect_answers.append(converted_story + " " + prediction)
-        elif grade == 'u' or grade=='unrelated':
-            count_unrelated += 1
-            unrelated_answers.append(converted_story + " " + prediction)
-        elif grade == 'i' or grade=='inconsistent':
-            count_inconsistent += 1
-            inconsistent_answers.append(converted_story + " " + prediction)
-        else:
-            continue
-        break
-    print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
+        while True:
+            grade = input("Is the prediction correct? (y:yes/n:no/u:unrelated/i:inconsistent) ")
+            if grade == 'y' or grade=='yes':
+                count_correct += 1
+                correct_answers.append(converted_story + " " + prediction)
+            elif grade == 'n' or grade=='no':
+                count_incorrect += 1
+                incorrect_answers.append(converted_story + " " + prediction)
+            elif grade == 'u' or grade=='unrelated':
+                count_unrelated += 1
+                unrelated_answers.append(converted_story + " " + prediction)
+            elif grade == 'i' or grade=='inconsistent':
+                count_inconsistent += 1
+                inconsistent_answers.append(converted_story + " " + prediction)
+            else:
+                continue
+            break
+        counter += 1
+        print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 
 print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 print("LOGGING OUTPUTS FOR MODEL", model_id)
@@ -147,6 +168,7 @@ with open(LOG_FILE, "r") as f:
 runs["evals"].append({
     "model_id":model_id,
     "method":"manual",
+    "data_range":data_range,
     "init_belief":args.init_belief,
     "variable":args.variable,
     "condition":args.condition,
