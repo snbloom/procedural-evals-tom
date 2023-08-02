@@ -101,7 +101,7 @@ with open(CONVERTED_FILE, 'r') as f:
 
 counter = 0
 for i in range(len(converted)):
-    if i >= args.o and counter < args.n:
+    if i >= args.offset and counter < args.num:
         print(i)
         story, question, correct_answer, wrong_answer, _ = data[i]
         converted_story = converted[i].strip()
