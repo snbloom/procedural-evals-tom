@@ -138,6 +138,7 @@ for i in range(len(converted)):
                 prediction = prediction.replace("\n", " ")
         elif model_id in our_models_ids:
             prediction = pipe(converted_story, num_return_sequences=1)[0]["generated_text"]
+            print(prediction)
             prediction = prediction[len(converted_story)+1:]
             prediction = prediction.replace("\n", " ")
         else:
