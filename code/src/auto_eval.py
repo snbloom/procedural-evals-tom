@@ -213,7 +213,6 @@ runs["evals"].append({
     "inconsistent_stories":inconsistent_answers,
 })
 runs_json = json.dumps(runs)
-print(runs_json)
 
 if runs_json != "" and runs_json != "{}" and runs_json != "{'evals':[]}":
     with open(LOG_FILE, "w") as f:
