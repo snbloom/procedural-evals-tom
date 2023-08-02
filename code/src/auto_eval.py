@@ -134,15 +134,17 @@ for i in range(len(converted)):
             responses = test_llm.generate([messages])
             for g, generation in enumerate(responses.generations[0]):
                 prediction = generation.text.strip() 
-                prediction = prediction.replace("\n", " ")
                 prediction = prediction.split(".")[0] + "."
+                prediction = prediction.replace("\n", " ")
         elif model_id in our_models_ids:
-            prediction = pipe(converted_story, max_new_tokens=300, num_return_sequences=1)[0]["generated_text"]
+            prediction = pipe(converted_story, num_return_sequences=1)[0]["generated_text"]
+            prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
             prediction = prediction.replace("\n", " ")
         else:
             if not args.local:
                 prediction = test_llm(converted_story)
                 prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
+                prediction = prediction.replace("\n", " ")
             else:
                 input_ids = tokenizer.encode(converted_story, return_tensors="pt")
                 output = model.generate(input_ids, max_new_tokens=args.max_tokens, num_beams=1, )
