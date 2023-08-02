@@ -69,7 +69,7 @@ if model_id =="gpt-4":
     llm = get_llm()
 elif model_id in our_models_ids:
     device = torch.device(0) if torch.cuda.is_available() else torch.device("cpu")
-    pipe = pipeline( "text-generation", model=args.model, device=device )
+    pipe = pipeline( "text-generation", model=model_id, device=device )
 else:
     if not args.local:
         llm = HuggingFaceHub(repo_id=model_id, model_kwargs={"temperature":args.temperature, "max_new_tokens":args.max_tokens})

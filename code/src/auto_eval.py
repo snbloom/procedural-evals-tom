@@ -84,7 +84,7 @@ if model_id =="gpt-4-0613":
 # get model (finetuned / trained models)
 elif model_id in our_models_ids:
     device = torch.device(0) if torch.cuda.is_available() else torch.device("cpu")
-    pipe = pipeline( "text-generation", model=args.model, device=device )
+    pipe = pipeline( "text-generation", model=model_id, device=device )
 # get model (tinystories huggingface models)
 else:
     if not args.local:
