@@ -37,11 +37,13 @@ variables = ["belief", "action"]
 conditions = ["true_belief", "false_belief"]
 init_beliefs = ["0_forward", "0_backward", "1_forward", "1_backward"]
 
-all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", "gpt-4-0613", 
+all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", 
+                 "gpt-4-0613", "text-davinci-003", "gpt-3.5-turbo",
                  "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
-                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"]
+                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
+open_ai_model_ids = ["gpt-4-0613", "text-davinci-003", "gpt-3.5-turbo"]
 our_models_ids = ["/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
-                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"]
+                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
 model_id = args.model_id # or use the following shorthand:
 if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
 if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
@@ -54,9 +56,9 @@ LOG_FILE = f"../../data/evals.json"
 
 data_range = f"{args.offset}-{args.offset + args.num}"
 
-def get_llm():
+def get_llm(model):
     llm = ChatOpenAI(
-        model="gpt-4",
+        model=model,
         temperature=0.0,
         max_tokens=args.max_tokens,
         n=1,
@@ -65,8 +67,8 @@ def get_llm():
     return llm
 
 # get model (gpt4 vesus huggingface model)
-if model_id =="gpt-4":
-    llm = get_llm()
+if model_id in open_ai_model_ids:
+    llm = get_llm(model_id)
 elif model_id in our_models_ids:
     device = torch.device(0) if torch.cuda.is_available() else torch.device("cpu")
     pipe = pipeline( "text-generation", model=model_id, device=device )
@@ -107,7 +109,7 @@ for i in range(len(converted)):
         converted_story = converted[i].strip()
         
         # predict answer
-        if model_id =="gpt-4":
+        if model_id in open_ai_model_ids:
             system_message = SystemMessage(content=converted_story)
             messages = [system_message]
             responses = llm.generate([messages])

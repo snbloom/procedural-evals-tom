@@ -27,9 +27,9 @@ parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M"
 
 # data args
 parser.add_argument('--data_dir', type=str, default='../../data/conditions/three_words', help='data directory')
-parser.add_argument('--variable', type=str, default='belief')
-parser.add_argument('--condition', type=str, default='true_belief')
-parser.add_argument('--init_belief', type=str, default="0_forward")
+# parser.add_argument('--variable', type=str, default='belief')
+# parser.add_argument('--condition', type=str, default='true_belief')
+# parser.add_argument('--init_belief', type=str, default="0_forward")
 
 args = parser.parse_args()
 
@@ -37,11 +37,9 @@ variables = ["belief", "action"]
 conditions = ["true_belief", "false_belief"]
 init_beliefs = ["0_forward", "0_backward", "1_forward", "1_backward"]
 
-all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", 
-                 "gpt-4-0613", "text-davinci-003", "gpt-3.5-turbo",
+all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", "gpt-4-0613", 
                  "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
                  "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
-open_ai_model_ids = ["gpt-4-0613", "text-davinci-003", "gpt-3.5-turbo"]
 our_models_ids = ["/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
                  "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
 
@@ -49,8 +47,8 @@ model_id = args.model_id # or use the following shorthand:
 if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
 if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
 if args.model_id == "gpt4": model_id = "gpt-4-0613"
-if args.model_id == "finetuned_28": model_id = "/scr/kanishkg/models/finetuned-28-nc/checkpoint-35"
-if args.model_id == "finetuned_33": model_id = "/scr/kanishkg/models/finetuned-33-nc/checkpoint-35"
+if args.model_id == "finetuned_28": model_id = "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45"
+if args.model_id == "finetuned_33": model_id = "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45"
 if args.model_id == "llama_14": model_id = "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"
 if args.model_id == "llama_43": model_id = "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"
 
@@ -69,9 +67,9 @@ def get_eval_llm():
     )
     return eval_llm
 
-def get_test_llm(model):
+def get_test_llm():
     test_llm = ChatOpenAI(
-        model=model,
+        model="gpt-4-0613",
         temperature=0.0,
         max_tokens=args.max_tokens,
         n=1,
@@ -82,8 +80,8 @@ def get_test_llm(model):
 eval_llm = get_eval_llm()
 
 # get model (gpt4)
-if model_id in open_ai_model_ids:
-    test_llm = get_test_llm(model_id)
+if model_id =="gpt-4-0613":
+    test_llm = get_test_llm()
 # get model (finetuned / trained models)
 elif model_id in our_models_ids:
     device = torch.device(0) if torch.cuda.is_available() else torch.device("cpu")
@@ -131,7 +129,7 @@ for i in range(len(converted)):
         converted_story = converted[i].strip()
         
         # predict answer
-        if model_id in open_ai_model_ids:
+        if model_id =="gpt-4-0613":
             system_message = SystemMessage(content=converted_story)
             messages = [system_message]
             responses = test_llm.generate([messages])
