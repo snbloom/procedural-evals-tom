@@ -47,8 +47,8 @@ model_id = args.model_id # or use the following shorthand:
 if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
 if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
 if args.model_id == "gpt4": model_id = "gpt-4-0613"
-if args.model_id == "finetuned_28": model_id = "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45"
-if args.model_id == "finetuned_33": model_id = "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45"
+if args.model_id == "finetuned_28": model_id = "/scr/kanishkg/models/finetuned-28-nc/checkpoint-35"
+if args.model_id == "finetuned_33": model_id = "/scr/kanishkg/models/finetuned-33-nc/checkpoint-35"
 if args.model_id == "llama_14": model_id = "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"
 if args.model_id == "llama_43": model_id = "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"
 
