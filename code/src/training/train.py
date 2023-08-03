@@ -52,22 +52,28 @@ tokenizer = LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokeni
 
 
 # load data
-data_files = []
-data_files += [f"{config['tinystories_dir']}/{f}" for f in os.listdir(config["tinystories_dir"]) if f.endswith(".json")]
-print(f"len data = {len(data_files)}")
-# TODO: add tinytom-pretrain here if needed
+if config["data"] == "full":
+    data_files = []
+    data_files += [f"{config['tinystories_dir']}/{f}" for f in os.listdir(config["tinystories_dir"]) if f.endswith(".json")]
+    print(f"len data = {len(data_files)}")
+    # TODO: add tinytom-pretrain here if needed
 
-# load data from jsons with hf datasets
-hf_dataset = load_dataset("json", data_files=data_files)
-print(hf_dataset)
-# split into train, val, test
-train_testval = hf_dataset["train"].train_test_split(test_size=config["test_ratio"], seed=config["seed"])
-test_val = train_testval["test"].train_test_split(test_size=0.5, seed=config["seed"])
-hf_datasets = DatasetDict({
-    "train": train_testval["train"],
-    "val": test_val["test"],
-    "test": test_val["train"]
+    # load data from jsons with hf datasets
+    hf_dataset = load_dataset("json", data_files=data_files)
+    print(hf_dataset)
+    # split into train, val, test
+    train_testval = hf_dataset["train"].train_test_split(test_size=config["test_ratio"], seed=config["seed"])
+    test_val = train_testval["test"].train_test_split(test_size=0.5, seed=config["seed"])
+    hf_datasets = DatasetDict({
+        "train": train_testval["train"],
+        "val": test_val["test"],
+        "test": test_val["train"]
 })
+elif config["data"] == "gpt-4":
+    # load data from hf datasets
+    train_file = os.path.join(config["tinystories_dir"], "TinyStoriesV2-GPT4-train.txt")
+    val_file = os.path.join(config["tinystories_dir"], "TinyStoriesV2-GPT4-valid.txt")
+    hf_datasets = load_dataset("text", data_files={"train": train_file, "val": val_file}, sample_by="paragraph")
 
 context_length = config["context_length"]
 def tokenize(element):
@@ -139,4 +145,5 @@ trainer = Trainer(
 trainer.train()
 
 # eval
-trainer.predict(tokenized_datasets["test"])
+if config["dataset"] == "full":
+    trainer.predict(tokenized_datasets["test"])
