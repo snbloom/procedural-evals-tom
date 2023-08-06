@@ -1,3 +1,5 @@
+import os
+import subprocess
 import argparse
 import json
 import csv
@@ -33,31 +35,50 @@ parser.add_argument('--init_belief', type=str, default="0_forward")
 
 args = parser.parse_args()
 
-variables = ["belief", "action"]
-conditions = ["true_belief", "false_belief"]
-init_beliefs = ["0_forward", "0_backward", "1_forward", "1_backward"]
-
 all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", 
                  "gpt-4-0613", "text-davinci-003", "gpt-3.5-turbo",
                  "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
                  "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
 open_ai_model_ids = ["gpt-4-0613", "text-davinci-003", "gpt-3.5-turbo"]
-our_models_ids = ["/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
-                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
 
 model_id = args.model_id # or use the following shorthand:
 if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
 if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
 if args.model_id == "gpt4": model_id = "gpt-4-0613"
-if args.model_id == "finetuned_28": model_id = "/scr/kanishkg/models/finetuned-28-nc/checkpoint-35"
-if args.model_id == "finetuned_33": model_id = "/scr/kanishkg/models/finetuned-33-nc/checkpoint-35"
-if args.model_id == "llama_14": model_id = "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"
-if args.model_id == "llama_43": model_id = "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"
 
 data_range = f"{args.offset}-{args.offset + args.num}"
 
 LOG_FILE = "../../data/evals.json"
 PROMPT_DIR = "../prompt_instructions"
+
+def get_llamac_prediction(prompt, args):
+    # Store the original directory
+    original_directory = os.getcwd()
+
+    # Define the directory of the command
+    command_directory = '/scr/kanishkg/llama2.c'
+
+    # Change the current working directory
+    os.chdir(command_directory)
+
+    # Define the command and the arguments
+    command = './run'
+    arguments = ['stories42M.bin', '-t', args.temperature, '-n', args.max_tokens, '-p', prompt]
+
+    # Use subprocess.run() to run the command and capture the output
+    completed_process = subprocess.run([command] + arguments, capture_output=True, text=True)
+    # Check if the command ran successfully
+    if completed_process.returncode != 0:
+        print(f'The command failed with exit code {completed_process.returncode}')
+        print(f'Standard error: {completed_process.stderr}')
+    else:
+        # Print or manipulate the command's output
+        print(completed_process.stdout)
+    
+    # Change back to the original directory
+    os.chdir(original_directory)
+    return completed_process.stdout
+
 
 def get_eval_llm():
     eval_llm = ChatOpenAI(
@@ -84,18 +105,16 @@ eval_llm = get_eval_llm()
 # get model (gpt4)
 if model_id in open_ai_model_ids:
     test_llm = get_test_llm(model_id)
-# get model (finetuned / trained models)
-elif model_id in our_models_ids:
-    device = torch.device(0) if torch.cuda.is_available() else torch.device("cpu")
-    pipe = pipeline( "text-generation", model=model_id, device=device )
-# get model (tinystories huggingface models)
+elif "bin" in model_id:
+    test_llm = get_llamac_prediction
+# get model finetuned / trained models or tinystories huggingface models)
 else:
     if not args.local:
         test_llm = HuggingFaceHub(repo_id=model_id, model_kwargs={"temperature":args.temperature, "max_new_tokens":args.max_tokens})
     else:
         model = AutoModelForCausalLM.from_pretrained(model_id)
-        tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
-        # tokenizer = AutoTokenizer.from_pretrained(model_id)
+        # tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
+        tokenizer = AutoTokenizer.from_pretrained(model_id)
 
 
 DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
@@ -139,10 +158,9 @@ for i in range(len(converted)):
                 prediction = generation.text.strip() 
                 prediction = prediction.split(".")[0] + "."
                 prediction = prediction.replace("\n", " ")
-        elif model_id in our_models_ids:
-            prediction = pipe(converted_story, num_return_sequences=1, max_new_tokens=args.max_tokens)[0]["generated_text"]
+        elif "bin" in model_id:
+            prediction = test_llm(converted_story, args)
             prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
-            prediction = prediction.replace("\n", " ")
         else:
             if not args.local:
                 prediction = test_llm(converted_story)
