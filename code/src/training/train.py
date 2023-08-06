@@ -9,7 +9,7 @@ from transformers import LlamaModel, LlamaConfig, LlamaForCausalLM
 from transformers import LlamaTokenizerFast
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
-from datasets import load_dataset, DatasetDict
+from datasets import load_dataset, DatasetDict, Dataset
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--config", type=str, default="../../configs/conf.json")
@@ -71,13 +71,20 @@ if config["data"] == "full":
 })
 elif config["data"] == "gpt-4":
     # load data from hf datasets
-    train_file = os.path.join(config["tinystories_dir"], "TinyStoriesV2-GPT4-train.txt")
-    val_file = os.path.join(config["tinystories_dir"], "TinyStoriesV2-GPT4-valid.txt")
-    hf_datasets = load_dataset("text", data_files={"train": train_file, "val": val_file}, sample_by="paragraph")
+    train_file = os.path.join(config["tinystories_dir"], "train_gpt4.json")
+    val_file = os.path.join(config["tinystories_dir"], "val_gpt4.json")
+
+    hf_datasets = load_dataset(
+            "json", 
+            data_files={"train": train_file, "val": val_file}
+                                                )
 
 context_length = config["context_length"]
 def tokenize(element):
-    stories = [e.strip() for e in element["story"]]
+    if config["data"] == "full":
+        stories = [e.strip() for e in element["story"]]
+    else:
+        stories = [e.strip() for e in element["text"]]
     outputs = tokenizer(
         stories,
         truncation=True,
@@ -93,6 +100,7 @@ def tokenize(element):
     return {"input_ids": input_batch}
 
 
+print(hf_datasets)
 tokenized_datasets = hf_datasets.map(
     tokenize, batched=True, remove_columns=hf_datasets["train"].column_names
 )
