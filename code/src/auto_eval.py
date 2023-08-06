@@ -63,7 +63,8 @@ def get_llamac_prediction(prompt, args):
 
     # Define the command and the arguments
     command = './run'
-    arguments = ['stories42M.bin', '-t', args.temperature, '-n', args.max_tokens, '-p', prompt]
+    arguments = [args.model_id, '-t', str(args.temperature), '-n', str(args.max_tokens), '-p', prompt]
+    print(arguments)
 
     # Use subprocess.run() to run the command and capture the output
     completed_process = subprocess.run([command] + arguments, capture_output=True, text=True)
