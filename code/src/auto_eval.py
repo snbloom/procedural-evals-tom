@@ -128,11 +128,14 @@ else:
 
 DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
 CONVERTED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
+RESULTS_DIR = os.path.join(args.data_dir, 'results')
 
 correct_answers = []
 incorrect_answers = []
 unrelated_answers = []
 inconsistent_answers = []
+predicted_answers = []
+graded_answers = []
 
 count_correct = 0
 count_incorrect = 0
@@ -181,6 +184,7 @@ for i in range(len(converted)):
                 prediction = tokenizer.decode(output[0], skip_special_tokens=True)
                 prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
 
+        predicted_answers.append(prediction)
         # use gpt4 to check for accuracy
         with open(f"{PROMPT_DIR}/auto_eval_user.txt", "r") as f:
             user_prompt = f.read() 
@@ -215,6 +219,7 @@ for i in range(len(converted)):
                 inconsistent_answers.append(converted_story + " " + prediction)
             else:
                 raise Exception(f"Classification '{classification}' is not recognized")
+        graded_answers.append(classification)
         counter += 1
         print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 
@@ -247,22 +252,21 @@ if runs_json != "" and runs_json != "{}" and runs_json != "{'evals':[]}":
     with open(LOG_FILE, "w") as f:
         f.write(runs_json)
 
-# run = {
-#     "model_id":model_id,
-#     "method":"auto",
-#     "data_range":data_range,
-#     "init_belief":args.init_belief,
-#     "variable":args.variable,
-#     "condition":args.condition,
-#     "count_correct":count_correct,
-#     "count_incorrect":count_incorrect,
-#     "count_unrelated":count_unrelated,
-#     "count_inconsistent":count_inconsistent,
-#     "correct_stories":correct_answers,
-#     "incorrect_stories":incorrect_answers,
-#     "unrelated_stories":unrelated_answers,
-#     "inconsistent_stories":inconsistent_answers,
-# }
+model_name = model_id.replace('/', '_')
+prediction = os.path.join(RESULTS_DIR, f'{args.init_belief}_{args.variable}_{args.condition}/prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
+accuracy_file = os.path.join(RESULTS_DIR, f'{args.init_belief}_{args.variable}_{args.condition}/accuracy_{model_id}_{args.temperature}__{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
 
-# with open(LOG_FILE, "a") as f:
-#     json.dump(run, f)
+if not os.path.exists(os.path.join(RESULTS_DIR, f'{args.init_belief}_{args.variable}_{args.condition}')):
+    os.makedirs(os.path.join(RESULTS_DIR, f'{args.init_belief}_{args.variable}_{args.condition}'))
+
+with open(prediction, "w") as f:
+    writer = csv.writer(f, delimiter=";")
+    # write a new row per element in predicted answers 
+    for predicted_answer in predicted_answers:
+        writer.writerow([predicted_answer])
+
+with open(accuracy_file, "w") as f:
+    writer = csv.writer(f, delimiter=";")
+    # write a new row per element in graded answers
+    for graded_answer in graded_answers:
+        writer.writerow([graded_answer])
