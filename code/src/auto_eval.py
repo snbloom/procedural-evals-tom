@@ -158,7 +158,7 @@ for i in range(len(converted)):
         # predict answer
         if model_id in open_ai_model_ids:
             if model_id == "text-davinci-003":
-                response = test_llm(prompt=system_message)
+                response = test_llm(prompt=converted_story)
                 print(response)
                 prediction = response.split(".")[0] + "."
                 prediction = prediction.replace("\n", " ")
