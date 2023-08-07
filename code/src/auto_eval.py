@@ -16,7 +16,6 @@ from langchain.schema import (
 parser = argparse.ArgumentParser()
 
 # model args
-parser.add_argument('--model', type=str, default='33', help='model name')
 parser.add_argument('--temperature', type=float, default=0.0, help='temperature')
 parser.add_argument('--max_tokens', type=int, default=20, help='max tokens')
 
@@ -45,6 +44,8 @@ model_id = args.model_id # or use the following shorthand:
 if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
 if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
 if args.model_id == "gpt4": model_id = "gpt-4-0613"
+if args.model_id == "gpt35turbo": model_id = "gpt-3.5-turbo"
+if args.model_id == "davinci003": model_id = "text-davinci-003"
 
 data_range = f"{args.offset}-{args.offset + args.num}"
 
@@ -238,3 +239,23 @@ runs_json = json.dumps(runs)
 if runs_json != "" and runs_json != "{}" and runs_json != "{'evals':[]}":
     with open(LOG_FILE, "w") as f:
         f.write(runs_json)
+
+# run = {
+#     "model_id":model_id,
+#     "method":"auto",
+#     "data_range":data_range,
+#     "init_belief":args.init_belief,
+#     "variable":args.variable,
+#     "condition":args.condition,
+#     "count_correct":count_correct,
+#     "count_incorrect":count_incorrect,
+#     "count_unrelated":count_unrelated,
+#     "count_inconsistent":count_inconsistent,
+#     "correct_stories":correct_answers,
+#     "incorrect_stories":incorrect_answers,
+#     "unrelated_stories":unrelated_answers,
+#     "inconsistent_stories":inconsistent_answers,
+# }
+
+# with open(LOG_FILE, "a") as f:
+#     json.dump(run, f)
