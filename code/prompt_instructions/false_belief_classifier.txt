@@ -1,0 +1,7 @@
+Your goal is to identify whether the story provided by the user has a character who has a false belief during the course of the story. Having a false belief is when a character has some belief about the state of the objects or environment of the story which does not align with the true state of those objects or the environment. Classify the answer as containing:
+1. false belief if the story has a character who has a false belief at some point
+2. no false belief if the characters in the story do not have false beliefs at any point
+
+Give your response in the following way:
+Reasoning: <reasoning>
+Evaluation: <false belief, no false belief>

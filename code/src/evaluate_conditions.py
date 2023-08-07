@@ -12,7 +12,7 @@ from evaluate_llm import parse_chat_response
 
 DATA_DIR = '../../data'
 MODEL_DIR = 'llama.cpp/models'
-CONDITION_DIR = os.path.join(DATA_DIR, 'conditions')
+CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/three_words')
 RESULTS_DIR = os.path.join(DATA_DIR, 'results')
 PROMPT_DIR = '../prompt_instructions'
 random.seed(0)
@@ -164,7 +164,7 @@ def main():
     parser.add_argument('--offset', '-o', type=int, default=0)
     parser.add_argument('--max_tokens', type=int, default=100)
     parser.add_argument('--method', type=str, default='0shot')
-    parser.add_argument('--init_belief', type=str, default="0_backward")
+    parser.add_argument('--init_belief', type=str, default="0_forward")
     parser.add_argument('--verbose', '-v', action='store_true')
     parser.add_argument('--mcq', action='store_true')
     args = parser.parse_args()

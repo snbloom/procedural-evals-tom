@@ -27,34 +27,26 @@ parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M"
 
 # data args
 parser.add_argument('--data_dir', type=str, default='../../data/conditions/three_words', help='data directory')
-# parser.add_argument('--variable', type=str, default='belief')
-# parser.add_argument('--condition', type=str, default='true_belief')
-# parser.add_argument('--init_belief', type=str, default="0_forward")
+parser.add_argument('--variable', type=str, default='belief')
+parser.add_argument('--condition', type=str, default='true_belief')
+parser.add_argument('--init_belief', type=str, default="0_forward")
 
 args = parser.parse_args()
 
-variables = ["belief", "action"]
-conditions = ["true_belief", "false_belief"]
-init_beliefs = ["0_forward", "0_backward", "1_forward", "1_backward"]
+# all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", 
+#                  "gpt-4-0613", "text-davinci-003", "gpt-3.5-turbo",
+#                  "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
+#                  "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
+# open_ai_model_ids = ["gpt-4-0613", "text-davinci-003", "gpt-3.5-turbo"]
 
-all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", "gpt-4-0613", 
-                 "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
-                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
-our_models_ids = ["/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
-                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
+# model_id = args.model_id # or use the following shorthand:
+# if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
+# if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
+# if args.model_id == "gpt4": model_id = "gpt-4-0613"
 
-model_id = args.model_id # or use the following shorthand:
-if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
-if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
-if args.model_id == "gpt4": model_id = "gpt-4-0613"
-if args.model_id == "finetuned_28": model_id = "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45"
-if args.model_id == "finetuned_33": model_id = "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45"
-if args.model_id == "llama_14": model_id = "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"
-if args.model_id == "llama_43": model_id = "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"
+data_range = f"{args.offset}-{args.offset + args.num-1}"
 
-data_range = f"{args.offset}-{args.offset + args.num}"
-
-LOG_FILE = "../../data/evals.json"
+LOG_FILE = "../../data/fb_classifications.json"
 PROMPT_DIR = "../prompt_instructions"
 
 def get_eval_llm():
@@ -67,47 +59,21 @@ def get_eval_llm():
     )
     return eval_llm
 
-def get_test_llm():
-    test_llm = ChatOpenAI(
-        model="gpt-4-0613",
-        temperature=0.0,
-        max_tokens=args.max_tokens,
-        n=1,
-        request_timeout=180
-    )
-    return test_llm
-
-eval_llm = get_eval_llm()
-
 # get model (gpt4)
-if model_id =="gpt-4-0613":
-    test_llm = get_test_llm()
-# get model (finetuned / trained models)
-elif model_id in our_models_ids:
-    device = torch.device(0) if torch.cuda.is_available() else torch.device("cpu")
-    pipe = pipeline( "text-generation", model=model_id, device=device )
-# get model (tinystories huggingface models)
-else:
-    if not args.local:
-        test_llm = HuggingFaceHub(repo_id=model_id, model_kwargs={"temperature":args.temperature, "max_new_tokens":args.max_tokens})
-    else:
-        model = AutoModelForCausalLM.from_pretrained(model_id)
-        tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
-        # tokenizer = AutoTokenizer.from_pretrained(model_id)
+eval_llm = get_eval_llm()
 
 
 DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
 CONVERTED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
 
-correct_answers = []
-incorrect_answers = []
-unrelated_answers = []
-inconsistent_answers = []
+correct_stories = []
+incorrect_stories = []
+
+correct_explanations = []
+incorrect_explanations = []
 
 count_correct = 0
 count_incorrect = 0
-count_unrelated = 0
-count_inconsistent = 0
 
 with open(DATA_FILE, 'r') as f:
     reader = csv.reader(f, delimiter=';')
@@ -116,7 +82,7 @@ with open(DATA_FILE, 'r') as f:
 with open(CONVERTED_FILE, 'r') as f:
     converted = f.readlines()
 
-with open(f"{PROMPT_DIR}/auto_eval_system.txt", "r") as f:
+with open(f"{PROMPT_DIR}/false_belief_classifier.txt", "r") as f:
     sys_prompt = f.read()
 
 print(sys_prompt)
@@ -127,90 +93,72 @@ for i in range(len(converted)):
     if i >= args.offset and counter < args.num:
         story, question, correct_answer, wrong_answer, _ = data[i]
         converted_story = converted[i].strip()
+        msg = "Story:\n" + converted_story
+        print(msg)
         
-        # predict answer
-        if model_id =="gpt-4-0613":
-            system_message = SystemMessage(content=converted_story)
-            messages = [system_message]
-            responses = test_llm.generate([messages])
-            for g, generation in enumerate(responses.generations[0]):
-                prediction = generation.text.strip() 
-                prediction = prediction.split(".")[0] + "."
-                prediction = prediction.replace("\n", " ")
-        elif model_id in our_models_ids:
-            prediction = pipe(converted_story, num_return_sequences=1, max_new_tokens=args.max_tokens)[0]["generated_text"]
-            prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
-            prediction = prediction.replace("\n", " ")
-        else:
-            if not args.local:
-                prediction = test_llm(converted_story)
-                prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
-                prediction = prediction.replace("\n", " ")
-            else:
-                input_ids = tokenizer.encode(converted_story, return_tensors="pt")
-                output = model.generate(input_ids, max_new_tokens=args.max_tokens, num_beams=1, )
-                prediction = tokenizer.decode(output[0], skip_special_tokens=True)
-                prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
-
-        # use gpt4 to check for accuracy
-        with open(f"{PROMPT_DIR}/auto_eval_user.txt", "r") as f:
-            user_prompt = f.read() 
-            user_prompt = user_prompt.replace("[story]", converted_story)
-            user_prompt = user_prompt.replace("[user_completion]", prediction)
-            user_prompt = user_prompt.replace("[correct_completion]", correct_answer)
-            user_prompt = user_prompt.replace("[incorrect_completion]", wrong_answer)
-
-        print(user_prompt)
-
+        # get classification from gpt4
         system_message = SystemMessage(content=sys_prompt)
-        user_msg = HumanMessage(content=user_prompt)
-        messages = [system_message, user_msg]
+        user_message = HumanMessage(content=msg)
+        messages = [system_message, user_message]
         responses = eval_llm.generate([messages])
-
+        print(responses)
         for g, generation in enumerate(responses.generations[0]):
-            eval = generation.text.strip() 
-            print(eval)
-            classification = eval.split("Evaluation:")[1].strip().lower()
+            prediction = generation.text.strip() 
+            print(prediction)
+            r_idx = prediction.index("Reasoning:")
+            e_idx = prediction.index("Evaluation:")
+            reasoning = prediction[r_idx:e_idx].strip()[10:]
+            evaluation = prediction.split("Evaluation:")[1].strip().lower()
+            print(reasoning)
+            print(evaluation)
+        
+        # flag eval errors
+        if args.condition not in ['true_belief', 'false_belief']: raise Exception("Unexpected evaluation. Expected ['false_belief', 'true_belief']")
+        if evaluation not in ["false belief", "no false belief"]: raise Exception("Unexpected evaluation. Expected ['false belief', 'no false belief']") 
 
-            if classification=="correct":
-                count_correct += 1
-                correct_answers.append(converted_story + " " + prediction)
-            elif classification=="incorrect":
+        # check for accuracy
+        if args.condition == "false_belief":
+            if evaluation == "no false belief": 
                 count_incorrect += 1
-                incorrect_answers.append(converted_story + " " + prediction)
-            elif classification=="unrelated":
-                count_unrelated += 1
-                unrelated_answers.append(converted_story + " " + prediction)
-            elif classification=="inconsistent":
-                count_inconsistent += 1
-                inconsistent_answers.append(converted_story + " " + prediction)
+                incorrect_stories.append(converted_story)
+                incorrect_explanations.append(reasoning)
             else:
-                raise Exception(f"Classification '{classification}' is not recognized")
+                count_correct += 1
+                correct_stories.append(converted_story)
+                correct_explanations.append(reasoning)
+        else:
+            if evaluation == "false belief": 
+                count_incorrect += 1
+                incorrect_stories.append(converted_story)
+                incorrect_explanations.append(reasoning)
+            else:
+                count_correct += 1
+                correct_stories.append(converted_story)
+                correct_explanations.append(reasoning)
+
+
+        print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}")
         counter += 1
-        print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 
 
-print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
-print("LOGGING OUTPUTS FOR MODEL", model_id)
+print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}")
+print("LOGGING OUTPUTS")
 
 with open(LOG_FILE, "r") as f:
     runs = json.load(f)
 
 runs["evals"].append({
-    "model_id":model_id,
-    "method":"auto",
+    "dataset": "tinytom",
     "data_range":data_range,
     "init_belief":args.init_belief,
     "variable":args.variable,
     "condition":args.condition,
     "count_correct":count_correct,
     "count_incorrect":count_incorrect,
-    "count_unrelated":count_unrelated,
-    "count_inconsistent":count_inconsistent,
-    "correct_stories":correct_answers,
-    "incorrect_stories":incorrect_answers,
-    "unrelated_stories":unrelated_answers,
-    "inconsistent_stories":inconsistent_answers,
+    "correct_stories":correct_stories,
+    "incorrect_stories":incorrect_stories,
+    "correct_explanations":correct_explanations,
+    "incorrect_explanations":incorrect_explanations,
 })
 runs_json = json.dumps(runs)
 
