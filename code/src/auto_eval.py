@@ -7,7 +7,7 @@ import torch
 from crfm_llm import crfmLLM
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, pipeline
 from langchain import HuggingFaceHub
-from langchain.chat_models import ChatOpenAI, OpenAI
+from langchain.chat_models import ChatOpenAI
 from langchain.schema import (
     AIMessage,
     HumanMessage,
