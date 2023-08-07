@@ -4,6 +4,7 @@ import argparse
 import json
 import csv
 import torch
+from crfm_llm import crfmLLM
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, pipeline
 from langchain import HuggingFaceHub
 from langchain.chat_models import ChatOpenAI, OpenAI
@@ -93,14 +94,7 @@ def get_eval_llm():
     return eval_llm
 
 def get_test_llm(model):
-    if model == "text-davinci-003":
-        return OpenAI(
-        model=model,
-        temperature=0.0,
-        max_tokens=args.max_tokens,
-        n=1,
-        request_timeout=180
-    )
+    if model == "text-davinci-003": return crfmLLM(model_name=model_name, temperature=args.temperature, max_tokens=args.max_tokens, verbose=False)
     else: return ChatOpenAI(
         model=model,
         temperature=0.0,
@@ -163,13 +157,20 @@ for i in range(len(converted)):
         
         # predict answer
         if model_id in open_ai_model_ids:
-            system_message = SystemMessage(content=converted_story)
-            messages = [system_message]
-            responses = test_llm.generate([messages])
-            for g, generation in enumerate(responses.generations[0]):
-                prediction = generation.text.strip() 
-                prediction = prediction.split(".")[0] + "."
+            if model_id == "text-davinci-003":
+                response = test_llm(prompt=system_message)
+                print(response)
+                prediction = response.split(".")[0] + "."
                 prediction = prediction.replace("\n", " ")
+                print(prediction)
+            else:
+                system_message = SystemMessage(content=converted_story)
+                messages = [system_message]
+                responses = test_llm.generate([messages])
+                for g, generation in enumerate(responses.generations[0]):
+                    prediction = generation.text.strip() 
+                    prediction = prediction.split(".")[0] + "."
+                    prediction = prediction.replace("\n", " ")
         elif "bin" in model_id:
             prediction = test_llm(converted_story, args)
             prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
