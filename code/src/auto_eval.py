@@ -6,7 +6,7 @@ import csv
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, pipeline
 from langchain import HuggingFaceHub
-from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import ChatOpenAI, OpenAI
 from langchain.schema import (
     AIMessage,
     HumanMessage,
@@ -93,14 +93,21 @@ def get_eval_llm():
     return eval_llm
 
 def get_test_llm(model):
-    test_llm = ChatOpenAI(
+    if model == "text-davinci-003":
+        return OpenAI(
         model=model,
         temperature=0.0,
         max_tokens=args.max_tokens,
         n=1,
         request_timeout=180
     )
-    return test_llm
+    else: return ChatOpenAI(
+        model=model,
+        temperature=0.0,
+        max_tokens=args.max_tokens,
+        n=1,
+        request_timeout=180
+    )
 
 eval_llm = get_eval_llm()
 
