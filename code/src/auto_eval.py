@@ -94,7 +94,7 @@ def get_eval_llm():
     return eval_llm
 
 def get_test_llm(model):
-    if model == "text-davinci-003": return crfmLLM(model_name=model_name, temperature=args.temperature, max_tokens=args.max_tokens, verbose=False)
+    if model == "text-davinci-003": return crfmLLM(model_name=model_id, temperature=args.temperature, max_tokens=args.max_tokens, verbose=False)
     else: return ChatOpenAI(
         model=model,
         temperature=0.0,
