@@ -48,16 +48,16 @@ data_range = f"{args.offset}-{args.offset + args.num-1}"
 
 LOG_FILE = "../../data/fb_classifications.json"
 PROMPT_DIR = "../prompt_instructions"
+STORIES_FILE = "../tinystories_words/tinystories_rows_gpt4.txt"
 
 def get_eval_llm():
-    eval_llm = ChatOpenAI(
+    return ChatOpenAI(
         model="gpt-4-0613",
         temperature=0.0,
         max_tokens=250,
         n=1,
         request_timeout=180
     )
-    return eval_llm
 
 # get model (gpt4)
 eval_llm = get_eval_llm()
@@ -66,21 +66,30 @@ eval_llm = get_eval_llm()
 DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
 CONVERTED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
 
-correct_stories = []
-incorrect_stories = []
+# correct_stories = []
+# incorrect_stories = []
 
-correct_explanations = []
-incorrect_explanations = []
+# correct_explanations = []
+# incorrect_explanations = []
 
-count_correct = 0
-count_incorrect = 0
+# count_correct = 0
+# count_incorrect = 0
 
-with open(DATA_FILE, 'r') as f:
-    reader = csv.reader(f, delimiter=';')
-    data = list(reader)
+count_false_belief = 0
+count_no_false_belief = 0
 
-with open(CONVERTED_FILE, 'r') as f:
-    converted = f.readlines()
+false_belief_stories = []
+no_false_belief_stories = []
+
+# with open(DATA_FILE, 'r') as f:
+#     reader = csv.reader(f, delimiter=';')
+#     data = list(reader)
+
+# with open(CONVERTED_FILE, 'r') as f:
+#     converted = f.readlines()
+
+with open(STORIES_FILE, "r") as f:
+    stories = f.readlines()
 
 with open(f"{PROMPT_DIR}/false_belief_classifier.txt", "r") as f:
     sys_prompt = f.read()
@@ -89,19 +98,22 @@ print(sys_prompt)
 print()
 
 counter = 0
-for i in range(len(converted)):
+for i, story in enumerate(stories):
     if i >= args.offset and counter < args.num:
-        story, question, correct_answer, wrong_answer, _ = data[i]
-        converted_story = converted[i].strip()
-        msg = "Story:\n" + converted_story
-        print(msg)
+        # story, question, correct_answer, wrong_answer, _ = data[i]
+        # converted_story = converted[i].strip()
+        # converted_story = ".".join(converted_story.split(".")[:-1]) + "."
+        # msg = "Story:\n" + converted_story
+        # print(msg)
         
+        msg = "Story:\n" + story
+        print(msg)
+
         # get classification from gpt4
         system_message = SystemMessage(content=sys_prompt)
         user_message = HumanMessage(content=msg)
         messages = [system_message, user_message]
         responses = eval_llm.generate([messages])
-        print(responses)
         for g, generation in enumerate(responses.generations[0]):
             prediction = generation.text.strip() 
             print(prediction)
@@ -116,52 +128,49 @@ for i in range(len(converted)):
         if args.condition not in ['true_belief', 'false_belief']: raise Exception("Unexpected evaluation. Expected ['false_belief', 'true_belief']")
         if evaluation not in ["false belief", "no false belief"]: raise Exception("Unexpected evaluation. Expected ['false belief', 'no false belief']") 
 
-        # check for accuracy
-        if args.condition == "false_belief":
-            if evaluation == "no false belief": 
-                count_incorrect += 1
-                incorrect_stories.append(converted_story)
-                incorrect_explanations.append(reasoning)
-            else:
-                count_correct += 1
-                correct_stories.append(converted_story)
-                correct_explanations.append(reasoning)
+        # log
+        if evaluation == "false belief":
+            count_false_belief += 1
+            false_belief_stories.append({"story": story, "reasoning": reasoning})
         else:
-            if evaluation == "false belief": 
-                count_incorrect += 1
-                incorrect_stories.append(converted_story)
-                incorrect_explanations.append(reasoning)
-            else:
-                count_correct += 1
-                correct_stories.append(converted_story)
-                correct_explanations.append(reasoning)
+            count_no_false_belief += 1
+            no_false_belief_stories.append({"story": story, "reasoning": reasoning})
+        # check for accuracy
+        # if args.condition == "false_belief":
+        #     if evaluation == "no false belief": 
+        #         count_incorrect += 1
+        #         incorrect_stories.append(converted_story)
+        #         incorrect_explanations.append(reasoning)
+        #     else:
+        #         count_correct += 1
+        #         correct_stories.append(converted_story)
+        #         correct_explanations.append(reasoning)
+        # else:
+        #     if evaluation == "false belief": 
+        #         count_incorrect += 1
+        #         incorrect_stories.append(converted_story)
+        #         incorrect_explanations.append(reasoning)
+        #     else:
+        #         count_correct += 1
+        #         correct_stories.append(converted_story)
+        #         correct_explanations.append(reasoning)
 
-
-        print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}")
+        print(f"Current Tallies: count_false_belief {count_false_belief}, count_no_false_belief {count_no_false_belief}")
         counter += 1
 
 
-print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}")
+print(f"Final Tallies: count_false_belief {count_false_belief}, count_no_false_belief {count_no_false_belief}")
 print("LOGGING OUTPUTS")
 
-with open(LOG_FILE, "r") as f:
-    runs = json.load(f)
-
-runs["evals"].append({
-    "dataset": "tinytom",
+run = {
+    "dataset": "tinystories-gpt4",
     "data_range":data_range,
-    "init_belief":args.init_belief,
-    "variable":args.variable,
-    "condition":args.condition,
-    "count_correct":count_correct,
-    "count_incorrect":count_incorrect,
-    "correct_stories":correct_stories,
-    "incorrect_stories":incorrect_stories,
-    "correct_explanations":correct_explanations,
-    "incorrect_explanations":incorrect_explanations,
-})
-runs_json = json.dumps(runs)
+    "count_false_belief":count_false_belief,
+    "count_no_false_belief":count_no_false_belief,
+    "false_belief_stories":false_belief_stories,
+    "no_false_belief_stories":no_false_belief_stories
+}
 
-if runs_json != "" and runs_json != "{}" and runs_json != "{'evals':[]}":
-    with open(LOG_FILE, "w") as f:
-        f.write(runs_json)
+with open(LOG_FILE, "a") as f:
+    json.dump(run, f)
+    f.write("\n")
