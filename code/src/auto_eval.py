@@ -36,17 +36,17 @@ parser.add_argument('--init_belief', type=str, default="0_forward")
 args = parser.parse_args()
 
 all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", 
-                 "gpt-4-0613", "openai_text-davinci-003", "gpt-3.5-turbo",
+                 "gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo",
                  "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
                  "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
-open_ai_model_ids = ["gpt-4-0613", "openai_text-davinci-003", "gpt-3.5-turbo"]
+open_ai_model_ids = ["gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo"]
 
 model_id = args.model_id # or use the following shorthand:
 if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
 if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
 if args.model_id == "gpt4": model_id = "gpt-4-0613"
 if args.model_id == "gpt35turbo": model_id = "gpt-3.5-turbo"
-if args.model_id == "davinci003": model_id = "openai_text-davinci-003"
+if args.model_id == "davinci003": model_id = "openai/text-davinci-003"
 
 data_range = f"{args.offset}-{args.offset + args.num}"
 
@@ -94,7 +94,7 @@ def get_eval_llm():
     return eval_llm
 
 def get_test_llm(model):
-    if model == "openai_text-davinci-003": return crfmLLM(model_name=model_id, temperature=args.temperature, max_tokens=args.max_tokens, verbose=False)
+    if model == "openai/text-davinci-003": return crfmLLM(model_name=model_id, temperature=args.temperature, max_tokens=args.max_tokens, verbose=False)
     else: return ChatOpenAI(
         model=model,
         temperature=0.0,
@@ -157,7 +157,7 @@ for i in range(len(converted)):
         
         # predict answer
         if model_id in open_ai_model_ids:
-            if model_id == "openai_text-davinci-003":
+            if model_id == "openai/text-davinci-003":
                 response = test_llm(prompt=converted_story)
                 print(response)
                 prediction = response.split(".")[0] + "."
