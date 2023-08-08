@@ -94,7 +94,7 @@ def get_eval_llm():
     return eval_llm
 
 def get_test_llm(model):
-    if model == "openai/text-davinci-003": return crfmLLM(model_name=model_id, temperature=args.temperature, max_tokens=args.max_tokens, verbose=False, stop_sequences=[".", '!', '\n'])
+    if model == "openai/text-davinci-003": return crfmLLM(model_name=model_id, temperature=args.temperature, max_tokens=args.max_tokens, verbose=False)
     else: return ChatOpenAI(
         model=model,
         temperature=0.0,
@@ -158,7 +158,7 @@ for i in range(len(converted)):
         # predict answer
         if model_id in open_ai_model_ids:
             if model_id == "openai/text-davinci-003":
-                response = test_llm(prompt=converted_story)
+                response = test_llm(prompt=converted_story, stop=['.', '!', '\n'])
                 print(response)
                 prediction = response.split(".")[0] + "."
                 prediction = prediction.replace("\n", " ")
