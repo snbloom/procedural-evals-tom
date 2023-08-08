@@ -32,6 +32,7 @@ parser.add_argument('--data_dir', type=str, default='../../data/conditions/three
 parser.add_argument('--variable', type=str, default='belief')
 parser.add_argument('--condition', type=str, default='true_belief')
 parser.add_argument('--init_belief', type=str, default="0_forward")
+parser.add_argument('--unconverted', action='store_true', help="whether to use unconverted (non tinystory-ified) versions")
 
 args = parser.parse_args()
 
@@ -121,6 +122,7 @@ else:
 
 
 DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
+TRIMMED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_trimmed.csv"
 CONVERTED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
 RESULTS_DIR = os.path.join(args.data_dir, 'results')
 
@@ -143,6 +145,9 @@ with open(DATA_FILE, 'r') as f:
 with open(CONVERTED_FILE, 'r') as f:
     converted = f.readlines()
 
+with open(TRIMMED_FILE, 'r') as f:
+    trimmed = f.readlines()
+
 with open(f"{PROMPT_DIR}/auto_eval_system.txt", "r") as f:
     sys_prompt = f.read()
 
@@ -153,18 +158,25 @@ counter = 0
 for i in range(len(converted)):
     if i >= args.offset and counter < args.num:
         story, question, correct_answer, wrong_answer, _ = data[i]
+        # story-ified story
         converted_story = converted[i].strip()
+
+        # non-story-ified version
+        unconverted_story_parts = trimmed[i].split(';')
+        unconverted_story = unconverted_story_parts[0] + " " + unconverted_story_parts[0].split()[0] + " thinks that the " + unconverted_story_parts[1].strip() + " is"
         
+        # select converted or unconverted version (depending on args)
+        if args.unconverted: eval_story = unconverted_story
+        else: eval_story = converted_story
+
         # predict answer
         if model_id in open_ai_model_ids:
             if model_id == "openai/text-davinci-003":
-                response = test_llm(prompt=converted_story, stop=['.', '!', '\n'])
-                print(response)
+                response = test_llm(prompt=eval_story, stop=['.', '!', '\n'])
                 prediction = response.split(".")[0] + "."
                 prediction = prediction.replace("\n", " ")
-                print(prediction)
             else:
-                system_message = SystemMessage(content=converted_story)
+                system_message = SystemMessage(content=eval_story)
                 messages = [system_message]
                 responses = test_llm.generate([messages])
                 for g, generation in enumerate(responses.generations[0]):
@@ -172,24 +184,24 @@ for i in range(len(converted)):
                     prediction = prediction.split(".")[0] + "."
                     prediction = prediction.replace("\n", " ")
         elif "bin" in model_id:
-            prediction = test_llm(converted_story, args)
-            prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
+            prediction = test_llm(eval_story, args)
+            prediction = prediction[len(eval_story)+1:].split(".")[0] + "."
         else:
             if not args.local:
-                prediction = test_llm(converted_story)
-                prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
+                prediction = test_llm(eval_story)
+                prediction = prediction[len(eval_story)+1:].split(".")[0] + "."
                 prediction = prediction.replace("\n", " ")
             else:
-                input_ids = tokenizer.encode(converted_story, return_tensors="pt")
+                input_ids = tokenizer.encode(eval_story, return_tensors="pt")
                 output = model.generate(input_ids, max_new_tokens=args.max_tokens, num_beams=1, )
                 prediction = tokenizer.decode(output[0], skip_special_tokens=True)
-                prediction = prediction[len(converted_story)+1:].split(".")[0] + "."
+                prediction = prediction[len(eval_story)+1:].split(".")[0] + "."
 
         predicted_answers.append(prediction)
         # use gpt4 to check for accuracy
         with open(f"{PROMPT_DIR}/auto_eval_user.txt", "r") as f:
             user_prompt = f.read() 
-            user_prompt = user_prompt.replace("[story]", converted_story)
+            user_prompt = user_prompt.replace("[story]", eval_story)
             user_prompt = user_prompt.replace("[user_completion]", prediction)
             user_prompt = user_prompt.replace("[correct_completion]", correct_answer)
             user_prompt = user_prompt.replace("[incorrect_completion]", wrong_answer)
@@ -208,16 +220,16 @@ for i in range(len(converted)):
 
             if classification=="correct":
                 count_correct += 1
-                correct_answers.append(converted_story + " " + prediction)
+                correct_answers.append(eval_story + " " + prediction)
             elif classification=="incorrect":
                 count_incorrect += 1
-                incorrect_answers.append(converted_story + " " + prediction)
+                incorrect_answers.append(eval_story + " " + prediction)
             elif classification=="unrelated":
                 count_unrelated += 1
-                unrelated_answers.append(converted_story + " " + prediction)
+                unrelated_answers.append(eval_story + " " + prediction)
             elif classification=="inconsistent":
                 count_inconsistent += 1
-                inconsistent_answers.append(converted_story + " " + prediction)
+                inconsistent_answers.append(eval_story + " " + prediction)
             else:
                 raise Exception(f"Classification '{classification}' is not recognized")
         graded_answers.append(classification)
@@ -231,6 +243,7 @@ print("LOGGING OUTPUTS FOR MODEL", model_id)
 run = {
     "model_id":model_id,
     "method":"auto",
+    "unconverted": args.unconverted,
     "data_range":data_range,
     "init_belief":args.init_belief,
     "variable":args.variable,
@@ -247,6 +260,7 @@ run = {
 
 with open(LOG_FILE, "a") as f:
     json.dump(run, f)
+    f.write('\n')
 
 model_name = model_id.replace('/', '_')
 prediction = os.path.join(RESULTS_DIR, f'{args.init_belief}_{args.variable}_{args.condition}/prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
