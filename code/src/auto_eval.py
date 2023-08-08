@@ -228,10 +228,7 @@ for i in range(len(converted)):
 print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 print("LOGGING OUTPUTS FOR MODEL", model_id)
 
-with open(LOG_FILE, "r") as f:
-    runs = json.load(f)
-
-runs["evals"].append({
+run = {
     "model_id":model_id,
     "method":"auto",
     "data_range":data_range,
@@ -246,12 +243,10 @@ runs["evals"].append({
     "incorrect_stories":incorrect_answers,
     "unrelated_stories":unrelated_answers,
     "inconsistent_stories":inconsistent_answers,
-})
-runs_json = json.dumps(runs)
+}
 
-if runs_json != "" and runs_json != "{}" and runs_json != "{'evals':[]}":
-    with open(LOG_FILE, "w") as f:
-        f.write(runs_json)
+with open(LOG_FILE, "a") as f:
+    json.dump(run, f)
 
 model_name = model_id.replace('/', '_')
 prediction = os.path.join(RESULTS_DIR, f'{args.init_belief}_{args.variable}_{args.condition}/prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
