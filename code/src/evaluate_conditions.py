@@ -2,6 +2,7 @@ import os
 import random
 import csv
 import tqdm
+import json
 import argparse
 from crfm_llm import crfmLLM
 from evaluate_llm import EvaluateLLM
@@ -17,6 +18,7 @@ RESULTS_DIR = os.path.join(DATA_DIR, 'results')
 PROMPT_DIR = '../prompt_instructions'
 random.seed(0)
 
+predicted = []
 
 def evaluate_condition(eval_model, model_name, temperature, method,
                     init_belief, variable, condition, num_probs,
@@ -52,7 +54,8 @@ def evaluate_condition(eval_model, model_name, temperature, method,
     )
     else:
         raise ValueError(f"Model {model_name} not supported")
-    test_model = EvaluateLLM(llm, method=method)
+    if model_name in ['gpt-4', 'gpt-3.5-turbo']: test_model = EvaluateLLM(llm, method="chat-0shot")
+    else: test_model = EvaluateLLM(llm, method=method)
 
     if 'openai' in eval_model:
         eval_llm = crfmLLM(model_name=eval_model, temperature=0, max_tokens=10, verbose=False)
@@ -119,6 +122,9 @@ def evaluate_condition(eval_model, model_name, temperature, method,
         graded_answers.append(graded_answer)
         if verbose:
             print(f"graded answer: {graded_answer}")
+        
+        predicted.append({"story": story, "question": question, "true answer": true_answer, "wrong answer": wrong_answer, "predicted answer": predicted_answer})
+
 
     # save results
     model_name = model_name.replace('/', '_')
@@ -150,7 +156,26 @@ def evaluate_condition(eval_model, model_name, temperature, method,
     print(f"MODEL: {model_name}, Temperature: {temperature}, Method: {method}")
     print(f"CONDITION: {init_belief} {variable}, {condition}")
     print(f"ACCURACY: {accuracy:.2%}")
+    print(f"CORRECT: {graded_answers.count('True')}")
+    print(f"INCORRECT: {graded_answers.count('False')}")
     print("------------------------\n")
+
+    LOG_FILE = "../../data/evals.json" 
+
+    run = {
+        "model_id":model_name,
+        "method":"auto-evaluate_conditions",
+        "init_belief":init_belief,
+        "variable":variable,
+        "condition":condition,
+        "count_correct":graded_answers.count('True'),
+        "count_incorrect":graded_answers.count('False'),
+        "stories":predicted,
+    }
+
+    with open(LOG_FILE, "a") as f:
+        json.dump(run, f)
+        f.write('\n')
     
 
 def main():
