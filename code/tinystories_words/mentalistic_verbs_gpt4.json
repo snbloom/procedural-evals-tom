@@ -1,1 +1,610 @@
-{"total_counts": {"Beliefs/ Knowledge": 23, "Emotion": 9, "Desire/ Intention": 19, "Others": 4}, "catagory_counts": [{"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 2, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 2, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 1, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 1, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 1, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 2, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 2, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 0, "Others": 1}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 2, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 2}, {"Beliefs/ Knowledge": 0, "Emotion": 1, "Desire/ Intention": 0, "Others": 1}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 4, "Others": 1}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 1, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 2, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 1, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 2, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 4, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 1, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 3, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 2, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 2, "Emotion": 0, "Desire/ Intention": 0, "Others": 0}, {"Beliefs/ Knowledge": 0, "Emotion": 0, "Desire/ Intention": 1, "Others": 0}]}
+{
+  "total_counts": {
+    "Beliefs/ Knowledge": 23,
+    "Emotion": 9,
+    "Desire/ Intention": 19,
+    "Others": 4
+  },
+  "catagory_counts": [
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 2,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 2,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 1,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 1,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 1,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 2,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 2,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 1
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 2,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 2
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 1,
+      "Desire/ Intention": 0,
+      "Others": 1
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 4,
+      "Others": 1
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 1,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 2,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 1,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 2,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 4,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 1,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 3,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 2,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 2,
+      "Emotion": 0,
+      "Desire/ Intention": 0,
+      "Others": 0
+    },
+    {
+      "Beliefs/ Knowledge": 0,
+      "Emotion": 0,
+      "Desire/ Intention": 1,
+      "Others": 0
+    }
+  ]
+}
