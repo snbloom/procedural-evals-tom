@@ -8,6 +8,7 @@ from crfm_llm import crfmLLM
 from evaluate_llm import EvaluateLLM
 from langchain.chat_models import ChatOpenAI, ChatAnthropic
 from langchain import HuggingFaceHub, HuggingFacePipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, pipeline
 from langchain.llms import LlamaCpp
 from evaluate_llm import parse_chat_response
 
@@ -26,6 +27,12 @@ def evaluate_condition(eval_model, model_name, temperature, method,
 
     if 'openai' in model_name:
         llm = crfmLLM(model_name=model_name, temperature=temperature, max_tokens=max_tokens, verbose=False)
+    elif 'meta' in model_name:
+        llm = HuggingFacePipeline.from_model_id(
+            model_id=model_name,
+            task="text-generation",
+            model_kwargs={"temperature": temperature, "max_length": max_tokens},
+        ) 
     elif 'llama' in model_name:
         if 'llama-65' in model_name:
             llm = LlamaCpp(model_path=f"{MODEL_DIR}/65B/ggml-model-q5_1.bin", n_ctx=1536, max_tokens=max_tokens, temperature=temperature, n_threads=16, n_batch=16)
@@ -35,9 +42,6 @@ def evaluate_condition(eval_model, model_name, temperature, method,
             llm = LlamaCpp(model_path=f"{MODEL_DIR}/13B/ggml-model-q5_1.bin", n_ctx=1536, max_tokens=max_tokens, temperature=temperature, n_threads=16, n_batch=16)
         elif 'llama-7' in model_name:
             llm = LlamaCpp(model_path=f"{MODEL_DIR}/7B/ggml-model-q5_1.bin", n_ctx=1536, max_tokens=max_tokens, temperature=temperature, n_threads=16, n_batch=16)
-            # repo_id = "decapoda-research/llama-65b-hf"
-            # llm = HuggingFacePipeline.from_model_id(model_id=repo_id, task="text-generation", model_kwargs={"temperature":temperature, "max_new_tokens":max_tokens})
-            # llm = HuggingFaceHub(repo_id=repo_id, model_kwargs={"temperature":temperature, "max_length":max_tokens})
     elif model_name in ['gpt-4', 'gpt-3.5-turbo']:
         llm = ChatOpenAI(
         model=model_name,
