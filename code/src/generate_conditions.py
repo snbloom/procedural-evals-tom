@@ -25,7 +25,7 @@ FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control
 MODEL = "gpt-3.5-turbo-16k-0613"
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--method', type=str, default="three_words", help="generate conditions for which set of words/features")
+parser.add_argument('--method', type=str, default="tinytom", help="generate conditions for which set of words/features")
 
 def get_llm():
     llm = ChatOpenAI(
@@ -154,7 +154,11 @@ def generate_conditions(stories):
 
 if __name__ == "__main__":  
     args = parser.parse_args()
-    if args.method in ["three_words", "three_words_plus_features", "one_word", "no_forced_vocab"]:
+    # Note: this only works for tinytom and bigtom... other methods are deprecated.
+    if args.method == "tinytom":
+        CONDITION_DIR += args.method
+        CSV_NAME = CSV_NAME + "tinytom.csv"
+    elif args.method in ["three_words", "three_words_plus_features", "one_word", "no_forced_vocab"]:
         CONDITION_DIR += args.method
         CSV_NAME = CSV_NAME + "tinytom_" + args.method + ".csv"
     elif args.method == "bigtom":

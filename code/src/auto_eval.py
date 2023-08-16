@@ -28,7 +28,7 @@ parser.add_argument('--local', action='store_true', default=True, help='local ev
 parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M", help="gpt-4-0613, roneneldan/TinyStories-33M, roneneldan/TinyStories-28M")
 
 # data args
-parser.add_argument('--data_dir', type=str, default='../../data/conditions/three_words', help='data directory')
+parser.add_argument('--data_dir', type=str, default='../../data/conditions/tinytom', help='data directory')
 parser.add_argument('--variable', type=str, default='belief')
 parser.add_argument('--condition', type=str, default='true_belief')
 parser.add_argument('--init_belief', type=str, default="0_forward")

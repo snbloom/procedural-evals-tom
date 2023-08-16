@@ -20,9 +20,9 @@ PROMPT_DIR = '../prompt_instructions'
 WORDS_DIR = '../tinystories_words'
 REPO_URL = 'https://github.com/cicl-stanford/marple_text'
 CSV_NAME = 'tinytom/tinytom'
-DISCARDED_NAME = 'tinytom/discarded_stories'
-LOG_NAME = 'tinytom/words_and_features'
-LOG_DISCARDED_NAME = 'tinytom/three_words_discarded'
+DISCARDED_NAME = 'tinytom/tinytom_discarded'
+LOG_NAME = 'tinytom/tinytom_settings'
+LOG_DISCARDED_NAME = 'tinytom/tinytom_discarded_settings'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str, default='gpt-4-0613', help='model name')
@@ -85,7 +85,7 @@ def get_human_message1(args):
             msg = msg.replace('verb "[verb]", the noun "[noun]" and the adjective "[adj]"', sentence)
 
     if args.object_states:
-        with open(f'{DATA_DIR}/tinytom/object_states_narrowed.csv', "r") as f:
+        with open(f'{DATA_DIR}/tinytom/object_states.csv', "r") as f:
             states = f.readlines()
         prop = random.choice(states).strip().lower()
         prop = prop[0:prop.index(";")]
@@ -234,9 +234,12 @@ if __name__ == "__main__":
         if args.features:
             CSV_NAME = 'tinytom/tinytom_three_words_plus_features'
             LOG_NAME = 'tinytom/three_words_and_features'
+        # THIS OPTION IS THE DEFAULT / FINALIZED VERSION, all other options are deprecated:
         else:
-            CSV_NAME = 'tinytom/tinytom_three_words'
-            LOG_NAME = 'tinytom/three_words'
+            CSV_NAME = 'tinytom/tinytom'
+            LOG_NAME = 'tinytom/tinytom_settings'
+            DISCARDED_NAME = 'tinytom/tinytom_discarded'
+            LOG_DISCARDED_NAME = 'tinytom/tinytom_discarded_settings'
     else: 
         CSV_NAME = 'tinytom/tinytom_one_word'
         LOG_NAME = 'tinytom/one_word'

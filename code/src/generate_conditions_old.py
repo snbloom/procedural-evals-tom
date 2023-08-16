@@ -16,7 +16,7 @@ VARIABLES = ['forward_belief', 'forward_action', 'backward_belief', 'percept_to_
 CONDITIONS = ['true_belief', 'false_belief', 'true_control', 'false_control']
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--method', type=str, default="three_words", help="generate conditions for which set of words/features")
+parser.add_argument('--method', type=str, default="tinytom", help="generate conditions for which set of words/features")
 
 def get_eval_llm():
     return ChatOpenAI(
@@ -249,7 +249,11 @@ def generate_conditions(completions):
 
 if __name__ == "__main__":  
     args = parser.parse_args()
-    if args.method in ["three_words", "three_words_plus_features", "one_word", "no_forced_vocab"]:
+    # Note: this only works for tinytom and bigtom... other methods are deprecated.
+    if args.method == "tinytom":
+        CONDITION_DIR += args.method
+        CSV_NAME = CSV_NAME + "tinytom.csv"
+    elif args.method in ["three_words", "three_words_plus_features", "one_word", "no_forced_vocab"]:
         CONDITION_DIR += args.method
         CSV_NAME = CSV_NAME + "tinytom_" + args.method + ".csv"
     elif args.method == "bigtom":
