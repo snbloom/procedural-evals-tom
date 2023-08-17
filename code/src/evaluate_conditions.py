@@ -31,6 +31,7 @@ def evaluate_condition(eval_model, model_name, temperature, method,
         llm = HuggingFacePipeline.from_model_id(
             model_id=model_name,
             task="text-generation",
+            device=0,
             model_kwargs={"temperature": temperature, "max_length": max_tokens},
         ) 
     elif 'llama' in model_name:
