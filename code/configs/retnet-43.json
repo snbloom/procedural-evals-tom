@@ -1,0 +1,18 @@
+{
+    "vocab_size": 32000,
+    "hidden_size": 512, 
+    "num_layers": 8,
+    "num_heads": 8,
+    "qk_dim": 512,
+    "v_dim": 1024,
+    "ffn_proj_size": 1024,
+    "use_bias_in_msr": false,
+    "use_bias_in_mlp": true,
+    "use_bias_in_msr_out": false,
+    "use_default_gamma": false,
+    "initializer_range": 0.02,
+    "output_retentions": false,
+    "pad_token_id": 31999,
+    "eos_token_id": 31999,
+    "unk_token_id": 31999
+}

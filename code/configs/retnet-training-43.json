@@ -1,0 +1,27 @@
+{
+    "name": "retnet-training-43-1",
+    "seed": 42,
+    "model": "43",
+    "tinystories_dir": "/scr/kanishkg/TinyStories/",
+    "test_ratio": 0.1,
+    "context_length": 512,
+    "output_dir": "/scr/kanishkg/models/retnet-training-43-1",
+    "batch_size": 80,
+    "eval_batch_size": 80,
+    "eval_steps": 500,
+    "log_steps": 50,
+    "gradient_accumulation_steps": 2,
+    "num_train_epochs": 20,
+    "weight_decay": 0.01,
+    "warmup_steps": 1000,
+    "lr_scheduler_type": "cosine",
+    "lr": 6e-4,
+    "save_total_limit": 20,
+    "save_steps": 500,
+    "data": "gpt-4"
+}
+
+
+
+
+
