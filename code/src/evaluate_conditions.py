@@ -14,7 +14,7 @@ from evaluate_llm import parse_chat_response
 
 DATA_DIR = '../../data'
 MODEL_DIR = 'llama.cpp/models'
-CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/three_words')
+CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/tinytom')
 RESULTS_DIR = os.path.join(DATA_DIR, 'results')
 PROMPT_DIR = '../prompt_instructions'
 random.seed(0)

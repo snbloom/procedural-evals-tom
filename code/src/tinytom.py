@@ -20,10 +20,12 @@ PROMPT_DIR = '../prompt_instructions'
 WORDS_DIR = '../tinystories_words'
 REPO_URL = 'https://github.com/cicl-stanford/marple_text'
 CSV_NAME = 'tinytom/tinytom'
-LOG_NAME = 'tinytom/words_and_features'
+DISCARDED_NAME = 'tinytom/tinytom_discarded'
+LOG_NAME = 'tinytom/tinytom_settings'
+LOG_DISCARDED_NAME = 'tinytom/tinytom_discarded_settings'
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--model', type=str, default='gpt-4', help='model name')
+parser.add_argument('--model', type=str, default='gpt-4-0613', help='model name')
 parser.add_argument('--temperature', type=float, default=0.5, help='temperature')
 parser.add_argument('--max_tokens', type=int, default=450, help='max tokens')
 # change num completions to 10
@@ -83,19 +85,16 @@ def get_human_message1(args):
             msg = msg.replace('verb "[verb]", the noun "[noun]" and the adjective "[adj]"', sentence)
 
     if args.object_states:
-        with open(f'{DATA_DIR}/tinytom/object_states_narrowed.csv', "r") as f:
+        with open(f'{DATA_DIR}/tinytom/object_states.csv', "r") as f:
             states = f.readlines()
         prop = random.choice(states).strip().lower()
         prop = prop[0:prop.index(";")]
         msg = msg.replace('[object_property]', prop)
     else:
         msg = msg.replace(' If it makes sense with the story, the event should change the following property of the object: [object_property].', "")
-    
-    with open(f'{DATA_DIR}/{LOG_NAME}.txt', 'a') as f_settings:
-        f_settings.write(str({"noun": noun, "verb": verb, "adj": adj, "word": word, "features": features, "property": prop}) + "\n")
 
     print(msg)
-    return msg
+    return msg, {"noun": noun, "verb": verb, "adj": adj, "word": word, "features": features, "property": prop}
 
 def gen_chat(args):
     response_template = """Here is the story:
@@ -156,7 +155,8 @@ Object: {object}"""
 
         human_message0 = HumanMessage(content='Generate a story. The name must start with J. The story should use the verb "change", the noun "refrigerator" and the adjective "spoiled".')        
         ai_message = AIMessage(content=response_template.format(**examples[0]))
-        human_message_1 = HumanMessage(content=get_human_message1(args))
+        s, settings = get_human_message1(args)
+        human_message_1 = HumanMessage(content=s)
 
         # 1-shot
         messages = [system_message, human_message0, ai_message, human_message_1]
@@ -175,17 +175,48 @@ Object: {object}"""
 
         for g, generation in enumerate(responses.generations[0]):
             # TODO: account for multiple completions
+            
+            # print story
             if args.verbose:
                 print(f"------ Generated Story {n_story+g} ------")
                 print(generation.text)
                 print("------------ Fin --------------")
+            
+            # extract template fragments
             list_var = ["Story", "Aware of event", "Not aware of event", "Action given new state", "Action given initial state", "Belief Question", "Desire Question", "Action Question",
                         "Belief Aware", "Desire Aware", "Action Aware", "Belief not Aware",
                         "Desire not Aware", "Action not Aware", "Random Event", "Aware of random event", "Not aware of random event", "Agent Name", "Object"]
             out_vars = get_vars_from_out(generation.text, list_var)
             data = [out_vars[k] for k in list_var]
             data += ["auto", 0]
+            
+            # validate story
+            with open(f'{PROMPT_DIR}/template_validation.txt', 'r') as f:
+                sys_msg = SystemMessage(content=f.read().strip())
+            with open(f'{PROMPT_DIR}/validation_ex_human.txt', "r") as f:
+                hum_msgs = f.read().split('-')
+            with open(f'{PROMPT_DIR}/validation_ex_ai.txt', "r") as f:
+                ai_msgs = f.read().split('-')
+            story_msg = HumanMessage(content=data[0])
+            messages = [sys_msg, HumanMessage(content=hum_msgs[0].strip()), AIMessage(content=ai_msgs[0].strip()), HumanMessage(content=hum_msgs[1].strip()), AIMessage(content=ai_msgs[1].strip()), HumanMessage(content=hum_msgs[2].strip()), AIMessage(content=ai_msgs[2].strip()), HumanMessage(content=hum_msgs[3].strip()), AIMessage(content=ai_msgs[3].strip()), story_msg]
+            responses = llm.generate([messages])
+            for g, generation in enumerate(responses.generations[0]):
+                reasoning = generation.text.split('\n')[0].split("Reasoning:")[1]
+                eval = generation.text.split("Evaluation:")[1].strip().lower()
+                print(reasoning)
+                print(eval)
+            if eval == "invalid":
+                discarded_file = f'{DATA_DIR}/{DISCARDED_NAME}.csv'
+                with open(discarded_file, 'a') as csvfile:
+                    writer = csv.writer(csvfile, delimiter=';')
+                    writer.writerow(data)
+                    with open(f'{DATA_DIR}/{LOG_DISCARDED_NAME}.txt', 'a') as f_settings:
+                        f_settings.write(str(settings) + str({"reasoning": reasoning}) + "\n")
+                continue
+
             # write to csv file
+            with open(f'{DATA_DIR}/{LOG_NAME}.txt', 'a') as f_settings:
+                f_settings.write(str(settings) + str({"reasoning": reasoning}) + "\n")
             story_file = f'{DATA_DIR}/{CSV_NAME}.csv'
             with open(story_file, 'a') as csvfile:
                 writer = csv.writer(csvfile, delimiter=';')
@@ -203,9 +234,12 @@ if __name__ == "__main__":
         if args.features:
             CSV_NAME = 'tinytom/tinytom_three_words_plus_features'
             LOG_NAME = 'tinytom/three_words_and_features'
+        # THIS OPTION IS THE DEFAULT / FINALIZED VERSION, all other options are deprecated:
         else:
-            CSV_NAME = 'tinytom/tinytom_three_words'
-            LOG_NAME = 'tinytom/three_words'
+            CSV_NAME = 'tinytom/tinytom'
+            LOG_NAME = 'tinytom/tinytom_settings'
+            DISCARDED_NAME = 'tinytom/tinytom_discarded'
+            LOG_DISCARDED_NAME = 'tinytom/tinytom_discarded_settings'
     else: 
         CSV_NAME = 'tinytom/tinytom_one_word'
         LOG_NAME = 'tinytom/one_word'

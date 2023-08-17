@@ -1,0 +1,7 @@
+Yara was at the farm. Yara wanted to record the chicken's song. The chicken was making loud noises. Yara believed the chicken was making loud noises. Suddenly, a loud car horn scared the chicken and it stopped making noise.
+-
+Oliver was in a dark cave. Oliver wanted to find a way out of the cave with his flashlight. The flashlight was bright and green. Oliver believed the flashlight was bright and green. Suddenly, a fall of small rocks knocked the flashlight out of Oliver's hand, changing its state from green to off.
+-
+Nia is in the dining room in her home. Nia wants to eat the hot pasta from her plate. The pasta is yellow and hot. Nia thinks the pasta is yellow and hot. Suddenly, a pot of red sauce spills over the pasta, changing its color to red.
+-
+Greta was at the park near the big tree. Greta wanted to swing on the colorful loop hanging from the tree. The colorful loop was hanging low, easy to reach. Greta thought the colorful loop was hanging low, easy to reach. Suddenly, a squirrel ran up the tree and pulled the loop up high, making it hidden from Greta's reach.

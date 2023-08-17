@@ -1,6 +1,12 @@
 import os
 import csv
 import argparse
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import (
+    AIMessage,
+    HumanMessage,
+    SystemMessage
+)
 
 DATA_DIR = '../../data'
 CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/')
@@ -10,7 +16,16 @@ VARIABLES = ['forward_belief', 'forward_action', 'backward_belief', 'percept_to_
 CONDITIONS = ['true_belief', 'false_belief', 'true_control', 'false_control']
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--method', type=str, default="three_words", help="generate conditions for which set of words/features")
+parser.add_argument('--method', type=str, default="tinytom", help="generate conditions for which set of words/features")
+
+def get_eval_llm():
+    return ChatOpenAI(
+        model="gpt-4-0613",
+        temperature=0.0,
+        max_tokens=250,
+        n=1,
+        request_timeout=180
+    )
 
 def get_completions():
     with open(CSV_NAME, "r") as f:
@@ -23,7 +38,29 @@ def generate_conditions(completions):
                 "Belief Answer Aware", "Desire Answer Aware", "Action Answer Aware", "Belief Answer not Aware",
                 "Desire Answer not Aware", "Action Answer not Aware", "Random Event", "Aware of random event", "Not aware of random event", "Agent name", "Object"]
 
+    llm = get_eval_llm()
+
     for completion_idx, completion in enumerate(completions):
+        if completion_idx < 8: continue
+        # get main story object for each story
+        story = completion[0]
+        print(story)
+        name = story.split()[0]
+        print(name)
+        if args.method == "bigtom":
+            system_message = SystemMessage(content="Your job is to identify the main object of a story provided by the user. Give your answer in 1-2 words. Do not include the word 'the'.")
+            human_message = HumanMessage(content=story)
+            messages = [system_message, human_message]
+            responses = llm.generate([messages])
+            for g, generation in enumerate(responses.generations[0]):
+                obj = generation.text.strip().lower()
+
+        print(obj)
+        completion = completion[:-2]
+        completion.append(name)
+        completion.append(obj)
+
+        print(completion)
 
         dict_var = {list_var[i]: completion[i] for i in range(len(list_var))}
         
@@ -212,7 +249,11 @@ def generate_conditions(completions):
 
 if __name__ == "__main__":  
     args = parser.parse_args()
-    if args.method in ["three_words", "three_words_plus_features", "one_word", "no_forced_vocab"]:
+    # Note: this only works for tinytom and bigtom... other methods are deprecated.
+    if args.method == "tinytom":
+        CONDITION_DIR += args.method
+        CSV_NAME = CSV_NAME + "tinytom.csv"
+    elif args.method in ["three_words", "three_words_plus_features", "one_word", "no_forced_vocab"]:
         CONDITION_DIR += args.method
         CSV_NAME = CSV_NAME + "tinytom_" + args.method + ".csv"
     elif args.method == "bigtom":

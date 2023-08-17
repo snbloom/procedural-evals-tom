@@ -28,11 +28,12 @@ parser.add_argument('--local', action='store_true', default=True, help='local ev
 parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M", help="gpt-4-0613, roneneldan/TinyStories-33M, roneneldan/TinyStories-28M")
 
 # data args
-parser.add_argument('--data_dir', type=str, default='../../data/conditions/three_words', help='data directory')
+parser.add_argument('--data_dir', type=str, default='../../data/conditions/tinytom', help='data directory')
 parser.add_argument('--variable', type=str, default='belief')
 parser.add_argument('--condition', type=str, default='true_belief')
 parser.add_argument('--init_belief', type=str, default="0_forward")
 parser.add_argument('--unconverted', action='store_true', help="whether to use unconverted (non tinystory-ified) versions")
+parser.add_argument('--bigtom', action='store_true', help="run auto eval on bigtom dataset")
 
 args = parser.parse_args()
 
@@ -120,11 +121,12 @@ else:
         # tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
         tokenizer = AutoTokenizer.from_pretrained(model_id)
 
-
-DATA_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
-TRIMMED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_trimmed.csv"
-CONVERTED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
-RESULTS_DIR = os.path.join(args.data_dir, 'results')
+data_dir = args.data_dir
+if args.bigtom: data_dir = '../../data/conditions/bigtom'
+DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
+TRIMMED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_trimmed.csv"
+CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
+RESULTS_DIR = os.path.join(data_dir, 'results')
 
 correct_answers = []
 incorrect_answers = []
@@ -142,8 +144,9 @@ with open(DATA_FILE, 'r') as f:
     reader = csv.reader(f, delimiter=';')
     data = list(reader)
 
-with open(CONVERTED_FILE, 'r') as f:
-    converted = f.readlines()
+if not args.bigtom: 
+    with open(CONVERTED_FILE, 'r') as f:
+        converted = f.readlines()
 
 with open(TRIMMED_FILE, 'r') as f:
     trimmed = f.readlines()
@@ -155,18 +158,19 @@ print(sys_prompt)
 print()
 
 counter = 0
-for i in range(len(converted)):
+for i in range(len(data)):
     if i >= args.offset and counter < args.num:
         story, question, correct_answer, wrong_answer, _ = data[i]
+
         # story-ified story
-        converted_story = converted[i].strip()
+        if not args.bigtom: converted_story = converted[i].strip()
 
         # non-story-ified version
         unconverted_story_parts = trimmed[i].split(';')
         unconverted_story = unconverted_story_parts[0] + " " + unconverted_story_parts[0].split()[0] + " thinks that the " + unconverted_story_parts[1].strip() + " is"
         
         # select converted or unconverted version (depending on args)
-        if args.unconverted: eval_story = unconverted_story
+        if args.unconverted or args.bigtom: eval_story = unconverted_story
         else: eval_story = converted_story
 
         # predict answer
@@ -240,9 +244,13 @@ for i in range(len(converted)):
 print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 print("LOGGING OUTPUTS FOR MODEL", model_id)
 
+if args.bigtom: dataset = "bigtom"
+else: dataset = "tinytom"
+
 run = {
     "model_id":model_id,
     "method":"auto",
+    "dataset": dataset,
     "unconverted": args.unconverted,
     "data_range":data_range,
     "init_belief":args.init_belief,

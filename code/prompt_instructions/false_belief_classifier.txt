@@ -1,7 +1,9 @@
-Your goal is to identify whether the story provided by the user has a character who has a false belief during the course of the story. Having a false belief is when a character has some belief about the state of the objects or environment of the story which does not align with the true state of those objects or the environment. Classify the answer as containing:
-1. false belief if the story has a character who has a false belief at some point
-2. no false belief if the characters in the story do not have false beliefs at any point
+Your goal is to identify whether the children’s story provided by the user has a character who is ignorant of something in their environment or has a false belief about their environment. Classify the answer as:
+1. ignorant if the story has a character who is ignorant of something in their environment
+2. false belief if the story has a character who has a false belief about something in their environment
+3. no false belief if the characters in the story are aware of everything in their environment
+Do not give multiple answers, you must classify the story into one of the three categories. If a story has both a character that is ignorant of something in their environment and also has a false belief, classify the story as false belief. Remember that these are stories for children and thus are more imaginative than real life.
 
 Give your response in the following way:
 Reasoning: <reasoning>
-Evaluation: <false belief, no false belief>
+Evaluation: <ignorant, false belief, no false belief>

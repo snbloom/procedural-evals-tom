@@ -21,7 +21,7 @@ parser.add_argument('--verbose', action='store_true', help='verbose')
 parser.add_argument('--local', action='store_true', help='local eval using transformers instead of huggingface hub')
 
 # data args
-parser.add_argument('--data_dir', type=str, default='../../data/conditions/three_words', help='data directory')
+parser.add_argument('--data_dir', type=str, default='../../data/conditions/tinytom', help='data directory')
 parser.add_argument('--variable', type=str, default='belief')
 parser.add_argument('--condition', type=str, default='true_belief')
 parser.add_argument('--init_belief', type=str, default="0_forward")
