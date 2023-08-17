@@ -1,0 +1,11 @@
+Reasoning: When the chicken got scared, it stopped making noises. Since Yara was listening to the sounds of the chicken, she would notice the absence of sound right away.
+Evaluation: invalid
+-
+Reasoning: After the rocks knocked the flashlight out of Oliver's hand, the flashlight turned off. Since they are in a dark cave, the absence of light would be noticeable to Oliver.
+Evaluation: invalid
+-
+Reasoning: It is possible that Nia was paying attention to something else at the dinner table and did not notice the spill when it happened. The change in color is a predictable result of the pasta sauce spill.
+Evaluation: valid
+-
+Reasoning: It is possible that Greta did not notice the loop being pulled by the squirrel if she was not looking at the loop when it was moved. The hiddenness of the loop is a predictable result of the loop being pulled up high.
+Evaluation: valid

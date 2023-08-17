@@ -26,10 +26,11 @@ parser.add_argument('--local', action='store_true', default=True, help='local ev
 parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M", help="gpt-4-0613, roneneldan/TinyStories-33M, roneneldan/TinyStories-28M")
 
 # data args
-parser.add_argument('--data_dir', type=str, default='../../data/conditions/three_words', help='data directory')
+parser.add_argument('--data_dir', type=str, default='../../data/conditions/tinytom', help='data directory')
 parser.add_argument('--variable', type=str, default='belief')
 parser.add_argument('--condition', type=str, default='true_belief')
 parser.add_argument('--init_belief', type=str, default="0_forward")
+parser.add_argument('--dataset', type=str, default="all")
 
 args = parser.parse_args()
 
@@ -48,7 +49,10 @@ data_range = f"{args.offset}-{args.offset + args.num-1}"
 
 LOG_FILE = "../../data/fb_classifications.json"
 PROMPT_DIR = "../prompt_instructions"
-STORIES_FILE = "../tinystories_words/tinystories_rows_gpt4.txt"
+
+if args.dataset == "all": STORIES_FILE = "../tinystories_words/tinystories_rows.txt"
+elif args.dataset == "gpt4": STORIES_FILE = "../tinystories_words/tinystories_rows_gpt4.txt"
+else: raise Exception("Unexpected dataset type")
 
 def get_eval_llm():
     return ChatOpenAI(
@@ -76,9 +80,15 @@ CONVERTED_FILE = f"{args.data_dir}/{args.init_belief}_{args.variable}_{args.cond
 # count_incorrect = 0
 
 count_false_belief = 0
+count_unaware = 0
+count_ignorant = 0
+count_unaware_and_false_belief = 0
 count_no_false_belief = 0
 
 false_belief_stories = []
+unaware_stories = []
+ignorant_stories = []
+unaware_and_false_belief_stories = []
 no_false_belief_stories = []
 
 # with open(DATA_FILE, 'r') as f:
@@ -103,8 +113,9 @@ for i, story in enumerate(stories):
         # story, question, correct_answer, wrong_answer, _ = data[i]
         # converted_story = converted[i].strip()
         # converted_story = ".".join(converted_story.split(".")[:-1]) + "."
-        # msg = "Story:\n" + converted_story
+        # msg = "Story:\n" + converted_story  # + " " + correct_answer
         # print(msg)
+        # print()
         
         msg = "Story:\n" + story
         print(msg)
@@ -126,15 +137,25 @@ for i, story in enumerate(stories):
         
         # flag eval errors
         if args.condition not in ['true_belief', 'false_belief']: raise Exception("Unexpected evaluation. Expected ['false_belief', 'true_belief']")
-        if evaluation not in ["false belief", "no false belief"]: raise Exception("Unexpected evaluation. Expected ['false belief', 'no false belief']") 
+        if evaluation not in ["false belief", "no false belief", "unaware", "unaware and false belief", "ignorant"]: raise Exception("Unexpected evaluation. Expected ['false belief', 'no false belief']") 
 
         # log
         if evaluation == "false belief":
             count_false_belief += 1
             false_belief_stories.append({"story": story, "reasoning": reasoning})
+        elif evaluation == "unaware":
+            count_unaware += 1
+            unaware_stories.append({"story": story, "reasoning": reasoning})
+        elif evaluation == "unaware and false belief":
+            count_unaware_and_false_belief += 1
+            unaware_and_false_belief_stories.append({"story": story, "reasoning": reasoning})
+        elif evaluation == "ignorant":
+            count_ignorant += 1
+            ignorant_stories.append({"story": story, "reasoning": reasoning})
         else:
             count_no_false_belief += 1
             no_false_belief_stories.append({"story": story, "reasoning": reasoning})
+
         # check for accuracy
         # if args.condition == "false_belief":
         #     if evaluation == "no false belief": 
@@ -155,21 +176,41 @@ for i, story in enumerate(stories):
         #         correct_stories.append(converted_story)
         #         correct_explanations.append(reasoning)
 
-        print(f"Current Tallies: count_false_belief {count_false_belief}, count_no_false_belief {count_no_false_belief}")
+        print(f"Current Tallies: count_false_belief {count_false_belief}, count_no_false_belief {count_no_false_belief}, count_unaware {count_unaware}, count_unaware_and_false_belief {count_unaware_and_false_belief}, count_ignorant {count_ignorant}")
+        print()
         counter += 1
 
 
-print(f"Final Tallies: count_false_belief {count_false_belief}, count_no_false_belief {count_no_false_belief}")
+print(f"Final Tallies: count_false_belief {count_false_belief}, count_no_false_belief {count_no_false_belief}, count_unaware {count_unaware}, count_unaware_and_false_belief {count_unaware_and_false_belief}, count_ignorant {count_ignorant}")
+
 print("LOGGING OUTPUTS")
 
 run = {
-    "dataset": "tinystories-gpt4",
+    "dataset": "tinystories_"+args.dataset,
     "data_range":data_range,
     "count_false_belief":count_false_belief,
+    "count_unaware": count_unaware,
+    "count_unaware_and_false_belief": count_unaware_and_false_belief,
+    "count_ignorant":count_ignorant,
     "count_no_false_belief":count_no_false_belief,
     "false_belief_stories":false_belief_stories,
-    "no_false_belief_stories":no_false_belief_stories
+    "unaware_stories":unaware_stories,
+    "unaware_and_false_belief_stories":unaware_and_false_belief_stories,
+    "ignorant_stories":ignorant_stories,
+    "no_false_belief_stories":no_false_belief_stories,
+    "prompt": sys_prompt
 }
+
+# run = {
+#     "dataset": "tinystories",
+#     "data_range":data_range,
+#     "count_correct":count_correct,
+#     "count_incorrect":count_incorrect,
+#     "correct_stories":correct_stories,
+#     "incorrect_stories":incorrect_stories,
+#     "correct_explanations":correct_explanations,
+#     "incorrect_explanations":incorrect_explanations
+# }
 
 with open(LOG_FILE, "a") as f:
     json.dump(run, f)

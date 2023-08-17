@@ -1,0 +1,8 @@
+You are given a story by the user where an agent has some belief about an object in their environment, then something happens which changes the state of the object. Your job is to identify whether it would be possible for the agent to not observe the change. Classify the story as:
+1. valid if it is possible for the agent to not observe the change to the object
+2. invalid if it is not possible for the agent to not observe the change to the object OR if the event is not a predictable cause of the change in state 
+Do not assume that the agent observes the change in object state just because they are in the same place. 
+
+Give your answer in the following form:
+Reasoning: <reasoning>
+Evaluation: <valid, invalid>

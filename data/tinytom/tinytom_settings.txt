@@ -1,0 +1,56 @@
+{'noun': 'refrigerator', 'verb': 'change', 'adj': 'spoiled', 'word': '', 'features': []}
+{'noun': 'leak', 'verb': 'offer', 'adj': 'uncomfortable', 'word': '', 'features': []}
+{'noun': 'triangle', 'verb': 'lay', 'adj': 'patient', 'word': '', 'features': []}
+{'noun': 'bathrobe', 'verb': 'restore', 'adj': 'creative', 'word': '', 'features': []}
+{'noun': 'spade', 'verb': 'splash', 'adj': 'dangerous', 'word': '', 'features': []}
+{'noun': 'case', 'verb': 'delay', 'adj': 'crazy', 'word': '', 'features': []}
+{'noun': 'mystery', 'verb': 'look', 'adj': 'smart', 'word': '', 'features': []}
+{'noun': 'fireman', 'verb': 'hug', 'adj': 'selfish', 'word': '', 'features': []}
+{'noun': 'bracelet', 'verb': 'increase', 'adj': 'mysterious', 'word': '', 'features': []}
+{'noun': 'stitch', 'verb': 'hide', 'adj': 'yummy', 'word': '', 'features': [], 'property': 'Scent (eg: what odor or fragrance does the object have);user'}
+{'noun': 'oven', 'verb': 'take', 'adj': 'foolish', 'word': '', 'features': [], 'property': 'broken or intact (eg: is a piece of equipment or object broken or intact);user'}
+{'noun': 'cane', 'verb': 'realize', 'adj': 'hairy', 'word': '', 'features': [], 'property': 'harmful or non-harmful (eg: is a chemical or substance harmful or non-harmful);user'}
+{'noun': 'cloth', 'verb': 'drive', 'adj': 'old', 'word': '', 'features': [], 'property': 'clean or dirty (eg: is a dish or surface clean or dirty);user'}
+{'noun': 'parent', 'verb': 'complete', 'adj': 'light', 'word': '', 'features': [], 'property': 'taste (eg: what taste or flavor does the object have);user'}
+{'noun': 'clock', 'verb': 'lift', 'adj': 'confused', 'word': '', 'features': [], 'property': 'color (eg: what color is the object);user'}
+{'noun': 'trumpet', 'verb': 'go', 'adj': 'beautiful', 'word': '', 'features': [], 'property': 'visible or hidden (eg: is an object or material visible or hidden from view);user'}
+{'noun': 'angel', 'verb': 'strike', 'adj': 'proud', 'word': '', 'features': [], 'property': 'open or closed (eg: is a door, window, or container open or closed)'}
+{'noun': 'earth', 'verb': 'rain', 'adj': 'clean', 'word': '', 'features': [], 'property': 'temperature (eg: is the object hot, cold, or at room temperature)'}
+{'noun': 'horse', 'verb': 'mention', 'adj': 'hairy', 'word': '', 'features': [], 'property': 'physical orientation (eg: how is the object positioned or oriented)'}
+{'noun': 'hair', 'verb': 'believe', 'adj': 'slow', 'word': '', 'features': [], 'property': 'safe or dangerous (eg: is an activity or product safe or dangerous)'}
+{'noun': 'road', 'verb': 'destroy', 'adj': 'ancient', 'word': '', 'features': [], 'property': 'level of being cooked (eg: is the obejct, like an egg, cooked enough)'}
+{'noun': 'event', 'verb': 'unite', 'adj': 'lazy', 'word': '', 'features': [], 'property': 'full or empty (eg: is a container full or empty)'}
+{'noun': 'wagon', 'verb': 'explain', 'adj': 'terrible', 'word': '', 'features': [], 'property': 'safe or dangerous (eg: is an activity or product safe or dangerous)'}
+{'noun': 'palm', 'verb': 'scatter', 'adj': 'scared', 'word': '', 'features': [], 'property': 'visible or hidden (eg: is an object or material visible or hidden from view)'}
+{'noun': 'goat', 'verb': 'mention', 'adj': 'organized', 'word': '', 'features': [], 'property': 'temperature (eg: is the object hot, cold, or at room temperature)'}
+{'noun': 'attic', 'verb': 'chew', 'adj': 'thin', 'word': '', 'features': [], 'property': 'charged or discharged (eg: is a battery or device charged or discharged)'}
+{'noun': 'model', 'verb': 'recommend', 'adj': 'adventurous', 'word': '', 'features': [], 'property': 'location (eg: where is the object)'}
+{'noun': 'pasta', 'verb': 'rain', 'adj': 'scared', 'word': '', 'features': [], 'property': 'broken or intact (eg: is a piece of equipment or object broken or intact)'}
+{'noun': 'brain', 'verb': 'own', 'adj': 'cold', 'word': '', 'features': [], 'property': 'charged or discharged (eg: is a battery or device charged or discharged)'}
+{'noun': 'eye', 'verb': 'sit', 'adj': 'creative', 'word': '', 'features': [], 'property': 'price (eg: how much does an object cost)'}
+{'noun': 'walk', 'verb': 'zip', 'adj': 'clean', 'word': '', 'features': [], 'property': 'sharp or dull (eg: is a knife or blade sharp or dull)'}
+{'noun': 'journey', 'verb': 'skip', 'adj': 'icy', 'word': '', 'features': [], 'property': 'on or off (eg: is a light or machine on or off)'}
+{'noun': 'neck', 'verb': 'sort', 'adj': 'open', 'word': '', 'features': [], 'property': 'open or closed (eg: is a door, window, or container open or closed)'}
+{'noun': 'rhythm', 'verb': 'sit', 'adj': 'furry', 'word': '', 'features': [], 'property': 'charged or discharged (eg: is a battery or device charged or discharged)'}
+{'noun': 'celery', 'verb': 'hold', 'adj': 'dirty', 'word': '', 'features': [], 'property': "texture (eg: what is the object's surface texture)"}
+{'noun': 'fur', 'verb': 'match', 'adj': 'fast', 'word': '', 'features': [], 'property': 'price (eg: how much does an object cost)'}
+{'noun': 'worm', 'verb': 'eat', 'adj': 'popular', 'word': '', 'features': [], 'property': 'full or empty (eg: is a container full or empty)'}
+{'noun': 'rope', 'verb': 'sing', 'adj': 'hot', 'word': '', 'features': [], 'property': 'charged or discharged (eg: is a battery or device charged or discharged)'}
+{'noun': 'pizza', 'verb': 'lift', 'adj': 'eager', 'word': '', 'features': [], 'property': 'broken or intact (eg: is a piece of equipment or object broken or intact)'}
+{'noun': 'quiz', 'verb': 'dance', 'adj': 'glad', 'word': '', 'features': [], 'property': 'alive or dead (eg: is a living organism alive or dead)'}
+{'noun': 'game', 'verb': 'seat', 'adj': 'lucky', 'word': '', 'features': [], 'property': "texture (eg: what is the object's surface texture)"}
+{'noun': 'hospital', 'verb': 'bite', 'adj': 'high', 'word': '', 'features': [], 'property': 'level of freshness (eg: how fresh is a food item)'}
+{'noun': 'mud', 'verb': 'create', 'adj': 'strong', 'word': '', 'features': [], 'property': 'charged or discharged (eg: is a battery or device charged or discharged)'}
+{'noun': 'village', 'verb': 'become', 'adj': 'obedient', 'word': '', 'features': [], 'property': 'broken or intact (eg: is a piece of equipment or object broken or intact)'}
+{'noun': 'head', 'verb': 'slide', 'adj': 'curious', 'word': '', 'features': [], 'property': 'safe or dangerous (eg: is an activity or product safe or dangerous)'}
+{'noun': 'will', 'verb': 'jump', 'adj': 'noisy', 'word': '', 'features': [], 'property': 'on or off (eg: is a light or machine on or off)'}
+{'noun': 'club', 'verb': 'start', 'adj': 'bitter', 'word': '', 'features': [], 'property': 'level of freshness (eg: how fresh is a food item)'}
+{'noun': 'poppy', 'verb': 'worry', 'adj': 'jolly', 'word': '', 'features': [], 'property': 'open or closed (eg: is a door, window, or container open or closed)'}
+{'noun': 'horn', 'verb': 'reveal', 'adj': 'eager', 'word': '', 'features': [], 'property': 'temperature (eg: is the object hot, cold, or at room temperature)'}
+{'noun': 'meal', 'verb': 'part', 'adj': 'lovely', 'word': '', 'features': [], 'property': 'charged or discharged (eg: is a battery or device charged or discharged)'}
+{'noun': 'worm', 'verb': 'sign', 'adj': 'eager', 'word': '', 'features': [], 'property': 'size (eg: how big or small is the object)'}{'reasoning': " The change in the worm's size was caused by an external factor, the frog. Unless Uma was looking directly at the worm when it stretched, she may not notice the change, especially if she was distracted by the frog or her bird."}
+{'noun': 'pasta', 'verb': 'hang', 'adj': 'hot', 'word': '', 'features': [], 'property': 'color (eg: what color is the object)'}{'reasoning': " If Nia is in the dining room and the pot of red sauce spills over the pasta, she might not notice the change if she isn't looking at the pasta at the moment the sauce spills."}
+{'noun': 'fork', 'verb': 'roar', 'adj': 'colorful', 'word': '', 'features': [], 'property': 'level of freshness (eg: how fresh is a food item)'}{'reasoning': " Lily is at a big party and the incident with the bird dropping a worm on the fork is a minor event. It's possible that Lily didn't see this happen, especially if she was distracted by the dog's roar or by other things going on at the party."}
+{'noun': 'reindeer', 'verb': 'say', 'adj': 'cold', 'word': '', 'features': [], 'property': 'charged or discharged (eg: is a battery or device charged or discharged)'}{'reasoning': " Grace may not necessarily notice the change in the reindeer's behavior if she does not interact with it after the event. The change in the reindeer's behavior is not a physical one that can be easily observed from a distance."}
+{'noun': 'loop', 'verb': 'disagree', 'adj': 'colorful', 'word': '', 'features': [], 'property': 'visible or hidden (eg: is an object or material visible or hidden from view)'}{'reasoning': ' Greta was at the park near the big tree where the colorful loop was hanging. When the squirrel pulled the loop up high, Greta would likely see this change because it happened in her immediate environment.'}
+{'noun': 'melon', 'verb': 'roar', 'adj': 'troubled', 'word': '', 'features': [], 'property': 'color (eg: what color is the object)'}{'reasoning': ' If Yara was not looking at the melon when the ants started to crawl on it, she might not notice the change in color. The change in color is a predictable result of the ants crawling on the melon.'}
