@@ -47,18 +47,19 @@ def generate_conditions(completions):
         print(story)
         name = story.split()[0]
         print(name)
-        if args.method == "bigtom":
-            system_message = SystemMessage(content="Your job is to identify the main object of a story provided by the user. Give your answer in 1-2 words. Do not include the word 'the'.")
-            human_message = HumanMessage(content=story)
-            messages = [system_message, human_message]
-            responses = llm.generate([messages])
-            for g, generation in enumerate(responses.generations[0]):
-                obj = generation.text.strip().lower()
+        # used before names/objects added to bigtom, now no need:
+        # if args.method == "bigtom":
+        #     system_message = SystemMessage(content="Your job is to identify the main object of a story provided by the user. Give your answer in 1-2 words. Do not include the word 'the'.")
+        #     human_message = HumanMessage(content=story)
+        #     messages = [system_message, human_message]
+        #     responses = llm.generate([messages])
+        #     for g, generation in enumerate(responses.generations[0]):
+        #         obj = generation.text.strip().lower()
 
-        print(obj)
-        completion = completion[:-2]
-        completion.append(name)
-        completion.append(obj)
+        # print(obj)
+        # completion = completion[:-2]
+        # completion.append(name)
+        # completion.append(obj)
 
         print(completion)
 
