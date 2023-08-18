@@ -198,13 +198,13 @@ Object: {object}"""
             with open(f'{PROMPT_DIR}/validation_ex_ai.txt', "r") as f:
                 ai_msgs = f.read().split('-')
             story_msg = HumanMessage(content=data[0])
+            print(story_msg)
             messages = [sys_msg, HumanMessage(content=hum_msgs[0].strip()), AIMessage(content=ai_msgs[0].strip()), HumanMessage(content=hum_msgs[1].strip()), AIMessage(content=ai_msgs[1].strip()), HumanMessage(content=hum_msgs[2].strip()), AIMessage(content=ai_msgs[2].strip()), HumanMessage(content=hum_msgs[3].strip()), AIMessage(content=ai_msgs[3].strip()), story_msg]
             responses = llm.generate([messages])
             for g, generation in enumerate(responses.generations[0]):
+                print(generation.text)
                 reasoning = generation.text.split('\n')[0].split("Reasoning:")[1]
                 eval = generation.text.split("Evaluation:")[1].strip().lower()
-                print(reasoning)
-                print(eval)
             if eval == "invalid":
                 discarded_file = f'{DATA_DIR}/{DISCARDED_NAME}.csv'
                 with open(discarded_file, 'a') as csvfile:
