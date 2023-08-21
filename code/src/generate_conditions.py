@@ -22,7 +22,7 @@ CONDITIONS = ['true_belief', 'false_belief', 'true_control', 'false_control']
 
 FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control", "0_forward_belief_true_belief", "0_forward_belief_true_control"]
 
-MODEL = "gpt-3.5-turbo-16k-0613"
+MODEL = "gpt-4-0613"
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, default="tinytom", help="generate conditions for which set of words/features")
@@ -30,7 +30,7 @@ parser.add_argument('--method', type=str, default="tinytom", help="generate cond
 def get_llm():
     llm = ChatOpenAI(
         model=MODEL,
-        temperature=0.5,
+        temperature=0.0,
         max_tokens=450,
         n=1,
         request_timeout=180

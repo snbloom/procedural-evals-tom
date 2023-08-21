@@ -44,7 +44,7 @@ parser.add_argument('--num_each', type=int, default="10", help="how many trainin
 def get_llm():
     llm = ChatOpenAI(
         model=MODEL,
-        temperature=0.5,
+        temperature=0.0,
         max_tokens=450,
         n=1,
         request_timeout=180
