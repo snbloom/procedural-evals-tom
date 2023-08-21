@@ -89,7 +89,7 @@ def convert_trimmed_stories(stories, args):
             percieve_random_yes = story[15].strip()
             percieve_random_no = story[16].strip()
             name = story[17].strip()
-            obj = story[18].strip()
+            obj = story[18].strip().lower()
             
             # print out parts to convert
             print("Context:", context_unconverted)

@@ -28,72 +28,56 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--model', type=str, default='gpt-4-0613', help='model name')
 parser.add_argument('--temperature', type=float, default=0.5, help='temperature')
 parser.add_argument('--max_tokens', type=int, default=450, help='max tokens')
-# change num completions to 10
-parser.add_argument('--num_completions', type=int, default=1, help='number of completions')
-parser.add_argument('--num_shots', type=int, default=1, help='number of shots')
-parser.add_argument('--num_stories', type=int, default=1, help='number of stories to generate')
+parser.add_argument('--num', type=int, default=1, help='number of stories to generate')
 parser.add_argument('--verbose', action='store_true', help='verbose')
 
-# tinytom generation
-parser.add_argument('--features', action='store_true', default=False, help='whether or not to add features constraint to stories instruction')
-parser.add_argument('--three_words', action='store_true', default=True, help='whether to force 3 words from vocab into instructions. if false, use 1 word')
-parser.add_argument('--object_states', action='store_true', default=True, help='whether to force diversity in eval dataset using object state change specification')
+# tinytom generation final method --> INCLUDE three words, INCLUDE object states, DON'T INCLUDE features
+# parser.add_argument('--features', action='store_true', default=False, help='whether or not to add features constraint to stories instruction')
+# parser.add_argument('--three_words', action='store_true', default=True, help='whether to force 3 words from vocab into instructions. if false, use 1 word')
+# parser.add_argument('--object_states', action='store_true', default=True, help='whether to force diversity in eval dataset using object state change specification')
 
 def get_llm(args):
     llm = ChatOpenAI(
         model=args.model,
         temperature=args.temperature,
         max_tokens=args.max_tokens,
-        n=args.num_completions,
         request_timeout=180
     )
     return llm
 
 def get_human_message1(args):
     noun, verb, adj, word, features, letter = "", "", "", "", [], random.choice(letters)
+
     with(open(f'{PROMPT_DIR}/human_message1.txt', 'r')) as f:
         msg = f.read().strip()
 
+    # random letter for name
     msg = msg.replace("[letter]", letter)
-    if args.features:
-        features = random.sample(["the story should contain at least one dialogue","the story has a bad ending","the story has a moral value", "the narrative uses foreshadowing or setup and payoff", "something unexpected happens / there is a plot twist", "the story has some form of conflict in it"], random.randint(0,3))
-        msg = msg.replace("[features]", ", ".join(features))
-    else: msg = msg.replace("The story has the following features: [features].", "")
 
-    if args.three_words:
-        # random noun
-        with open(f'{WORDS_DIR}/nouns.txt', 'r') as f_noun:
-            nouns = ast.literal_eval(f_noun.readline())
-            noun = random.choice(nouns)
-            msg = msg.replace("[noun]", noun)
-        # random verb
-        with open(f'{WORDS_DIR}/verbs.txt', 'r') as f_verb:
-            verbs = ast.literal_eval(f_verb.readline())
-            verb = random.choice(verbs)
-            msg = msg.replace("[verb]", verb)
-        # random adj
-        with open(f'{WORDS_DIR}/adj.txt', 'r') as f_adj:
-            adjs = ast.literal_eval(f_adj.readline())
-            adj = random.choice(adjs)
-            msg = msg.replace("[adj]", adj)
-    else:
-        word = ""
-        with open(f'{WORDS_DIR}/all_words.txt', 'r') as f_all:
-            words = ast.literal_eval(f_all.readline())
-            word = random.choice(words)
-            sentence = 'the word "' + word + '"' 
-            msg = msg.replace('verb "[verb]", the noun "[noun]" and the adjective "[adj]"', sentence)
+    # random noun
+    with open(f'{WORDS_DIR}/nouns.txt', 'r') as f_noun:
+        nouns = ast.literal_eval(f_noun.readline())
+        noun = random.choice(nouns)
+        msg = msg.replace("[noun]", noun)
+    # random verb
+    with open(f'{WORDS_DIR}/verbs.txt', 'r') as f_verb:
+        verbs = ast.literal_eval(f_verb.readline())
+        verb = random.choice(verbs)
+        msg = msg.replace("[verb]", verb)
+    # random adj
+    with open(f'{WORDS_DIR}/adj.txt', 'r') as f_adj:
+        adjs = ast.literal_eval(f_adj.readline())
+        adj = random.choice(adjs)
+        msg = msg.replace("[adj]", adj)
 
-    if args.object_states:
-        with open(f'{DATA_DIR}/tinytom/object_states.csv', "r") as f:
-            states = f.readlines()
-        prop = random.choice(states).strip().lower()
-        prop = prop[0:prop.index(";")]
-        msg = msg.replace('[object_property]', prop)
-    else:
-        msg = msg.replace(' If it makes sense with the story, the event should change the following property of the object: [object_property].', "")
+   #object states
+    with open(f'{DATA_DIR}/tinytom/object_states.csv', "r") as f:
+        states = f.readlines()
+    prop = random.choice(states).strip().lower()
+    prop = prop[0:prop.index(";")]
+    msg = msg.replace('[object_property]', prop)
 
-    print(msg)
+    if args.verbose: print(msg)
     return msg, {"noun": noun, "verb": verb, "adj": adj, "word": word, "features": features, "property": prop}
 
 def gen_chat(args):
@@ -131,20 +115,9 @@ Object: {object}"""
     prompt_tokens_used = 0
     completion_tokens_used = 0
 
-    # run loop with n stories, increase by num_completions
-    for n_story in tqdm.tqdm(range(0, args.num_stories, args.num_completions)):
+    # run loop with n stories
+    for n_story in tqdm.tqdm(range(0, args.num)):
         system_message = SystemMessage(content=instruction_text)
-
-        # read examples from csv file every iteration to add generated samples to the pool of seed examples
-        # if args.verbose:
-        #     print(f"Reading examples from {csv_file} with existing {get_num_items(csv_file)} examples")
-        # # read a few examples from the csv file
-        # with open(csv_file, 'r') as f:
-        #     for line in f.readlines():
-        #         params = line.split(';')
-        #         example = {k: params[v].strip() for v, k in enumerate(template_var)}
-        #         examples.append(example)
-        # random.shuffle(examples)
 
         # get hand-picked example (at zeroeth position in csv)
         with open(csv_file, "r") as f:
@@ -169,13 +142,11 @@ Object: {object}"""
         responses = llm.generate([messages])
         prompt_tokens_used += responses.llm_output['token_usage']['prompt_tokens']
         completion_tokens_used += responses.llm_output['token_usage']['completion_tokens']
-        price = (prompt_tokens_used * 0.03 + completion_tokens_used * 0.06) / 1000.
+        # price = (prompt_tokens_used * 0.03 + completion_tokens_used * 0.06) / 1000.
         # update tqdm progress bar with price
-        tqdm.tqdm.write(f"Price: {price:.2f} USD, Price per story: {price/(n_story+args.num_completions):.2f} USD")
-
+        # tqdm.tqdm.write(f"Price: {price:.2f} USD, Price per story: {price/(n_story):.2f} USD")
         for g, generation in enumerate(responses.generations[0]):
-            # TODO: account for multiple completions
-            
+
             # print story
             if args.verbose:
                 print(f"------ Generated Story {n_story+g} ------")
@@ -227,21 +198,7 @@ Object: {object}"""
     
 if __name__ == "__main__":
     args = parser.parse_args()
-    print(f"Generating {args.num_stories} stories")
+    print(f"Generating {args.num} stories")
     if args.verbose:
         print(args)
-    if args.three_words:
-        if args.features:
-            CSV_NAME = 'tinytom/tinytom_three_words_plus_features'
-            LOG_NAME = 'tinytom/three_words_and_features'
-        # THIS OPTION IS THE DEFAULT / FINALIZED VERSION, all other options are deprecated:
-        else:
-            CSV_NAME = 'tinytom/tinytom'
-            LOG_NAME = 'tinytom/tinytom_settings'
-            DISCARDED_NAME = 'tinytom/tinytom_discarded'
-            LOG_DISCARDED_NAME = 'tinytom/tinytom_discarded_settings'
-    else: 
-        CSV_NAME = 'tinytom/tinytom_one_word'
-        LOG_NAME = 'tinytom/one_word'
-    print(CSV_NAME, LOG_NAME)
     gen_chat(args)
