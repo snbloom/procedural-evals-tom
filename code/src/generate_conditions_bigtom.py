@@ -9,14 +9,14 @@ from langchain.schema import (
 )
 
 DATA_DIR = '../../data'
-CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/')
-CSV_NAME = os.path.join(DATA_DIR, 'tinytom/')
+CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/bigtom')
+CSV_NAME = os.path.join(DATA_DIR, 'bigtom/bigtom.csv')
 INITIAL_BELIEF = [0, 1] # 0 hide initial belief, 1 show initial belief
 VARIABLES = ['forward_belief', 'forward_action', 'backward_belief', 'percept_to_belief']
 CONDITIONS = ['true_belief', 'false_belief', 'true_control', 'false_control']
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--method', type=str, default="tinytom", help="generate conditions for which set of words/features")
+parser.add_argument('--method', type=str, default="bigtom", help="generate conditions for which set of words/features")
 
 # def get_eval_llm():
 #     return ChatOpenAI(
@@ -250,13 +250,7 @@ def generate_conditions(completions):
 
 if __name__ == "__main__":  
     args = parser.parse_args()
-    # Note: this only works for tinytom and bigtom... other methods are deprecated.
-    if args.method == "tinytom":
-        CONDITION_DIR += args.method
-        CSV_NAME = CSV_NAME + "tinytom.csv"
-    elif args.method == "bigtom":
-        CONDITION_DIR += args.method
-        CSV_NAME = os.path.join(DATA_DIR, 'bigtom/bigtom.csv')
-    else: raise Exception("invalid method argument")
+    # Note: this only works for bigtom... other methods are deprecated.
+    if args.method != "bigtom": raise Exception("invalid method argument")
     completions = get_completions()
     generate_conditions(completions)
