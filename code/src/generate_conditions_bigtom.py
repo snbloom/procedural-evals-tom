@@ -18,14 +18,14 @@ CONDITIONS = ['true_belief', 'false_belief', 'true_control', 'false_control']
 parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, default="tinytom", help="generate conditions for which set of words/features")
 
-def get_eval_llm():
-    return ChatOpenAI(
-        model="gpt-4-0613",
-        temperature=0.0,
-        max_tokens=250,
-        n=1,
-        request_timeout=180
-    )
+# def get_eval_llm():
+#     return ChatOpenAI(
+#         model="gpt-4-0613",
+#         temperature=0.0,
+#         max_tokens=250,
+#         n=1,
+#         request_timeout=180
+#     )
 
 def get_completions():
     with open(CSV_NAME, "r") as f:
@@ -38,7 +38,7 @@ def generate_conditions(completions):
                 "Belief Answer Aware", "Desire Answer Aware", "Action Answer Aware", "Belief Answer not Aware",
                 "Desire Answer not Aware", "Action Answer not Aware", "Random Event", "Aware of random event", "Not aware of random event", "Agent name", "Object"]
 
-    llm = get_eval_llm()
+    # llm = get_eval_llm()
 
     for completion_idx, completion in enumerate(completions):
         if completion_idx < 8: continue
@@ -254,9 +254,6 @@ if __name__ == "__main__":
     if args.method == "tinytom":
         CONDITION_DIR += args.method
         CSV_NAME = CSV_NAME + "tinytom.csv"
-    elif args.method in ["three_words", "three_words_plus_features", "one_word", "no_forced_vocab"]:
-        CONDITION_DIR += args.method
-        CSV_NAME = CSV_NAME + "tinytom_" + args.method + ".csv"
     elif args.method == "bigtom":
         CONDITION_DIR += args.method
         CSV_NAME = os.path.join(DATA_DIR, 'bigtom/bigtom.csv')
