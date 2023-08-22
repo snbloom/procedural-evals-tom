@@ -30,6 +30,7 @@ parser.add_argument('--temperature', type=float, default=0.5, help='temperature'
 parser.add_argument('--max_tokens', type=int, default=450, help='max tokens')
 parser.add_argument('--num', type=int, default=1, help='number of stories to generate')
 parser.add_argument('--verbose', action='store_true', help='verbose')
+parser.add_argument('--no_print', action='store_true', help='when enabled, do not print anything except progress until the end')
 
 # tinytom generation final method --> INCLUDE three words, INCLUDE object states, DON'T INCLUDE features
 # parser.add_argument('--features', action='store_true', default=False, help='whether or not to add features constraint to stories instruction')
@@ -115,8 +116,14 @@ Object: {object}"""
     prompt_tokens_used = 0
     completion_tokens_used = 0
 
-    # run loop with n stories
-    for n_story in tqdm.tqdm(range(0, args.num)):
+    # counter variables
+    counter = 0
+    total_generated = 0
+    invalid = 0
+    
+    # run loop to generate n stories
+    while counter < args.num:
+        print(f'{counter+1}/{args.num}')
         system_message = SystemMessage(content=instruction_text)
 
         # get hand-picked example (at zeroeth position in csv)
@@ -146,10 +153,11 @@ Object: {object}"""
         # update tqdm progress bar with price
         # tqdm.tqdm.write(f"Price: {price:.2f} USD, Price per story: {price/(n_story):.2f} USD")
         for g, generation in enumerate(responses.generations[0]):
+            total_generated += 1
 
             # print story
             if args.verbose:
-                print(f"------ Generated Story {n_story+g} ------")
+                print(f"------ Generated Story {total_generated+g} ------")
                 print(generation.text)
                 print("------------ Fin --------------")
             
@@ -169,14 +177,15 @@ Object: {object}"""
             with open(f'{PROMPT_DIR}/validation_ex_ai.txt', "r") as f:
                 ai_msgs = f.read().split('-')
             story_msg = HumanMessage(content=data[0])
-            print(story_msg)
+            if not args.no_print: print(story_msg)
             messages = [sys_msg, HumanMessage(content=hum_msgs[0].strip()), AIMessage(content=ai_msgs[0].strip()), HumanMessage(content=hum_msgs[1].strip()), AIMessage(content=ai_msgs[1].strip()), HumanMessage(content=hum_msgs[2].strip()), AIMessage(content=ai_msgs[2].strip()), HumanMessage(content=hum_msgs[3].strip()), AIMessage(content=ai_msgs[3].strip()), story_msg]
             responses = llm.generate([messages])
             for g, generation in enumerate(responses.generations[0]):
-                print(generation.text)
+                if not args.no_print: print(generation.text)
                 reasoning = generation.text.split('\n')[0].split("Reasoning:")[1]
                 eval = generation.text.split("Evaluation:")[1].strip().lower()
             if eval == "invalid":
+                invalid += 1
                 discarded_file = f'{DATA_DIR}/{DISCARDED_NAME}.csv'
                 with open(discarded_file, 'a') as csvfile:
                     writer = csv.writer(csvfile, delimiter=';')
@@ -185,6 +194,9 @@ Object: {object}"""
                         f_settings.write(str(settings) + str({"reasoning": reasoning}) + "\n")
                 continue
 
+            # increment counter
+            counter += 1
+
             # write to csv file
             with open(f'{DATA_DIR}/{LOG_NAME}.txt', 'a') as f_settings:
                 f_settings.write(str(settings) + str({"reasoning": reasoning}) + "\n")
@@ -192,13 +204,14 @@ Object: {object}"""
             with open(story_file, 'a') as csvfile:
                 writer = csv.writer(csvfile, delimiter=';')
                 writer.writerow(data)
-    # push to github
-    # push_data(DATA_DIR, REPO_URL)
+    # log stats
+    print("Total Generated:", total_generated)
+    print("Invalid:", invalid)
     
     
 if __name__ == "__main__":
     args = parser.parse_args()
-    print(f"Generating {args.num} stories")
+    if not args.no_print: print(f"Generating {args.num} stories")
     if args.verbose:
         print(args)
     gen_chat(args)

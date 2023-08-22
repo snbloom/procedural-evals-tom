@@ -1,6 +1,6 @@
 # This script is used to generate stories in a fully automatic way.
-num_stories=50
-num_convert=120
+num_stories=129
+num_convert=200
 
 python ../src/tinytom.py --num $num_stories
 python ../src/generate_conditions_tinytom.py --num $num_convert

@@ -24,6 +24,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, default="tinytom", help="generate conditions for which set of words/features")
 parser.add_argument('--num', type=int, default=50, help="max number of stories to convert")
 parser.add_argument('--verbose', action='store_true', help="when enabled, print out unconverted and converted fragments")
+parser.add_argument('--no_print', action='store_true', help="when enabled, don't print anything to the console except tqdm progress")
+
 
 def get_llm():
     llm = ChatOpenAI(
@@ -67,11 +69,12 @@ def convert_trimmed_stories(stories, args):
         if f_r.readable():
             lines = f_r.readlines()
             start_idx = len(lines)
-    print(f"Already converted {start_idx} stories")
-    print()
+    if not args.no_print:
+        print(f"Already converted {start_idx} stories")
+        print()
     count = 1
 
-    for i, story in enumerate(stories):
+    for i, story in enumerate(tqdm(stories)):
 
         # limit by num argument
         if count > args.num: break
@@ -92,10 +95,11 @@ def convert_trimmed_stories(stories, args):
             obj = story[18].strip().lower()
             
             # print out parts to convert
-            print("Context:", context_unconverted)
-            print("Causal Event:", causal_event_unconverted)
-            print("Random Event:", random_event_unconverted)
-            print()
+            if not args.no_print:
+                print("Context:", context_unconverted)
+                print("Causal Event:", causal_event_unconverted)
+                print("Random Event:", random_event_unconverted)
+                print()
 
             # get converted context
             instr_context = get_formatted_instructions("context", context_unconverted)
@@ -121,10 +125,11 @@ def convert_trimmed_stories(stories, args):
                 print()
 
             # print out converted parts
-            print("Converted Context: ", context)
-            print("Converted Causal Event: ", causal_event)
-            print("Converted Random Event: ", random_event)
-            print()
+            if not args.no_print:
+                print("Converted Context: ", context)
+                print("Converted Causal Event: ", causal_event)
+                print("Converted Random Event: ", random_event)
+                print()
 
             # record converted parts
             with open(f'{DATA_DIR}/tinytom/tinytom_converted_parts.txt', "a") as f:
@@ -168,5 +173,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.method != "tinytom": raise Exception("invalid method argument")
     stories = get_unconverted_stories()
-    print("Length of stories:", len(stories))
+    if not args.no_print: print("Length of stories:", len(stories))
     convert_trimmed_stories(stories, args)
