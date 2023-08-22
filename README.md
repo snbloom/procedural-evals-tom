@@ -47,8 +47,8 @@ This project: we adapt the BigToM generation and evaluation method for models tr
 Prompt for generating TinyToM is in `code/prompt_instructions/tinytom.txt` and the python script is at `code/src/tinytom.py`. To generate TinyToM, run the following commands:
 1. `cd code/src`
 2. `python tinytom.py` (use `python tinytom.py --num_stories [NUM_STORIES]` to specify number of stories to generate)
-3. `python generate_conditions.py`
-4. `python generate_tinytom_stories.py`
+3. `python generate_conditions_unconverted.py`
+4. `python generate_conditions_converted.py`
 
 #### Evaluating on TinyToM
 We provide code to evaluate models on TinyToM in `code/src/auto_eval.py`. More specific experiment scripts are available in `code/scripts`.
