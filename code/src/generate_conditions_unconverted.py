@@ -1,6 +1,7 @@
 import os
 import csv
 import argparse
+from tqdm import tqdm
 
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import (
@@ -33,7 +34,7 @@ def generate_conditions(completions):
 
     # llm = get_eval_llm()
 
-    for completion_idx, completion in enumerate(completions):
+    for completion_idx, completion in enumerate(tqdm(completions)):
 
         # get main story object for each story
         story = completion[0]
