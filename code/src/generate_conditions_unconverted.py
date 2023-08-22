@@ -1,6 +1,7 @@
 import os
 import csv
 import argparse
+
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import (
     AIMessage,
@@ -9,23 +10,15 @@ from langchain.schema import (
 )
 
 DATA_DIR = '../../data'
-CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/bigtom')
-CSV_NAME = os.path.join(DATA_DIR, 'bigtom/bigtom.csv')
+CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/')
+CSV_NAME = os.path.join(DATA_DIR, 'tinytom/')
 INITIAL_BELIEF = [0, 1] # 0 hide initial belief, 1 show initial belief
 VARIABLES = ['forward_belief', 'forward_action', 'backward_belief', 'percept_to_belief']
 CONDITIONS = ['true_belief', 'false_belief', 'true_control', 'false_control']
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--method', type=str, default="bigtom", help="generate conditions for which set of words/features")
-
-# def get_eval_llm():
-#     return ChatOpenAI(
-#         model="gpt-4-0613",
-#         temperature=0.0,
-#         max_tokens=250,
-#         n=1,
-#         request_timeout=180
-#     )
+parser.add_argument('--method', type=str, default="tinytom", help="[tinytom, bigtom]")
+parser.add_argument('--verbose', action="store_true", help="verbose or not")
 
 def get_completions():
     with open(CSV_NAME, "r") as f:
@@ -41,27 +34,15 @@ def generate_conditions(completions):
     # llm = get_eval_llm()
 
     for completion_idx, completion in enumerate(completions):
-        if completion_idx < 8: continue
+
         # get main story object for each story
         story = completion[0]
-        print(story)
         name = story.split()[0]
-        print(name)
-        # used before names/objects added to bigtom, now no need:
-        # if args.method == "bigtom":
-        #     system_message = SystemMessage(content="Your job is to identify the main object of a story provided by the user. Give your answer in 1-2 words. Do not include the word 'the'.")
-        #     human_message = HumanMessage(content=story)
-        #     messages = [system_message, human_message]
-        #     responses = llm.generate([messages])
-        #     for g, generation in enumerate(responses.generations[0]):
-        #         obj = generation.text.strip().lower()
 
-        # print(obj)
-        # completion = completion[:-2]
-        # completion.append(name)
-        # completion.append(obj)
-
-        print(completion)
+        if args.verbose:
+            print(story)
+            print(name)
+            print(completion)
 
         dict_var = {list_var[i]: completion[i] for i in range(len(list_var))}
         
@@ -163,11 +144,17 @@ def generate_conditions(completions):
 
                 for condition in CONDITIONS:
 
-                    # check if folder exists
-
                     # Write the row to the CSV file based on the condition and variable
                     if variable == "percept_to_belief":
                         if condition == "true_belief" and init_belief == 1:
+
+                            # skip if already parsed this story
+                            folder = f"{CONDITION_DIR}/{init_belief}_{variable}_{condition}/stories.csv"
+                            with open(folder, "r") as f:
+                                l = f.readlines()
+                                start_idx = len(l)-1
+                            if completion_idx < start_idx: continue
+
                             if not os.path.exists(os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}')):
                                 os.makedirs(os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}'))
                             new_csv_file = os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}/stories.csv')
@@ -181,6 +168,14 @@ def generate_conditions(completions):
                                 writer.writerow([f"{story}", question, answers[0], answers[1], dict_var["Object"]])
                           
                     elif variable != "percept_to_belief":
+
+                        # skip if already parsed this story
+                        folder = f"{CONDITION_DIR}/{init_belief}_{variable}_{condition}/stories.csv"
+                        with open(folder, "r") as f:
+                            l = f.readlines()
+                            start_idx = len(l)-1
+                        if completion_idx < start_idx: continue
+
                         # Check if the new file needs to be created or appended
                         if not os.path.exists(os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}')):
                             os.makedirs(os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}'))
@@ -250,7 +245,13 @@ def generate_conditions(completions):
 
 if __name__ == "__main__":  
     args = parser.parse_args()
-    # Note: this only works for bigtom... other methods are deprecated.
-    if args.method != "bigtom": raise Exception("invalid method argument")
+    # Note: this only works for tinytom and bigtom... other methods are deprecated.
+    if args.method == "tinytom":
+        CONDITION_DIR += args.method
+        CSV_NAME = CSV_NAME + "tinytom.csv"
+    elif args.method == "bigtom":
+        CONDITION_DIR += args.method
+        CSV_NAME = os.path.join(DATA_DIR, 'bigtom/bigtom.csv')
+    else: raise Exception("invalid method argument")
     completions = get_completions()
     generate_conditions(completions)
