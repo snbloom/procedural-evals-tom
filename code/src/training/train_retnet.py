@@ -30,10 +30,10 @@ random.seed(config["seed"])
 torch.manual_seed(config["seed"])
 
 if config["model"] == '43':
-    model_config = load_config_from_json("../../configs/retent-43.json")
+    model_config = load_config_from_json("../../configs/retnet-43.json")
 else:
     raise ValueError("Invalid model size")
-model = RetNetModelWithLMHead(config)
+model = RetNetModelWithLMHead(model_config)
 print(f"Number of parameters: {model.model.num_parameters()}")
 
 
@@ -75,16 +75,25 @@ tokenizer.bos_token = tokenizer.eos_token
 
 context_length = config["context_length"]
 
-def tokenize(example):
+def tokenize(element):
     if config["data"] == "full":
-        text_col = "story"
+        stories = [e.strip() for e in element["story"]]
     else:
-        text_col = "text"
-    input_ids = tokenizer(example[text_col],
-                            truncation=True,
-                            max_length=context_length,
-                            return_tensors='pt').input_ids[0]
-    return {'input_ids': input_ids}
+        stories = [e.strip() for e in element["text"]]
+ 
+    outputs = tokenizer(
+        stories,
+        truncation=True,
+        max_length=context_length,
+        return_overflowing_tokens=True,
+        return_length=True,
+    )
+
+    input_batch = []
+    for length, input_ids in zip(outputs["length"], outputs["input_ids"]):
+        if length <= context_length:
+            input_batch.append(input_ids)
+    return {"input_ids": input_batch}
 
 print(hf_datasets)
 tokenized_datasets = hf_datasets.map(
