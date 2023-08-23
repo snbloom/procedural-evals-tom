@@ -644,6 +644,7 @@ class RetNetModelWithLMHead(RetNetPreTrainedModel):
                                       top_p=top_p,
                                       temperature=temperature)
             generated.append(token)
+            token = token.unsqueeze(-1)
             if early_stopping and (token == eos_token_id).all():
                 break
         generated = torch.cat(generated, dim=-1)
