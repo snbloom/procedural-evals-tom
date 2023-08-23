@@ -41,7 +41,7 @@ all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M",
                  "gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo",
                  "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
                  "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
-open_ai_model_ids = ["gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo"]
+open_ai_model_ids = ["gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo", "text-davinici-003"]
 
 model_id = args.model_id # or use the following shorthand:
 if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
@@ -122,11 +122,11 @@ else:
         tokenizer = AutoTokenizer.from_pretrained(model_id)
 
 data_dir = args.data_dir
+RESULTS_DIR = os.path.join('../../data/results')
 if args.bigtom: data_dir = '../../data/conditions/bigtom'
 DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
 TRIMMED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_trimmed.csv"
 CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
-RESULTS_DIR = os.path.join(data_dir, 'results')
 
 correct_answers = []
 incorrect_answers = []
@@ -271,11 +271,14 @@ with open(LOG_FILE, "a") as f:
     f.write('\n')
 
 model_name = model_id.replace('/', '_')
-prediction = os.path.join(RESULTS_DIR, f'{args.init_belief}_{args.variable}_{args.condition}/prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
-accuracy_file = os.path.join(RESULTS_DIR, f'{args.init_belief}_{args.variable}_{args.condition}/accuracy_{model_id}_{args.temperature}__{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
+model_id = model_id.replace('/', '_')
+prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
+accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
 
-if not os.path.exists(os.path.join(RESULTS_DIR, f'{args.init_belief}_{args.variable}_{args.condition}')):
-    os.makedirs(os.path.join(RESULTS_DIR, f'{args.init_belief}_{args.variable}_{args.condition}'))
+print("WRITING OUTPUTS TO", prediction, accuracy_file)
+
+if not os.path.exists(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}')):
+    os.makedirs(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}'))
 
 with open(prediction, "w") as f:
     writer = csv.writer(f, delimiter=";")
