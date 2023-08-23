@@ -39,8 +39,8 @@ args = parser.parse_args()
 
 all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", 
                  "gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo",
-                 "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
-                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
+                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-4/checkpoint-50000",
+                 '/scr/snbloom/models/finetuned-33-tinytom/checkpoint-125', '/scr/snbloom/models/finetuned-llama-43-tinytom/checkpoint-125']
 open_ai_model_ids = ["gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo", "text-davinici-003"]
 
 model_id = args.model_id # or use the following shorthand:
@@ -49,6 +49,13 @@ if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
 if args.model_id == "gpt4": model_id = "gpt-4-0613"
 if args.model_id == "gpt35turbo": model_id = "gpt-3.5-turbo"
 if args.model_id == "davinci003": model_id = "openai/text-davinci-003"
+
+if args.model_id == "llama-14": model_id = "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"
+if args.model_id == "llama-43": model_id = "/scr/kanishkg/models/llama-training-43-4/checkpoint-50000"
+if args.model_id == "finetuned-33": model_id = '/scr/snbloom/models/finetuned-33-tinytom/checkpoint-125'
+if args.model_id == "finetuned-llama-43-100": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-100/checkpoint-35'
+if args.model_id == "finetuned-llama-43-200": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-200/checkpoint-65'
+if args.model_id == "finetuned-llama-43-400": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-400/checkpoint-125'
 
 data_range = f"{args.offset}-{args.offset + args.num}"
 
