@@ -40,7 +40,8 @@ args = parser.parse_args()
 all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", 
                  "gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo",
                  "/scr/kanishkg/models/finetuned-28-0r/checkpoint-45", "/scr/kanishkg/models/finetuned-33-0r/checkpoint-45",
-                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-1/checkpoint-68500"]
+                 "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-4/checkpoint-50000",
+                 '/scr/snbloom/models/finetuned-33-tinytom/checkpoint-125']
 open_ai_model_ids = ["gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo", "text-davinici-003"]
 
 model_id = args.model_id # or use the following shorthand:

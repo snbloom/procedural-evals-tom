@@ -34,6 +34,8 @@ if config["model"] == '33':
     repo_id = "roneneldan/TinyStories-33M"
 elif config["model"] == '28':
     repo_id = "roneneldan/TinyStories-28M"
+elif config["model"] == '43':
+    repo_id = "/scr/kanishkg/models/llama-training-43-4/checkpoint-50000"
 
 print(f"Loading model from {repo_id}")
 model = AutoModelForCausalLM.from_pretrained(repo_id)
