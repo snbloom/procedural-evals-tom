@@ -20,9 +20,12 @@ def get_tiny_tom(config):
                 text = line.strip()
                 last_period_index = text.strip().rfind(".")
                 story = text[:last_period_index+1]
+                final_sentence = final_sentences[i]
+                if 'believe' in final_sentence:
+                    final_sentence = final_sentence.replace('believe', 'think')
                 story = story + " " + final_sentences[i]
                 tinytom[cond].append(story)
-    # ensure all conditions are shuffled in the same order
+    # TODO: ensure all conditions are shuffled in the same order
     # keeping unshuffled for now
     return tinytom
 
