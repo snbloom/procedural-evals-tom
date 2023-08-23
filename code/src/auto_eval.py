@@ -53,7 +53,8 @@ if args.model_id == "davinci003": model_id = "openai/text-davinci-003"
 if args.model_id == "llama-14": model_id = "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"
 if args.model_id == "llama-43": model_id = "/scr/kanishkg/models/llama-training-43-4/checkpoint-50000"
 if args.model_id == "finetuned-33": model_id = '/scr/snbloom/models/finetuned-33-tinytom/checkpoint-125'
-if args.model_id == "finetuned-llama-43": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom/checkpoint-125'
+if args.model_id == "finetuned-llama-43-100": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-100/checkpoint-125'
+if args.model_id == "finetuned-llama-43-400": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-400/checkpoint-125'
 
 data_range = f"{args.offset}-{args.offset + args.num}"
 
