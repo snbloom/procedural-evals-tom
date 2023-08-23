@@ -1,3 +1,4 @@
+import copy
 import numpy as np
 import pandas as pd
 from matplotlib.patches import FancyBboxPatch
@@ -89,17 +90,21 @@ def compute_stats(df_raw, pp_level=False):
     
     # Compute mean and bootstrap_CI, then merge the two dataframes
     df_mean = df_raw.groupby(group_cols).mean().reset_index()
-    df_ci = df_raw.groupby(group_cols).agg(bootstrap_CI).reset_index()
+    # df_ci = df2.groupby(group_cols).agg(bootstrap_CI).reset_index()
 
     
     
-    df = pd.merge(df_mean, df_ci, on=group_cols, suffixes=('_mean', '_ci'))
+    # df = pd.merge(df_mean, df_ci, on=group_cols, suffixes=('_mean', '_ci'))
+    df = df_mean
     
     # Create new columns and rename existing ones
     df['Question'] = (df['direction'].astype(str) + ' ' + df['variable'].astype(str)).str.title()
     df['Type'] = df['true_false']
     df['Method'] = df['method']
-    df = df.rename(columns={'correct_mean': 'Average Accuracy', 'correct_ci': 'Error'})
+    # df = df.rename(columns={'correct_mean': 'Average Accuracy', 'correct_ci': 'Error'})
+    df = df.rename(columns={'correct_mean': 'Average Accuracy'})
+
+
     
     # Drop the original group columns
     df = df.drop(group_cols, axis=1)
@@ -208,7 +213,8 @@ def plot_model(grouped_df,
     
     for i, bar in enumerate(ax.patches):
 
-        yerr = grouped_df['Error'].values.T.flatten()[i]
+        # yerr = grouped_df['Error'].values.T.flatten()[i]
+        yerr = 0
         bar_color = bar.get_facecolor()
         bar_color = "black"
         lower_error = bar.get_height() - yerr[0]
