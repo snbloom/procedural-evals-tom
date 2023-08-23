@@ -153,7 +153,7 @@ def generate_conditions(completions):
                             folder = f"{CONDITION_DIR}/{init_belief}_{variable}_{condition}/stories.csv"
                             with open(folder, "r") as f:
                                 l = f.readlines()
-                                start_idx = len(l)-1
+                                start_idx = len(l)
                             if completion_idx < start_idx: continue
 
                             if not os.path.exists(os.path.join(CONDITION_DIR, f'{init_belief}_{variable}_{condition}')):
@@ -174,7 +174,7 @@ def generate_conditions(completions):
                         folder = f"{CONDITION_DIR}/{init_belief}_{variable}_{condition}/stories.csv"
                         with open(folder, "r") as f:
                             l = f.readlines()
-                            start_idx = len(l)-1
+                            start_idx = len(l)
                         if completion_idx < start_idx: continue
 
                         # Check if the new file needs to be created or appended

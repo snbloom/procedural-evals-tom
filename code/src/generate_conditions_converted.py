@@ -22,7 +22,7 @@ FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, default="tinytom", help="generate conditions for which set of words/features")
-parser.add_argument('--num', type=int, default=50, help="max number of stories to convert")
+parser.add_argument('--num', type=int, default=None, help="max number of stories to convert")
 parser.add_argument('--verbose', action='store_true', help="when enabled, print out unconverted and converted fragments")
 parser.add_argument('--no_print', action='store_true', help="when enabled, don't print anything to the console except tqdm progress")
 
@@ -77,7 +77,7 @@ def convert_trimmed_stories(stories, args):
     for i, story in enumerate(tqdm(stories)):
 
         # limit by num argument
-        if count > args.num: break
+        if args.num is not None and count > args.num: break
 
         # only convert for new stories
         if i >= start_idx:
