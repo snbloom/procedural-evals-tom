@@ -7,12 +7,16 @@ import argparse
 import pandas as pd
 import wandb
 from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import LlamaModel, LlamaConfig, LlamaForCausalLM
+from transformers import LlamaTokenizerFast
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
 from datasets import Dataset, DatasetDict
 
 from data_utils import get_tiny_tom, get_tiny_stories
 
+tinyLM_models = ["28", "33"]
+llama_models = ["llama-43"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--config", type=str, default="../../configs/conf.json")
@@ -34,14 +38,34 @@ if config["model"] == '33':
     repo_id = "roneneldan/TinyStories-33M"
 elif config["model"] == '28':
     repo_id = "roneneldan/TinyStories-28M"
-elif config["model"] == '43':
+elif config["model"] == 'llama-43':
     repo_id = "/scr/kanishkg/models/llama-training-43-4/checkpoint-50000"
+else: raise Exception("Unexpected config[model]. Expected [28, 33, llama-43]")
 
-print(f"Loading model from {repo_id}")
-model = AutoModelForCausalLM.from_pretrained(repo_id)
-print("Model loaded")
-print(f"Number of parameters: {model.num_parameters()}")
-tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
+# Load TinyLM Models
+if config["model"] in tinyLM_models:
+    if config["model"] == '33': repo_id = "roneneldan/TinyStories-33M"
+    elif config["model"] == '28': repo_id = "roneneldan/TinyStories-28M"
+    print(f"Loading model from {repo_id}")
+
+    # load model
+    model = AutoModelForCausalLM.from_pretrained(repo_id)
+    print("Model loaded")
+    print(f"Number of parameters: {model.num_parameters()}")
+    # load tokenizer
+    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
+
+# Load llama models
+elif config["model"] in llama_models:
+    if config["model"] == "llama-43": repo_id = "/scr/kanishkg/models/llama-training-43-4/checkpoint-50000"
+    print(f"Loading model from {repo_id}")
+
+    # load model
+    model = LlamaForCausalLM.from_pretrained(repo_id)
+    print("Model loaded")
+    print(f"Number of parameters: {model.model.num_parameters()}")
+    # load tokenizer
+    tokenizer = LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
 
 # load data
 # If the size of the new dataset is small,
