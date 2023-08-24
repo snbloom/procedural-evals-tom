@@ -73,7 +73,7 @@ def convert_trimmed_stories(stories, args):
         print(f"Already converted {start_idx} stories")
         print()
     count = 1
-    start_idx = 0
+    # start_idx = 0
 
     for i, story in enumerate(tqdm(stories)):
 
@@ -102,22 +102,22 @@ def convert_trimmed_stories(stories, args):
                 print("Random Event:", random_event_unconverted)
                 print()
 
-            with open(f'{DATA_DIR}/tinytom/tinytom_converted_parts.txt', "r") as f:
-                # read context, causal event, random event
-                data = f.readlines()
-                context, causal_event, random_event = data[i].strip().split(";")
+            # with open(f'{DATA_DIR}/tinytom/tinytom_converted_parts.txt', "r") as f:
+            #     # read context, causal event, random event
+            #     data = f.readlines()
+            #     context, causal_event, random_event = data[i].strip().split(";")
 
-            # # get converted context
-            # instr_context = get_formatted_instructions("context", context_unconverted)
-            # context = get_generation(llm, instr_context)
+            # get converted context
+            instr_context = get_formatted_instructions("context", context_unconverted)
+            context = get_generation(llm, instr_context)
 
-            # # get converted event -- causal
-            # instr_causal = get_formatted_instructions("event", causal_event_unconverted)
-            # causal_event = get_generation(llm, instr_causal)
+            # get converted event -- causal
+            instr_causal = get_formatted_instructions("event", causal_event_unconverted)
+            causal_event = get_generation(llm, instr_causal)
 
-            # # get converted event -- random
-            # instr_randpm = get_formatted_instructions("event", random_event_unconverted)
-            # random_event = get_generation(llm, instr_randpm)
+            # get converted event -- random
+            instr_randpm = get_formatted_instructions("event", random_event_unconverted)
+            random_event = get_generation(llm, instr_randpm)
 
             # print out all parts
             if args.verbose:
@@ -138,9 +138,9 @@ def convert_trimmed_stories(stories, args):
                 print()
 
             # record converted parts
-            # with open(f'{DATA_DIR}/tinytom/tinytom_converted_parts.txt', "a") as f:
-            #     f.write(";".join([context, causal_event, random_event]))
-            #     f.write('\n')
+            with open(f'{DATA_DIR}/tinytom/tinytom_converted_parts.txt', "a") as f:
+                f.write(";".join([context, causal_event, random_event]))
+                f.write('\n')
 
             # stitch combinations by condition
             for folder_name in FOLDER_NAMES:
