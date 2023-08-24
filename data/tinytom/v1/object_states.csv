@@ -75,15 +75,18 @@ Flexibility (e.g., is the object flexible, rigid, or brittle);user
 Smell (e.g., does the object smell pleasant, foul, or neutral);user
 Taste (e.g., does the object taste sweet, salty, bitter, or sour);user
 Texture (e.g., is the object smooth, rough, or bumpy);user
+Magnetism (e.g., is the object magnetic, non-magnetic, or weakly magnetic);user
 Opacity (e.g., is the object opaque, translucent, or transparent);user
 Shape (e.g., is the object round, square, triangular, or irregular);user
 Motion (e.g., is the object stationary, moving, or vibrating);user
 Clarity (e.g., is the object clear, foggy, or hazy);user
+Viscosity (e.g., is the object viscous, runny, or sticky);user
 Size (e.g., is the object big, small, or medium-sized);user
 Weight (e.g., is the object heavy, light, or moderate);user
 Elasticity (e.g., is the object elastic, non-elastic, or stretchy);user
 Charge (e.g., is the object positively charged, negatively charged, or neutral);user
 Reflection (e.g., does the object reflect light well, poorly, or not at all);user
+Radioactivity (e.g., is the object radioactive, non-radioactive, or slightly radioactive);user
 State of Matter (e.g., is the object solid, liquid, gas, or plasma);user
 Pressure (e.g., is the object under high pressure, low pressure, or normal pressure);user
 Resonance (e.g., does the object resonate strongly, weakly, or not at all);user
