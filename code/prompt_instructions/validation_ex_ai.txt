@@ -1,11 +1,11 @@
-Reasoning: When the chicken got scared, it stopped making noises. Since Yara was listening to the sounds of the chicken, she would notice the absence of sound right away.
+Reasoning: When the chicken got scared, it stopped making noises. Since Yara was listening to the sounds of the chicken, she would notice the absence of sound right away. The car making loud noises is a valid reason for the chicken to get scared.
 Evaluation: invalid
 -
-Reasoning: After the rocks knocked the flashlight out of Oliver's hand, the flashlight turned off. Since they are in a dark cave, the absence of light would be noticeable to Oliver.
+Reasoning: After the rocks knocked the flashlight out of Oliver's hand, the flashlight turned off. Since they are in a dark cave, the absence of light would be noticeable to Oliver. The rocks hitting the flashlight is a valid reason for the flashlight to turn off.
 Evaluation: invalid
 -
-Reasoning: It is possible that Nia was paying attention to something else at the dinner table and did not notice the spill when it happened. The change in color is a predictable result of the pasta sauce spill.
+Reasoning: The pickpocket took cash from Noah's wallet. Since Noah was reading a book when this happened and not looking at his wallet, he would not notice the cash being taken. The pickpocket taking the cash is a valid reason for the cash to be missing.
 Evaluation: valid
 -
-Reasoning: It is possible that Greta did not notice the loop being pulled by the squirrel if she was not looking at the loop when it was moved. The hiddenness of the loop is a predictable result of the loop being pulled up high.
-Evaluation: valid
+Reasoning: Wally is watching the birds and not paying attention to his cup of coffee. Wally could fail to notice the change in temperature until he takes a sip. The ants marching into his cup is an unlikely cause for the coffee to cool down.
+Evaluation: invalid

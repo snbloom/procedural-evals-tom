@@ -2,6 +2,7 @@ Yara was at the farm. Yara wanted to record the chicken's song. The chicken was 
 -
 Oliver was in a dark cave. Oliver wanted to find a way out of the cave with his flashlight. The flashlight was bright and green. Oliver believed the flashlight was bright and green. Suddenly, a fall of small rocks knocked the flashlight out of Oliver's hand, changing its state from green to off.
 -
-Nia is in the dining room in her home. Nia wants to eat the hot pasta from her plate. The pasta is yellow and hot. Nia thinks the pasta is yellow and hot. Suddenly, a pot of red sauce spills over the pasta, changing its color to red.
+Noah was at the airport, ready to travel to a modern city. Noah wanted to buy a snack before his flight. The wallet in Noah's bag was full of cash. Noah believed his wallet was full of cash. A pickpocket slipped into Noah's bag and took all the cash from his wallet. Noah doesn't feel the pickpocket's hand because he is engrossed in his book.
 -
-Greta was at the park near the big tree. Greta wanted to swing on the colorful loop hanging from the tree. The colorful loop was hanging low, easy to reach. Greta thought the colorful loop was hanging low, easy to reach. Suddenly, a squirrel ran up the tree and pulled the loop up high, making it hidden from Greta's reach.
+Wally was at the park watching the birds. Wally wanted to enjoy his hot coffee while sitting on the park bench. The coffee in Wally's cup was hot. Wally believed the coffee in his cup was hot. A group of ants managed to march into his cup and the coffee cooled down. Wally doesn't see the ants in his coffee because he is watching the birds.
+Reasoning: Wally is watching the birds and not paying attention to his cup of coffee. Although the ants marching into his cup is an unlikely cause for the coffee to cool down, Wally could fail to notice the change in temperature until he takes a sip.
