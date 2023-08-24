@@ -41,7 +41,8 @@ args = parser.parse_args()
 all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M", 
                  "gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo",
                  "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500", "/scr/kanishkg/models/llama-training-43-4/checkpoint-50000",
-                 '/scr/snbloom/models/finetuned-33-tinytom/checkpoint-125', '/scr/snbloom/models/finetuned-llama-43-tinytom/checkpoint-125']
+                 '/scr/snbloom/models/finetuned-33-tinytom/checkpoint-125', '/scr/snbloom/models/finetuned-llama-43-tinytom/checkpoint-125',
+                 '/scr/snbloom/models/finetuned-28-tinytom-v2-100/checkpoint-80']
 open_ai_model_ids = ["gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo", "text-davinici-003"]
 
 model_id = args.model_id # or use the following shorthand:
@@ -57,6 +58,7 @@ if args.model_id == "finetuned-33": model_id = '/scr/snbloom/models/finetuned-33
 if args.model_id == "finetuned-llama-43-100": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-100/checkpoint-35'
 if args.model_id == "finetuned-llama-43-200": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-200/checkpoint-65'
 if args.model_id == "finetuned-llama-43-400": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-400/checkpoint-125'
+if args.model_id == 'finetuned-28-100': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-100/checkpoint-80'
 
 data_range = f"{args.offset+1}-{args.offset + args.num}"
 
