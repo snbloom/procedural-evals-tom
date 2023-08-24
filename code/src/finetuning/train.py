@@ -25,6 +25,7 @@ args = parser.parse_args()
 
 config_name = args.config
 if config_name == "28": config_name = "../../configs/finetune-28.json"
+if config_name == "33": config_name = "../../configs/finetune-33.json"
 
 # read config from a json config file
 with open(config_name, "r") as f:
@@ -103,8 +104,8 @@ for cond in config["conditions"]:
     # raw_datasets['train'] += [{"content": s} for s in tinytom[cond][:num_train]]
     # raw_datasets['val_tom'] += [{"content": s} for s in tinytom[cond][num_train:]]
     offset = config["train_offset"]
-    num_train = len(tinytom[cond]) - offset
-    num_val = len(tinytom[cond]) - num_train
+    num_train = config["num_train"]
+    num_val = offset
     raw_datasets['train'] += [{"content": s} for s in tinytom[cond][offset:offset+num_train]]
     raw_datasets['val_tom'] += [{"content": s} for s in tinytom[cond][:offset]]
 
