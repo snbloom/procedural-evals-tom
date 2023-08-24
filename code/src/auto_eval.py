@@ -4,6 +4,7 @@ import argparse
 import json
 import csv
 import torch
+from tqdm import tqdm
 from crfm_llm import crfmLLM
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, pipeline
 from langchain import HuggingFaceHub
@@ -57,7 +58,7 @@ if args.model_id == "finetuned-llama-43-100": model_id = '/scr/snbloom/models/fi
 if args.model_id == "finetuned-llama-43-200": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-200/checkpoint-65'
 if args.model_id == "finetuned-llama-43-400": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-400/checkpoint-125'
 
-data_range = f"{args.offset}-{args.offset + args.num}"
+data_range = f"{args.offset+1}-{args.offset + args.num}"
 
 LOG_FILE = "../../data/evals.json"
 PROMPT_DIR = "../prompt_instructions"
@@ -165,7 +166,7 @@ print(sys_prompt)
 print()
 
 counter = 0
-for i in range(len(data)):
+for i in tqdm(range(len(data))):
     if i >= args.offset and counter < args.num:
         story, question, correct_answer, wrong_answer, _ = data[i]
 
