@@ -25,5 +25,6 @@
                    "1_forward_belief_false_belief"],
     "tinystories_data_dir" : "/scr/kanishkg/TinyStories/",
     "tinystories_ratio": 0,
-    "train_ratio": 0.2
+    "train_ratio": 0.2,
+    "train_offset": 50
 }

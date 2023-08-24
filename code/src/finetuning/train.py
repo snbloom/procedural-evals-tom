@@ -95,10 +95,16 @@ tinystories = get_tiny_stories(config, num_tiny_stories)
 # 'train' (tinytom+tinystories)
 print("Splitting into train and val")
 for cond in config["conditions"]:
-    num_train = int(len(tinytom[cond]) * config["train_ratio"])
+    # num_train = int(len(tinytom[cond]) * config["train_ratio"])
+    # num_val = len(tinytom[cond]) - num_train
+    # raw_datasets['train'] += [{"content": s} for s in tinytom[cond][:num_train]]
+    # raw_datasets['val_tom'] += [{"content": s} for s in tinytom[cond][num_train:]]
+    offset = config["train_offset"]
+    num_train = len(tinytom[cond]) - offset
     num_val = len(tinytom[cond]) - num_train
-    raw_datasets['train'] += [{"content": s} for s in tinytom[cond][:num_train]]
-    raw_datasets['val_tom'] += [{"content": s} for s in tinytom[cond][num_train:]]
+    raw_datasets['train'] += [{"content": s} for s in tinytom[cond][offset:offset+num_train]]
+    raw_datasets['val_tom'] += [{"content": s} for s in tinytom[cond][:offset]]
+
 
 # split tinystories into train and val
 if config["tinystories_ratio"] > 0:
