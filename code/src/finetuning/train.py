@@ -23,8 +23,11 @@ parser.add_argument("--config", type=str, default="../../configs/conf.json")
 
 args = parser.parse_args()
 
+config_name = args.config
+if config_name == "28": config_name = "../../configs/finetune-28.json"
+
 # read config from a json config file
-with open(args.config, "r") as f:
+with open(config_name, "r") as f:
     config = json.load(f)
 
 wandb.init(project="tiny-tom", dir='/scr/kanishkg/wandb/', name=config["name"], config=config)
