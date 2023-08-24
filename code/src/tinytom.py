@@ -84,6 +84,7 @@ def get_human_message1(args):
 def gen_chat(args):
     response_template = """Here is the story:
 Story: {story}
+Reason for lack of perceptual access: {reason}
 Aware of event: {awarenes}
 Not aware of event: {not_aware}
 Action given new state: {action_new}
@@ -109,7 +110,7 @@ Object: {object}"""
     examples = []
     template_var = ["story", "awarenes", "not_aware", "action_new", "action_init", "belief_question", "desire_question", "action_question", 
                     "belief_answer_aware", "desire_answer_aware", "action_answer_aware", "belief_answer_not_aware", "desire_answer_not_aware", 
-                    "action_answer_not_aware", "random_event", "aware_of_random_event", "not_aware_of_random_event", "agent_name", "object"]
+                    "action_answer_not_aware", "random_event", "aware_of_random_event", "not_aware_of_random_event", "agent_name", "object", "reason"]
     
     csv_file = f'{DATA_DIR}/{CSV_NAME}.csv'
 
@@ -133,7 +134,7 @@ Object: {object}"""
             example_story = {k: params[v].strip() for v, k in enumerate(template_var)}
             examples.append(example_story)
 
-        human_message0 = HumanMessage(content='Generate a story. The name must start with J. The story should use the verb "change", the noun "refrigerator" and the adjective "spoiled".')        
+        human_message0 = HumanMessage(content='Generate a story. The name must start with N. The story should use the verb "find", the noun "door" and the adjective "good".')        
         ai_message = AIMessage(content=response_template.format(**examples[0]))
         s, settings = get_human_message1(args)
         human_message_1 = HumanMessage(content=s)
@@ -164,7 +165,7 @@ Object: {object}"""
             # extract template fragments
             list_var = ["Story", "Aware of event", "Not aware of event", "Action given new state", "Action given initial state", "Belief Question", "Desire Question", "Action Question",
                         "Belief Aware", "Desire Aware", "Action Aware", "Belief not Aware",
-                        "Desire not Aware", "Action not Aware", "Random Event", "Aware of random event", "Not aware of random event", "Agent Name", "Object"]
+                        "Desire not Aware", "Action not Aware", "Random Event", "Aware of random event", "Not aware of random event", "Agent Name", "Object", "Reason for lack of perceptual access"]
             out_vars = get_vars_from_out(generation.text, list_var)
             data = [out_vars[k] for k in list_var]
             data += ["auto", 0]
@@ -176,7 +177,8 @@ Object: {object}"""
                 hum_msgs = f.read().split('-')
             with open(f'{PROMPT_DIR}/validation_ex_ai.txt', "r") as f:
                 ai_msgs = f.read().split('-')
-            story_msg = HumanMessage(content=data[0])
+            story = f"{data[0]}"
+            story_msg = HumanMessage(content=story)
             if not args.no_print: print(story_msg)
             messages = [sys_msg, HumanMessage(content=hum_msgs[0].strip()), AIMessage(content=ai_msgs[0].strip()), HumanMessage(content=hum_msgs[1].strip()), AIMessage(content=ai_msgs[1].strip()), HumanMessage(content=hum_msgs[2].strip()), AIMessage(content=ai_msgs[2].strip()), HumanMessage(content=hum_msgs[3].strip()), AIMessage(content=ai_msgs[3].strip()), story_msg]
             responses = llm.generate([messages])
