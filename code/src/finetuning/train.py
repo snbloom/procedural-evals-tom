@@ -131,6 +131,7 @@ for cond in config["conditions"]:
     # raw_datasets['val_tom'] += [{"content": s} for s in tinytom[cond][num_train:]]
     offset = config["train_offset"]
     num_train = config["num_train"]
+    print("Offset:", offset, "Num Train:", num_train)
     num_val = offset
     raw_datasets['train'] += [{"content": s} for s in tinytom[cond][offset:offset+num_train]]
     raw_datasets['val_tom'] += [{"content": s} for s in tinytom[cond][:offset]]
