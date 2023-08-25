@@ -88,8 +88,8 @@ if "peft" in config:
     target_modules = ["q_proj", "k_proj", "v_proj", "out_proj", "fc_in", "fc_out", "wte"]
     lora_config = LoraConfig(
     task_type="CAUSAL_LM",
-    r=16,
-    lora_alpha=16,
+    r=32,
+    lora_alpha=32,
     target_modules=target_modules,
     lora_dropout=0.1,
     bias="none",

@@ -7,6 +7,8 @@ import torch
 from tqdm import tqdm
 from crfm_llm import crfmLLM
 from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, pipeline
+from peft import PeftModel, PeftConfig
+
 from langchain import HuggingFaceHub
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import (
@@ -20,6 +22,7 @@ parser = argparse.ArgumentParser()
 # model args
 parser.add_argument('--temperature', type=float, default=0.0, help='temperature')
 parser.add_argument('--max_tokens', type=int, default=20, help='max tokens')
+parser.add_argument('--lora', action='store_true')
 
 # eval args
 parser.add_argument('--num', '-n', type=int, default=50, help='number of evaluations')
@@ -125,12 +128,16 @@ if model_id in open_ai_model_ids:
 elif "bin" in model_id:
     test_llm = get_llamac_prediction
 # get model finetuned / trained models or tinystories huggingface models)
+elif args.lora:
+    config = PeftConfig.from_pretrained(model_id)
+    model = AutoModelForCausalLM.from_pretrained(config.base_model_name_or_path)
+    model = PeftModel.from_pretrained(model, model_id)
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
 else:
     if not args.local:
         test_llm = HuggingFaceHub(repo_id=model_id, model_kwargs={"temperature":args.temperature, "max_new_tokens":args.max_tokens})
     else:
         model = AutoModelForCausalLM.from_pretrained(model_id)
-        # tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
         tokenizer = AutoTokenizer.from_pretrained(model_id)
 
 data_dir = args.data_dir
@@ -209,7 +216,8 @@ for i in tqdm(range(len(data))):
                 prediction = prediction.replace("\n", " ")
             else:
                 input_ids = tokenizer.encode(eval_story, return_tensors="pt")
-                output = model.generate(input_ids, max_new_tokens=args.max_tokens, num_beams=1, )
+                output = model.generate(input_ids=input_ids, max_new_tokens=args.max_tokens, num_beams=1, )
+
                 prediction = tokenizer.decode(output[0], skip_special_tokens=True)
                 prediction = prediction[len(eval_story)+1:].split(".")[0] + "."
 
