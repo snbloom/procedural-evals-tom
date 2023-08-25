@@ -1,0 +1,62 @@
+Once upon a time, there was a boy named Jack. Jack was in his kitchen at home. He wanted a cold drink, so he went to the refrigerator. The refrigerator was full of yummy fresh food. But then, something unexpected happened! The power went out and the food in the refrigerator became spoiled. Jack does not notice the power cut. 
+Reasoning: The story involves concepts such as a refrigerator, power outage, and food spoilage, which are likely to be understood by older children who have some understanding of how household appliances work and the concept of electricity. A younger child may not fully understand why the food in the refrigerator would spoil if the power went out.
+Evaluation: 8
+-
+Once upon a time, Caden moved into a new house. But oh no! There was a big leak in the roof. Water was coming inside the house. But then, something amazing happened. The sun came out and shone its bright rays on the leak. The sun was so warm and powerful that it dried up all the water. The leak was gone! But Caden did not see the sun dry up the leak. 
+Reasoning: The story involves concepts such as moving into a new house, a leak in the roof, and the sun drying up water. These are concepts that a child would start to understand around the age of 5, when they begin to grasp more complex cause-and-effect relationships and have a basic understanding of the natural world.
+Evaluation: 5
+-
+Once upon a time, there was a little girl named Vivi. Vivi loved playing with her toys in her cozy room. Today, she was playing with her special triangle toy. It was a patient triangle toy, always waiting for Vivi to play with it. Vivi wanted to put her triangle toy on the shelf with her other toys. But, oh no! The triangle toy was not on the shelf. It was in her toy box. Just as Vivi was about to move the toy from her toy box, something exciting happened! Her baby brother crawled into the room. He was so little and curious. He saw the triangle toy and thought it looked interesting. Without Vivi noticing, her baby brother took the triangle toy and crawled away. 
+Reasoning: The story involves concepts such as playing with toys, recognizing shapes like a triangle, having a baby brother, and understanding the concept of someone taking something without noticing. These are concepts that a 3 year old would recognize.
+Evaluation: 3
+-
+Once upon a time, there was a little girl named Emma. Emma had a special bathrobe that she loved very much. The bathrobe was plain and white, just like a fluffy cloud. One day, after Emma came home from school, she went to her room to play. She took out her markers and crayons, wanting to draw on her bathrobe. But before she could start, something unexpected happened! A bottle of bleach accidentally spilled on the bathrobe. Oh no! The bleach made the bathrobe look different. It was not plain and white anymore. Now, it had patches of white and yellow all over it. But Emma did not see the bleach spill. 
+Reasoning: The story involves a school-going child, the concept of drawing with markers and crayons, and the effect of bleach on a bathrobe. These are concepts that would be understood by a child older than 3 years. However, the concept of bleach and its effect on clothes might not be fully understood until a bit later in childhood.
+Evaluation: 6
+-
+Once upon a time, there was a little boy named Ollie. Ollie loved going to the beach and playing in the sand. One sunny day, Ollie decided to build a sand castle. He had a special tool called a spade to dig a deep hole, which was sharp and safe to use. He started digging and digging, making a big hole in the sand. But then, something unexpected happened!  A big wave came crashing onto the beach and splashed on Ollie's spade. The water made the spade all slippery and dangerous. Ollie did not see the wave splash on the spade. 
+Reasoning: The story involves a child playing at the beach, building a sand castle, and using a spade. These are activities and objects that a 3 year old would recognize and understand. The concept of a wave making the spade slippery might be a bit complex for a 2 year old, but a 3 year old would likely understand this.
+Evaluation: 3
+-
+Once upon a time, there was a man named Ben. Ben was at the train station, waiting for the train to go to work. But then, something unexpected happened! There was a problem with the signals, and it made the train late. Oh no! But Ben did not see the signal fault. 
+Reasoning: The story involves concepts such as a man going to work, a train station, waiting for a train, and a signal fault causing the train to be late. These are concepts that would be understood by older children and adults who have knowledge about transportation, jobs, and problems that can occur with them.
+Evaluation: 15
+-
+Pia is at her school library. She wants to read a mystery book. The mystery book is up high on a shelf. Suddenly, a tall boy moves the mystery book to the bottom shelf. Pia does not see the tall boy move the book. 
+Reasoning: The story involves concepts such as a school library, mystery books, and the idea of moving objects from one place to another. These are concepts that would be understood by a child who has started school and has some understanding of different book genres and the concept of height. 
+Evaluation: 6
+-
+Once upon a time, there was a little girl named Chloe. She went to a special fair in her town. Chloe saw a fireman at the fair. He was so friendly. But then, something scary happened! There was a loud noise that made the fireman jump with fear. He became very scared. Chloe did not hear the loud noise or see the fireman jump. 
+Reasoning: The story involves a fair, a fireman, and a loud noise. These are concepts that a child would understand around the age of 3, as they start to understand more complex social situations and emotions like fear.
+Evaluation: 3
+-
+Once upon a time, there was a girl named Wendy. She went to a special sale in her town. There was a pretty bracelet that was shiny and not expensive. But then, something amazing happened! A famous collector saw the bracelet and said it was worth a lot of money. Suddenly, the price went up and the bracelet became very expensive. Wendy did not hear the famous collector talking about the bracelet. 
+Reasoning: The story involves concepts such as shopping, sales, jewelry, value of items, and collectors. These are concepts that are typically understood by older children and teenagers. A younger child may not understand the concept of a sale, the value of jewelry, or what a collector is.
+Evaluation: 15
+-
+Once upon a time, there was a little girl named Yara. Yara had a special friend named Stitch, her teddy bear. Stitch was soft and cuddly, and Yara loved to play with him every day. The teddy bear smelled like yummy vanilla. But then, something unexpected happened. Yara accidentally spilled a bottle of vinegar in her room. The vinegar had a very strong smell, and it changed the scent of Stitch. Instead of smelling like yummy vanilla, Stitch now smelled sour, like lemons. But Yara did not perceive the vinegar spill.
+Reasoning: The story involves a young girl playing with her teddy bear and an incident of spilling vinegar, which changes the smell of the teddy bear. These are concepts and events that a 3 year old would understand, such as playing with toys, the concept of smell, and the occurrence of accidents like spills.
+Evaluation: 3
+-
+Once upon a time, there was a girl named Nia. Nia was very excited because she wanted to bake a yummy cake in the oven. But then, something unexpected happened! The whole house started shaking because of a little earthquake. Oh no! The oven broke! Now Nia couldn't bake her cake. But Nia did not feel the earthquake. 
+Reasoning: The story involves concepts such as baking a cake, using an oven, and understanding what an earthquake is. These are concepts that are typically understood by older children and teenagers.
+Evaluation: 13
+-
+Once upon a time, there was a girl named Amy. She went for a walk in the park and felt very tired. Amy wanted to sit on a bench and rest. The bench had pretty vines all over it, making it look so beautiful. But then, something unexpected happened! A gardener came and sprayed the vines with a special liquid. This liquid made the vines change from harmless to harmful. Oh no! Amy did not see the gardener spraying the vines. 
+Reasoning: The story involves concepts such as walking in the park, sitting on a bench, and a gardener spraying vines. These are concepts that a child would understand around the age of 4 or 5, when they start to understand more complex narratives and cause-and-effect relationships.
+Evaluation: 5
+-
+Once upon a time, there was a girl named Kate. She loved playing with her old toy car. One sunny day, she went to the park with her toy car and a clean cloth. Kate wanted to drive her toy car on the cloth, so she spread it on the grass. But then, something unexpected happened! A dog came running through the park. It had muddy paws and accidentally stepped on the cloth. Oh no! The cloth became dirty and messy! Kate does not see the dog run across the cloth. 
+Reasoning: The story involves a girl playing with a toy car, a dog running through a park, and a cloth getting dirty. These are concepts that a 3 year old would understand, as they are familiar with toys, animals, and the concept of cleanliness.
+Evaluation: 3
+-
+Once upon a time, Ella and her parent went to the park. Ella had a yummy ice cream that she wanted to eat before it melted. But then, a big wind came and blew some sandy stuff onto her ice cream. Oh no! The ice cream was not sweet anymore, it was gritty. Ella does not notice the sand in her ice cream. 
+Reasoning: The story involves concepts such as going to the park, eating ice cream, and understanding the concept of something being gritty or not sweet anymore. These are concepts that a 3 year old would understand.
+Evaluation: 3
+-
+Once upon a time, there was a girl named Uma. She had a big clock on the wall of her room. The clock was brown. One day, Uma decided to move the clock to another room. As she was thinking about where to put it, something magical happened! A parade went by outside, and a splash of paint flew through the window and landed on the clock. Can you guess what happened? The clock changed color! It did not stay brown anymore. It became a beautiful rainbow clock! Uma did not see the splash of paint. 
+Reasoning: The story involves a girl moving a clock, a parade, and a splash of paint changing the color of the clock. These are concepts that a 3 year old would understand, as they are familiar with basic objects like clocks and paint, and events like parades.
+Evaluation: 3
+-
+Average: 6.3
+Number of 3 ratings: 7
