@@ -50,8 +50,8 @@ all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M",
 open_ai_model_ids = ["gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo", "text-davinici-003"]
 
 model_id = args.model_id # or use the following shorthand:
-if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
-if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
+if args.model_id == "33": model_id = "roneneldan/TinyStories-33M"
+if args.model_id == "28": model_id = "roneneldan/TinyStories-28M"
 if args.model_id == "gpt4": model_id = "gpt-4-0613"
 if args.model_id == "gpt35turbo": model_id = "gpt-3.5-turbo"
 if args.model_id == "davinci003": model_id = "openai/text-davinci-003"
@@ -66,6 +66,10 @@ if args.model_id == 'finetuned-28-100': model_id = '/scr/snbloom/models/finetune
 if args.model_id == 'finetuned-33-100': model_id = '/scr/snbloom/models/finetuned-33-tinytom-v2-100/checkpoint-140'
 if args.model_id == 'finetuned-28-200': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-200/checkpoint-140'
 if args.model_id == 'finetuned-33-200': model_id = "/scr/snbloom/models/finetuned-33-tinytom-v2-200/checkpoint-260"
+
+data_dir = args.data_dir
+if data_dir == "v1": data_dir = "../../data/conditions/tinytom-v1"
+
 data_range = f"{args.offset+1}-{args.offset + args.num}"
 
 LOG_FILE = "../../data/evals.json"
@@ -141,7 +145,6 @@ else:
         model = AutoModelForCausalLM.from_pretrained(model_id)
         tokenizer = AutoTokenizer.from_pretrained(model_id)
 
-data_dir = args.data_dir
 RESULTS_DIR = os.path.join('../../data/results')
 if args.bigtom: data_dir = '../../data/conditions/bigtom'
 DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
@@ -267,6 +270,7 @@ print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unr
 print("LOGGING OUTPUTS FOR MODEL", model_id)
 
 if args.bigtom: dataset = "bigtom"
+elif data_dir == "../../data/conditions/tinytom-v1": dataset = "tinytom-v1"
 else: dataset = "tinytom"
 
 run = {
