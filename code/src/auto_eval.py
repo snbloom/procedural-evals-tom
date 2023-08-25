@@ -28,6 +28,7 @@ parser.add_argument('--lora', action='store_true')
 parser.add_argument('--num', '-n', type=int, default=50, help='number of evaluations')
 parser.add_argument('--offset', '-o', type=int, default=0, help='offset')
 parser.add_argument('--verbose', action='store_true', help='verbose')
+parser.add_argument("--no_print", action="store_true", help="print no intermediate steps")
 parser.add_argument('--local', action='store_true', default=True, help='local eval using transformers instead of huggingface hub')
 parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M", help="gpt-4-0613, roneneldan/TinyStories-33M, roneneldan/TinyStories-28M")
 
@@ -62,8 +63,8 @@ if args.model_id == "finetuned-llama-43-100": model_id = '/scr/snbloom/models/fi
 if args.model_id == "finetuned-llama-43-200": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-200/checkpoint-65'
 if args.model_id == "finetuned-llama-43-400": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-400/checkpoint-125'
 if args.model_id == 'finetuned-28-100': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-100/checkpoint-80'
-if args.model_id == 'finetuned-33-100': model_id = '/scr/snbloom/models/finetuned-33-tinytom-v2-100/checkpoint-35'
-if args.model_id == 'finetuned-28-200': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-200/checkpoint-35'
+if args.model_id == 'finetuned-33-100': model_id = '/scr/snbloom/models/finetuned-33-tinytom-v2-100/checkpoint-140'
+if args.model_id == 'finetuned-28-200': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-200/checkpoint-140'
 
 data_range = f"{args.offset+1}-{args.offset + args.num}"
 
@@ -173,8 +174,9 @@ with open(TRIMMED_FILE, 'r') as f:
 with open(f"{PROMPT_DIR}/auto_eval_system.txt", "r") as f:
     sys_prompt = f.read()
 
-print(sys_prompt)
-print()
+if not args.no_print: 
+    print(sys_prompt)
+    print()
 
 counter = 0
 for i in tqdm(range(len(data))):
@@ -230,7 +232,7 @@ for i in tqdm(range(len(data))):
             user_prompt = user_prompt.replace("[correct_completion]", correct_answer)
             user_prompt = user_prompt.replace("[incorrect_completion]", wrong_answer)
 
-        print(user_prompt)
+        if not args.no_print: print(user_prompt)
 
         system_message = SystemMessage(content=sys_prompt)
         user_msg = HumanMessage(content=user_prompt)
@@ -239,7 +241,7 @@ for i in tqdm(range(len(data))):
 
         for g, generation in enumerate(responses.generations[0]):
             eval = generation.text.strip() 
-            print(eval)
+            if not args.no_print: print(eval)
             classification = eval.split("Evaluation:")[1].strip().lower()
 
             if classification=="correct":
@@ -258,7 +260,7 @@ for i in tqdm(range(len(data))):
                 raise Exception(f"Classification '{classification}' is not recognized")
         graded_answers.append(classification)
         counter += 1
-        print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
+        if not args.no_print: print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 
 
 print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
