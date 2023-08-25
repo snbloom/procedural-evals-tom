@@ -12,8 +12,20 @@ from transformers import LlamaTokenizerFast
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
 from datasets import Dataset, DatasetDict
+from peft import LoraConfig, get_peft_model, TaskType
 
 from data_utils import get_tiny_tom, get_tiny_stories
+
+def print_trainable_parameters(model):
+    trainable_params = 0
+    all_param = 0
+    for _, param in model.named_parameters():
+        all_param += param.numel()
+        if param.requires_grad:
+            trainable_params += param.numel()
+    print(
+        f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param:.2f}"
+    )
 
 tinyLM_models = ["28", "33"]
 llama_models = ["llama-43"]
@@ -70,6 +82,20 @@ elif config["model"] in llama_models:
     print(f"Number of parameters: {model.model.num_parameters()}")
     # load tokenizer
     tokenizer = LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
+
+# check if lora finetuning
+if "peft" in config:
+    target_modules = ["q_proj", "k_proj", "v_proj", "out_proj", "fc_in", "fc_out", "wte"]
+    lora_config = LoraConfig(
+    task_type="CAUSAL_LM",
+    r=16,
+    lora_alpha=16,
+    target_modules=target_modules,
+    lora_dropout=0.1,
+    bias="none",
+    )
+    model = get_peft_model(model, lora_config)
+    print_trainable_parameters(model)
 
 # load data
 # If the size of the new dataset is small,
