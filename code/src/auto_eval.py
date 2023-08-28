@@ -67,6 +67,7 @@ if args.model_id == "finetuned-llama-43-400": model_id = '/scr/snbloom/models/fi
 if args.model_id == 'finetuned-28-100': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-100/checkpoint-80'
 if args.model_id == 'finetuned-28-200': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-200/checkpoint-140'
 if args.model_id == 'finetuned-28-400': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-400/checkpoint-140'
+if args.model_id == 'finetuned-28-500': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-500/checkpoint-320'
 
 if args.model_id == 'finetuned-33-100': model_id = '/scr/snbloom/models/finetuned-33-tinytom-v2-100/checkpoint-140'
 if args.model_id == 'finetuned-33-200': model_id = "/scr/snbloom/models/finetuned-33-tinytom-v2-200/checkpoint-260"
