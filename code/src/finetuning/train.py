@@ -55,7 +55,7 @@ if config["model"] == '33':
 elif config["model"] == '28':
     repo_id = "roneneldan/TinyStories-28M"
 elif config["model"] == 'llama-43':
-    repo_id = "/scr/kanishkg/models/llama-training-43-4/checkpoint-50000"
+    repo_id = "/scr/kanishkg/models/llama-training-43-2/checkpoint-68500"
 else: raise Exception("Unexpected config[model]. Expected [28, 33, llama-43]")
 
 # Load TinyLM Models
