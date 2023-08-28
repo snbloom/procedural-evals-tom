@@ -1,0 +1,62 @@
+Once upon a time, in a room full of toys, there was a little boy named Olly. Olly had a special toy, a speedy laser toy car. This toy car was tucked away, waiting for Olly in the toy box.  Olly believed that the toy car was in the toy box. Out of nowhere, his tiny sister appeared. With a giggle, she shut the lid of the toy box. Olly did not see his sister close the toy box. 
+Reasoning: The story involves concepts such as toys, a toy box, a little boy and his sister, all of which are familiar to a 3 year old. The concept of a "speedy laser toy car" might be a bit complex for a 2 year old, but a 3 year old would likely understand it.
+Evaluation: 3
+-
+Once upon a time, there was a big, fancy party. Our friend Pete was there. He wished for a black bow tie. But oh no! The bow tie was red, not black.  Pete believed the bow tie was red. In a quick moment, a server accidentally tipped over a cup of dark coffee. Oops! The coffee splashed on the bow tie, making it all black. Pete doesn't see the waiter spill coffee. 
+Reasoning: The story involves concepts such as colors, parties, and understanding the concept of a waiter spilling coffee, which are typically understood by children around the age of 5. The story also involves the concept of wishing for something and the concept of accidents, which are also typically understood by children around this age.
+Evaluation: 5
+-
+Once upon a time, Mary was in her room. She was getting all dressed up for a fun party. She had a new skirt that was just perfect. It was waiting for her in the closet.  Mary believed the skirt was hanging in the closet. A big whoosh of wind came in from the open window. It played a little trick and made the skirt fly off its hanger. Mary does not hear the wind. 
+Reasoning: The story involves concepts such as getting dressed, parties, clothing items like skirts, and natural phenomena like wind. These are concepts that a child would start to understand and recognize around the age of 3.
+Evaluation: 3
+-
+Once upon a time, in a big park, there was a little girl named Penny. Near the park was an old, old building. Penny was very curious about this building. But, oh dear! The building was closed.  Penny believed the building was closed. In a bustling city, a friendly worker used his shiny key to open a big building. It was no longer shut tight, but wide open for everyone. Penny does not see the city worker unlock the building. 
+Reasoning: The story involves concepts such as a park, a building, a city, and a worker using a key to unlock a building. These are concepts that a child would start to understand and recognize around the age of 4 or 5. A younger child might not fully understand the concept of a city or a worker, or the action of unlocking a building.
+Evaluation: 5
+-
+Once upon a time, in a park close to her home, little Yara found a slide. She wanted to have fun on it. The slide was dry and ready for her to play safely.  Yara believed the slide was dry and safe to play on. Out of nowhere, the water sprinkler woke up, splashing the slide with lots of water. Now, the slide was all wet and super slippery! Yara does not see the water sprinkler turn on. 
+Reasoning: The story involves a child playing on a slide and a water sprinkler, which are concepts that a 3 year old would understand. They would be familiar with the concept of a park, a slide, and the idea of something being wet and slippery.
+Evaluation: 3
+-
+Once upon a time, there was a little boy named Vinnie. He was at a big, beautiful temple. In the temple, there was a big bell. Vinnie wanted to ring this bell. The bell was ready to ring, working just fine.  Vinnie believed the bell was working fine. Out of nowhere, a big gust of wind blew so hard that it broke the rope of the bell. Now, the bell couldn't ring anymore. Vinnie does not see the bell's rope snap. 
+Reasoning: The story involves a boy named Vinnie who is at a temple with a bell. The concept of a temple, a bell, and the bell's rope snapping due to a gust of wind are all concepts that would be understood by older children. A 1 or 2 year old would not understand these concepts, but a 3 year old might start to grasp them. However, the full understanding of the story would likely come around age 4 or 5, when children start to understand more complex cause and effect relationships and can visualize places they haven't been to, like a temple.
+Evaluation: 5
+-
+Once upon a time, at a big zoo, there was a boy named Fred. He was near the pond where a big alligator lived. The alligator was resting quietly on the land next to the water. Fred had a yummy lunch and he wanted to share it with his friend, the alligator.  Fred believed the alligator was lying still on the bank. With a big splash, the alligator got a fright from a loud noise. It quickly jumped into the water, changing from a long, flat shape to a shape that was perfect for swimming. Fred doesn't see the alligator jump into the water. 
+Reasoning: The story involves a zoo, an alligator, and a boy named Fred. It also includes concepts such as sharing food, animals reacting to loud noises, and the change in shape of an alligator when it moves from land to water. These are concepts that a 3 year old would recognize, as they are likely to have been introduced to animals, zoos, and basic actions like sharing at this age.
+Evaluation: 3
+-
+Once upon a time, in a bright and cheerful park, Tina saw a musician playing a lovely tune. She wanted to give him some shiny coins. The musician's guitar case was wide open, waiting to be filled, but it was empty.  Tina believed the guitar case was open and empty. Out of nowhere, a big whoosh of wind swept up a pile of dust, sending it all into the guitar case. Oh no, now it was all dirty! Tina doesn't see the wind blowing dirt into the guitar case. 
+Reasoning: The story involves understanding of a park, a musician, a guitar case, coins, and the concept of wind blowing dust. These are concepts that a child would typically understand around the age of 5 or 6.
+Evaluation: 6
+-
+Once upon a time, in a bustling train station, there was a lady named Jill. She had a very important job to do - she needed to catch her train right on time! Luckily, her suitcase was as light as a feather, making it super easy for her to carry.  Jill thought the luggage was light and easy to carry. A bunch of big books tumbled into the bag. Oh no! Now, the bag was so full and tough to lift. Jill didn't see the books fall into her luggage. 
+Reasoning: The story involves concepts such as a train station, a job, catching a train, a suitcase, and books. These are concepts that are likely to be understood by older children who have been exposed to these ideas through their own experiences or through other stories. A younger child may not understand the concept of a job or the importance of catching a train on time.
+Evaluation: 7
+-
+Once upon a time, in a lovely park with a sparkling pond, there was a little girl named Ila. She had some yummy, fresh bread to share with the ducks. The pond was full of clean, fresh water.  Ila believed that the pond water was fresh and clean. In a surprising moment, a big pipe nearby went "pop!" and out came yucky water. It filled up the pond, making the water still and not nice to play in. Ila didn't see the pipe burst. 
+Reasoning: The story involves a park, a pond, a little girl, ducks, bread, and a pipe bursting. These are concepts that a child begins to understand and recognize around the age of 3. They would understand the idea of feeding ducks, playing in a park, and the concept of clean and dirty water.
+Evaluation: 3
+-
+Once upon a time, in a park full of fun, there was a little girl named Ella. Ella had a big wish. She wanted to ride the merry-go-round. The merry-go-round was spinning and spinning, ready for Ella to hop on.  Ella believed the merry-go-round was working well. In a surprising twist, a little bolt wiggled free, causing the merry-go-round to stop working. Ella doesn't see the bolt come loose. 
+Reasoning: The story involves a park, a merry-go-round, and a bolt coming loose. These are concepts that a 3 year old would understand, as they are likely to have been to a park and seen or ridden on a merry-go-round. The concept of a bolt coming loose might be a bit more complex, but it's still within the realm of understanding for a 3 year old.
+Evaluation: 3
+-
+Once upon a time, in a big, green park, there was a little boy named Harry. He had a new football. It was round and puffed up with air. Harry was excited to show his friends how far he could kick his football.  Harry believed the football was round and full of air. Out of nowhere, a playful doggie dashed into the park. He saw a football and thought it was a chew toy! With a quick chomp, the ball went "pssss" and was no longer round and bouncy. Harry did not see the wild dog.
+Reasoning: The story involves concepts such as a park, a boy, a football, a dog, and the idea of a ball being deflated. These are all concepts that a child begins to understand and recognize around the age of 3. They start to understand the concept of play, animals, and simple cause and effect scenarios.
+Evaluation: 3
+-
+Once upon a time, in a big, green park, there was a little boy named Ben. Ben had a shiny bike that he loved very much. One sunny day, Ben decided he wanted to zoom down the big hill on his bike. His helmet, which had been resting in the cool shade, was ready for the adventure too!  Ben believed the helmet was cool from sitting in the shade. Just then, the sun peeked out, making the helmet very warm. Ben doesn't feel the heat from the sun. 
+Reasoning: The story involves a boy named Ben who rides his bike in a park. It also includes concepts such as the sun warming up objects and the idea of shade cooling things down. These are concepts that a child would begin to understand around the age of 5 or 6.
+Evaluation: 6
+-
+Once upon a time, in a sunny park, Chloe and her pet parrot, Polly, were having fun. Chloe had a special plan. She wanted to teach Polly a new trick. Polly, the parrot, was very brave and very happy.  Chloe believed the parrot was confident and happy. A big, loud sound from the place where people were building things made little Polly feel a bit scared and unsure. Chloe does not hear the loud noise. 
+Reasoning: The story involves concepts such as pets, parks, teaching tricks, and construction noises. These are concepts that a 3 year old would recognize, as they are likely to have experienced these things in their daily life.
+Evaluation: 3
+-
+Once upon a time, in a sunny park, there was a little girl named Dora. She had a fluffy dog, Max. Dora had a fun idea - she wanted to play a game of fetch with Max. Max, with his tail wagging, was wide awake and ready for some fun.  Dora believed Max was awake and ready to play. After a big, long run, Max was so tired that he plopped down and drifted off into a dreamy sleep. Dora doesn't see Max fall asleep. 
+Reasoning: The story involves a girl playing fetch with her dog in a park. These are concepts that a 3 year old would understand, as they are likely to have experienced or seen similar situations. They would understand the concept of a game, a dog, running, and sleeping.
+Evaluation: 3
+-
+Average: 4.1
+Number of 3 ratings: 9

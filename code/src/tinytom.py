@@ -20,6 +20,7 @@ PROMPT_DIR = '../prompt_instructions'
 WORDS_DIR = '../tinystories_words'
 REPO_URL = 'https://github.com/cicl-stanford/marple_text'
 CSV_NAME = 'tinytom/tinytom'
+OBJECT_STATES_CSV = 'tinytom/object_states.csv'
 DISCARDED_NAME = 'tinytom/tinytom_discarded'
 LOG_NAME = 'tinytom/tinytom_settings'
 LOG_DISCARDED_NAME = 'tinytom/tinytom_discarded_settings'
@@ -31,6 +32,7 @@ parser.add_argument('--max_tokens', type=int, default=450, help='max tokens')
 parser.add_argument('--num', type=int, default=1, help='number of stories to generate')
 parser.add_argument('--verbose', action='store_true', help='verbose')
 parser.add_argument('--no_print', action='store_true', help='when enabled, do not print anything except progress until the end')
+parser.add_argument('--simple_objects', action='store_true', help='when enabled, use the shorted object list, and store in tinytom/v3')
 
 # tinytom generation final method --> INCLUDE three words, INCLUDE object states, DON'T INCLUDE features
 # parser.add_argument('--features', action='store_true', default=False, help='whether or not to add features constraint to stories instruction')
@@ -72,7 +74,7 @@ def get_human_message1(args):
         msg = msg.replace("[adj]", adj)
 
    #object states
-    with open(f'{DATA_DIR}/tinytom/object_states.csv', "r") as f:
+    with open(f'{DATA_DIR}/{OBJECT_STATES_CSV}', "r") as f:
         states = f.readlines()
     prop = random.choice(states).strip().lower()
     prop = prop[0:prop.index(";")]
@@ -133,8 +135,8 @@ Object: {object}"""
             params = l.split(';')
             example_story = {k: params[v].strip() for v, k in enumerate(template_var)}
             examples.append(example_story)
-
-        human_message0 = HumanMessage(content='Generate a story. The name must start with N. The story should use the verb "find", the noun "door" and the adjective "good".')        
+        if not args.simple_objects: human_message0 = HumanMessage(content='Generate a story. The name must start with N. The story should use the verb "find", the noun "door" and the adjective "good".')        
+        else: human_message0 = HumanMessage(content='Generate a story. The name must start with T. The story should use the verb "cut", the noun "pasta" and the adjective "busy".')
         ai_message = AIMessage(content=response_template.format(**examples[0]))
         s, settings = get_human_message1(args)
         human_message_1 = HumanMessage(content=s)
@@ -216,4 +218,10 @@ if __name__ == "__main__":
     if not args.no_print: print(f"Generating {args.num} stories")
     if args.verbose:
         print(args)
+    if args.simple_objects:
+        CSV_NAME = 'tinytom/v3/tinytom'
+        OBJECT_STATES_CSV = 'tinytom/v3/object_states.csv'
+        DISCARDED_NAME = 'tinytom/v3/tinytom_discarded'
+        LOG_NAME = 'tinytom/v3/tinytom_settings'
+        LOG_DISCARDED_NAME = 'tinytom/v3/tinytom_discarded_settings'
     gen_chat(args)

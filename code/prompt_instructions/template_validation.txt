@@ -5,6 +5,7 @@ You are given a story by the user where an agent has some belief about an object
 4. invalid if the event is a sudden extreme weather shift 
 5. invalid if the event is implausible to occur in the given environment
 6. invalid if the story seems implausible to occur
+7. invalid if the story content seems far beyond the understanding of a 3 year old
 Do not assume that the agent observes the change in object state just because they are in the same place. 
 
 Give your answer in the following form:

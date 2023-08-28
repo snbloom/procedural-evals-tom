@@ -18,7 +18,7 @@ VARIABLES = ['forward_belief', 'forward_action', 'backward_belief', 'percept_to_
 CONDITIONS = ['true_belief', 'false_belief', 'true_control', 'false_control']
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--method', type=str, default="tinytom", help="[tinytom, bigtom]")
+parser.add_argument('--method', type=str, default="tinytom", help="[tinytom, bigtom, tinytom-v3]")
 parser.add_argument('--verbose', action="store_true", help="verbose or not")
 
 def get_completions():
@@ -50,6 +50,9 @@ def generate_conditions(completions):
         for init_belief in INITIAL_BELIEF:
 
             for variable in VARIABLES:  
+                
+                # only generate for forward belief right now
+                if variable != "forward_belief": continue
 
                 if variable == "percept_to_belief":
                     question = dict_var["Belief Question"]
@@ -248,10 +251,13 @@ def generate_conditions(completions):
 
 if __name__ == "__main__":  
     args = parser.parse_args()
-    # Note: this only works for tinytom and bigtom... other methods are deprecated.
+    # Note: this only works for tinytom, tinytom-v3, and bigtom... other methods are deprecated.
     if args.method == "tinytom":
         CONDITION_DIR += args.method
         CSV_NAME = CSV_NAME + "tinytom.csv"
+    elif args.method == "tinytom-v3":
+        CONDITION_DIR += args.method
+        CSV_NAME = CSV_NAME + "/v3/tinytom.csv"
     elif args.method == "bigtom":
         CONDITION_DIR += args.method
         CSV_NAME = os.path.join(DATA_DIR, 'bigtom/bigtom.csv')

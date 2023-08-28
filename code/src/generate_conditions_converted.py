@@ -16,12 +16,13 @@ DATA_DIR = '../../data'
 PROMPT_DIR = '../prompt_instructions'
 STORIES_FILE = '../tinystories_words/tinystories_rows.txt'
 CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/tinytom')
+CONVERTED_PARTS_NAME = "tinytom/tinytom_converted_parts.txt'"
 CSV_NAME = os.path.join(DATA_DIR, 'tinytom/tinytom.csv')
 FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control", "0_forward_belief_true_belief", "0_forward_belief_true_control",
                 "1_forward_belief_false_belief", "1_forward_belief_false_control", "1_forward_belief_true_belief", "1_forward_belief_true_control"]
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--method', type=str, default="tinytom", help="generate conditions for which set of words/features")
+parser.add_argument('--method', type=str, default="tinytom", help="[tinytom, tinytom-v3]")
 parser.add_argument('--num', type=int, default=None, help="max number of stories to convert")
 parser.add_argument('--verbose', action='store_true', help="when enabled, print out unconverted and converted fragments")
 parser.add_argument('--no_print', action='store_true', help="when enabled, don't print anything to the console except tqdm progress")
@@ -64,7 +65,7 @@ def convert_trimmed_stories(stories, args):
     llm = get_llm()
 
     # get number of already-converted stories
-    with open(f'{DATA_DIR}/tinytom/tinytom_converted_parts.txt', 'r') as f_r:
+    with open(f'{DATA_DIR}/{CONVERTED_PARTS_NAME}', 'r') as f_r:
         start_idx = 0
         if f_r.readable():
             lines = f_r.readlines()
@@ -138,7 +139,7 @@ def convert_trimmed_stories(stories, args):
                 print()
 
             # record converted parts
-            with open(f'{DATA_DIR}/tinytom/tinytom_converted_parts.txt', "a") as f:
+            with open(f'{DATA_DIR}/{CONVERTED_PARTS_NAME}', "a") as f:
                 f.write(";".join([context, causal_event, random_event]))
                 f.write('\n')
 
@@ -179,7 +180,12 @@ def convert_trimmed_stories(stories, args):
 
 if __name__ == "__main__":  
     args = parser.parse_args()
-    if args.method != "tinytom": raise Exception("invalid method argument")
+    # for v3
+    if args.method == "tinytom-v3":
+        CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/tinytom-v3')
+        CSV_NAME = os.path.join(DATA_DIR, 'tinytom/v3/tinytom.csv')
+        CONVERTED_PARTS_NAME = 'tinytom/v3/tinytom_converted_parts.txt'
+    elif args.method != "tinytom": raise Exception("invalid method argument")
     stories = get_unconverted_stories()
     if not args.no_print: print("Length of stories:", len(stories))
     convert_trimmed_stories(stories, args)

@@ -28,6 +28,7 @@ parser.add_argument('--lora', action='store_true')
 parser.add_argument('--num', '-n', type=int, default=50, help='number of evaluations')
 parser.add_argument('--offset', '-o', type=int, default=0, help='offset')
 parser.add_argument('--verbose', action='store_true', help='verbose')
+parser.add_argument("--no_print", action="store_true", help="print no intermediate steps")
 parser.add_argument('--local', action='store_true', default=True, help='local eval using transformers instead of huggingface hub')
 parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M", help="gpt-4-0613, roneneldan/TinyStories-33M, roneneldan/TinyStories-28M")
 
@@ -49,8 +50,8 @@ all_model_ids = ["roneneldan/TinyStories-33M", "roneneldan/TinyStories-28M",
 open_ai_model_ids = ["gpt-4-0613", "openai/text-davinci-003", "gpt-3.5-turbo", "text-davinici-003"]
 
 model_id = args.model_id # or use the following shorthand:
-if args.model_id == "33M": model_id = "roneneldan/TinyStories-33M"
-if args.model_id == "28M": model_id = "roneneldan/TinyStories-28M"
+if args.model_id == "33": model_id = "roneneldan/TinyStories-33M"
+if args.model_id == "28": model_id = "roneneldan/TinyStories-28M"
 if args.model_id == "gpt4": model_id = "gpt-4-0613"
 if args.model_id == "gpt35turbo": model_id = "gpt-3.5-turbo"
 if args.model_id == "davinci003": model_id = "openai/text-davinci-003"
@@ -58,12 +59,22 @@ if args.model_id == "davinci003": model_id = "openai/text-davinci-003"
 if args.model_id == "llama-14": model_id = "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"
 if args.model_id == "llama-43": model_id = "/scr/kanishkg/models/llama-training-43-4/checkpoint-50000"
 if args.model_id == "finetuned-33": model_id = '/scr/snbloom/models/finetuned-33-tinytom/checkpoint-125'
+
 if args.model_id == "finetuned-llama-43-100": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-100/checkpoint-35'
 if args.model_id == "finetuned-llama-43-200": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-200/checkpoint-65'
 if args.model_id == "finetuned-llama-43-400": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-400/checkpoint-125'
+
 if args.model_id == 'finetuned-28-100': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-100/checkpoint-80'
-if args.model_id == 'finetuned-33-100': model_id = '/scr/snbloom/models/finetuned-33-tinytom-v2-100/checkpoint-35'
-if args.model_id == 'finetuned-28-200': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-200/checkpoint-35'
+if args.model_id == 'finetuned-28-200': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-200/checkpoint-140'
+if args.model_id == 'finetuned-28-400': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-400/checkpoint-140'
+if args.model_id == 'finetuned-28-500': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-500/checkpoint-320'
+if args.model_id == 'finetuned-28-600': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-600/checkpoint-380'
+
+if args.model_id == 'finetuned-33-100': model_id = '/scr/snbloom/models/finetuned-33-tinytom-v2-100/checkpoint-140'
+if args.model_id == 'finetuned-33-200': model_id = "/scr/snbloom/models/finetuned-33-tinytom-v2-200/checkpoint-260"
+
+data_dir = args.data_dir
+if data_dir == "v1": data_dir = "../../data/conditions/tinytom-v1"
 
 data_range = f"{args.offset+1}-{args.offset + args.num}"
 
@@ -140,7 +151,6 @@ else:
         model = AutoModelForCausalLM.from_pretrained(model_id)
         tokenizer = AutoTokenizer.from_pretrained(model_id)
 
-data_dir = args.data_dir
 RESULTS_DIR = os.path.join('../../data/results')
 if args.bigtom: data_dir = '../../data/conditions/bigtom'
 DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
@@ -173,8 +183,9 @@ with open(TRIMMED_FILE, 'r') as f:
 with open(f"{PROMPT_DIR}/auto_eval_system.txt", "r") as f:
     sys_prompt = f.read()
 
-print(sys_prompt)
-print()
+if not args.no_print: 
+    print(sys_prompt)
+    print()
 
 counter = 0
 for i in tqdm(range(len(data))):
@@ -230,7 +241,7 @@ for i in tqdm(range(len(data))):
             user_prompt = user_prompt.replace("[correct_completion]", correct_answer)
             user_prompt = user_prompt.replace("[incorrect_completion]", wrong_answer)
 
-        print(user_prompt)
+        if not args.no_print: print(user_prompt)
 
         system_message = SystemMessage(content=sys_prompt)
         user_msg = HumanMessage(content=user_prompt)
@@ -239,7 +250,7 @@ for i in tqdm(range(len(data))):
 
         for g, generation in enumerate(responses.generations[0]):
             eval = generation.text.strip() 
-            print(eval)
+            if not args.no_print: print(eval)
             classification = eval.split("Evaluation:")[1].strip().lower()
 
             if classification=="correct":
@@ -258,13 +269,14 @@ for i in tqdm(range(len(data))):
                 raise Exception(f"Classification '{classification}' is not recognized")
         graded_answers.append(classification)
         counter += 1
-        print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
+        if not args.no_print: print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 
 
 print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 print("LOGGING OUTPUTS FOR MODEL", model_id)
 
 if args.bigtom: dataset = "bigtom"
+elif data_dir == "../../data/conditions/tinytom-v1": dataset = "tinytom-v1"
 else: dataset = "tinytom"
 
 run = {
