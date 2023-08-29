@@ -39,6 +39,7 @@ parser.add_argument('--condition', type=str, default='true_belief')
 parser.add_argument('--init_belief', type=str, default="0_forward")
 parser.add_argument('--unconverted', action='store_true', help="whether to use unconverted (non tinystory-ified) versions")
 parser.add_argument('--bigtom', action='store_true', help="run auto eval on bigtom dataset")
+parser.add_argument('--filter', action='store_true', help="whether to filter out stories that are too long")
 
 args = parser.parse_args()
 
@@ -132,6 +133,7 @@ def get_test_llm(model):
         request_timeout=180
     )
 
+
 eval_llm = get_eval_llm()
 
 # get model (gpt4)
@@ -157,6 +159,7 @@ if args.bigtom: data_dir = '../../data/conditions/bigtom'
 DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
 TRIMMED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_trimmed.csv"
 CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
+if args.filter: FILTER_FILE = f"{data_dir}/ids_to_keep.txt"
 
 correct_answers = []
 incorrect_answers = []
@@ -180,6 +183,17 @@ if not args.bigtom:
 
 with open(TRIMMED_FILE, 'r') as f:
     trimmed = f.readlines()
+
+if args.filter:
+    with open(FILTER_FILE, 'r') as f:
+        ids_to_keep = f.readlines()
+        ids_to_keep = [int(x.strip()) for x in ids_to_keep]
+        # check if there are enough ids to keep
+        if len(ids_to_keep) < args.num:
+            raise Exception(f"Only {len(ids_to_keep)} ids to keep, but {args.num} evaluations requested")
+        data = [data[i] for i in ids_to_keep]
+        if not args.bigtom: converted = [converted[i] for i in ids_to_keep]
+        trimmed = [trimmed[i] for i in ids_to_keep]
 
 with open(f"{PROMPT_DIR}/auto_eval_system.txt", "r") as f:
     sys_prompt = f.read()
