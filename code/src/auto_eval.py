@@ -75,6 +75,7 @@ if args.model_id == 'finetuned-33-200': model_id = "/scr/snbloom/models/finetune
 
 data_dir = args.data_dir
 if data_dir == "v1": data_dir = "../../data/conditions/tinytom-v1"
+if data_dir == "v3": data_dir = "../../data/conditions/tinytom-v3"
 
 data_range = f"{args.offset+1}-{args.offset + args.num}"
 
@@ -277,6 +278,7 @@ print("LOGGING OUTPUTS FOR MODEL", model_id)
 
 if args.bigtom: dataset = "bigtom"
 elif data_dir == "../../data/conditions/tinytom-v1": dataset = "tinytom-v1"
+elif data_dir == "../../data/conditions/tinytom-v3": dataset = "tinytom-v3"
 else: dataset = "tinytom"
 
 run = {
