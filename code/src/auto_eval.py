@@ -204,7 +204,7 @@ if not args.no_print:
 
 counter = 0
 for i in tqdm(range(len(data))):
-    if i >= args.offset and counter < args.num:
+    if (i >= args.offset and counter < args.num) or args.filter:
         story, question, correct_answer, wrong_answer, _ = data[i]
 
         # story-ified story
