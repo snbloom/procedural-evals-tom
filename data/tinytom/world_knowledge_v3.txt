@@ -1,0 +1,62 @@
+Once upon a time, in a bright, cheery kitchen, there was a boy named Tim. He was all set to make a yummy lunch. He decided to make a big bowl of squiggly pasta. The pasta box was filled to the top.  Tim believed the pasta box was full. While big brother Tim was chopping up colorful veggies in the kitchen, his little sister tiptoed in. She giggled as she grabbed some squiggly pasta to play with. Tim does not see his sister leaving the kitchen with some pasta in her hand. 
+Reasoning: The story involves a boy named Tim making pasta and his little sister sneaking in to play with some of the pasta. These are concepts that a child would understand, such as cooking, playing, and sibling relationships. The story also involves simple actions like chopping vegetables and sneaking around.
+Evaluation: 4
+-
+Once upon a time, Fiona and her buddies were at the park. They decided to play a fun game of soccer. They had a ball that was very clean and sparkly.  Fiona believed the ball was clean and shiny. As they frolicked, their bouncy ball tumbled into a squishy mud puddle, becoming all grubby and messy. Fiona does not see the ball in the muddy puddle. 
+Reasoning: The story involves playing in a park, playing soccer, and a ball getting dirty in a mud puddle. These are concepts that a child would understand and experience in their daily life. The story does not involve complex concepts or abstract ideas that would require a higher level of understanding.
+Evaluation: 3
+-
+Once upon a time, in a sunny park, Olivia sat on a bench. She had a yummy-smelling bag of fresh bread. She wanted to share it with the ducks.  Olivia believed the bread was fresh and smelled good. While Olivia was busy looking at the ducks, a cheeky squirrel quietly tiptoed to the bench. It cheekily grabbed a piece of bread and accidentally dropped it into a dirty puddle. Olivia does not see the squirrel run away with a piece of bread. 
+Reasoning: The story involves concepts such as parks, benches, bread, ducks, squirrels, and puddles. These are things that a child would likely be familiar with by the age of 3, as they would have likely had experiences with feeding ducks or seeing squirrels in a park. The concept of something being "dirty" is also something that a 3 year old would understand.
+Evaluation: 3
+-
+Once upon a time, Ina was at the park. She sat on a bench, hoping to see the birds have fun. There was a tiny, pink bird wide awake on a branch of a tree.  Ina believed the bird was awake. While Ina was looking at a picture, the tiny bird snuggled up and drifted off to sleep. Ina does not look up and does not see the bird asleep. 
+Reasoning: The story involves simple concepts such as a park, a bench, birds, trees, looking at a picture, and sleeping. These are all concepts that a 3 year old would recognize and understand.
+Evaluation: 3
+-
+Once upon a time, in a big, green park, John was sitting on a bench. He had a special question to ask his girlfriend. He wanted to ask her to be his wife. He had a shiny ring hidden in his hat.  John believed the ring was in his cap. While John was watching the squirrels play, a fluffy doggie came along. The doggie picked up John's cap in his mouth, giving it a good shake. Oops! Out fell John's shiny ring. John does not see the dog with his cap in its mouth. 
+Reasoning: The story involves concepts such as parks, benches, squirrels, dogs, hats, and rings. It also involves the concept of marriage proposal which is a more complex social concept. These are things that a child would start to understand around the age of 5 or 6.
+Evaluation: 6
+-
+Once upon a time, in a bright and cheerful park, Jill was there. She was watching all the little children play. Her son was about to go on the swing for the very first time! Jill had a camera with her, but it was not on. She wanted to make a video of this special moment.  Jill believed the camera was off. While Jill was waiting for her little boy to be brave and start swinging, a funny doggie came by. With a wag of its tail, it bumped the camera and it started to work all by itself! Jill does not see the dog walk away from the camera. 
+Reasoning: The story involves concepts such as parks, children playing, swings, cameras, and dogs. These are concepts that a 3 year old would recognize, as they are likely to have experienced these things in their daily life.
+Evaluation: 3
+-
+Once upon a time, on a big ranch, there was a man named Ben. He loved taking care of all the animals. His favorite was a horse, the one he loved to ride. He had a saddle for the horse, and it wasn't heavy at all.  Ben believed the saddle was not heavy. As the day went on, raindrops fell on the saddle. It became heavy because it was all wet. Ben does not touch the saddle. 
+Reasoning: The story involves concepts such as a ranch, a man taking care of animals, a horse, a saddle, and the effect of rain on objects. These are concepts that a child would likely understand around the age of 5 or 6, when they start to understand more complex scenarios and cause-and-effect relationships.
+Evaluation: 6
+-
+Once upon a time, in a big school, there was a little boy named Vinny. He had shiny new roller skates. The school hall was big and empty. Vinny wanted to skate fast in the hall.  Vinny believed the hall was empty. As Vinny was strapping on his fun skates, a friendly janitor walked in. He began to clean the floor with his mop, making it all shiny and slippery. Vinny does not see the janitor mopping the floor. 
+Reasoning: The story involves a school setting, a janitor, roller skates, and the concept of a floor being mopped and becoming slippery. These are concepts that would be familiar to a child who has started school and has some understanding of the consequences of certain actions, such as the floor becoming slippery when mopped. 
+Evaluation: 6
+-
+Once upon a time, there was a boy named Fred. He was at a fair, full of fun games. Fred had his eyes on a big, cuddly teddy bear prize. The game machine was ready to play.  Fred believed the game machine was on. While Fred took a little nap on a comfy bench, a friendly fair worker switched off the game machine to make sure it was working just right. Fred does not see the worker turning off the game machine. 
+Reasoning: The story involves concepts such as a fair, games, a game machine, and a worker performing maintenance. These are concepts that a child would start to understand and recognize around the age of 5 or 6. The story also involves a sequence of events and cause-and-effect relationships that require a certain level of cognitive development to understand.
+Evaluation: 6
+-
+Once upon a time, Sam was having a fun picnic at the beach. He had a yummy sandwich to eat. After finishing his sandwich, he planned to go see his friend.  Sam believed the sandwich was tasty. While Sam was happily watching the big blue sea, a cheeky seagull flew down quickly and sprinkled some salt on his yummy sandwich. Sam does not see the seagull flying away from his picnic spot. 
+Reasoning: The story involves concepts such as a picnic, beach, sandwich, seagull, and the act of a bird sprinkling salt on food. These are concepts that a child would typically understand around the age of 3 or 4. However, the concept of a bird sprinkling salt on food might be a bit complex for a 3-year-old, but a 4-year-old might be able to understand this with some explanation.
+Evaluation: 4
+-
+Once upon a time, Quin was playing at the park with his buddies. Quin wanted to show them how brave he was. But oh no! The park's gate was locked.  Quin believed the gate was locked. While Quin was playfully challenging his friends to a fun race, the friendly park keeper arrived and opened the big gate. Quin does not see the park keeper unlocking the gate. 
+Reasoning: The story involves concepts such as playing at the park, bravery, locked gates, and a park keeper. These are concepts that a child would understand and recognize around the age of 3 or 4, when they start to understand more complex social interactions and can comprehend the idea of locked gates and park keepers.
+Evaluation: 4
+-
+Once upon a time, in a lovely park, there was a big, bouncy castle. Little Sam was there, his eyes sparkling with excitement. He really wanted to jump and have fun in the castle. The castle was so big and full of air, just waiting for Sam to come and play.  Sam believed the castle was big and inflated. While Sam was having fun chasing a pretty butterfly, a naughty stick poked a tiny hole in his bouncy castle. Uh-oh! The castle began to get smaller and smaller as the air whooshed out. Sam does not see the castle starting to deflate. 
+Reasoning: The story involves concepts such as a park, a bouncy castle, playing, and the concept of something deflating. These are concepts that a 3 year old would recognize, as they are likely to have experienced playing in a park or on a bouncy castle, and may understand the concept of something getting smaller or deflating.
+Evaluation: 3
+-
+Once upon a time, in a lovely park full of pretty flowers, there was a little girl named Queenie. She needed a green leaf for her art project. She spotted a leaf that was very green and fresh.  Queenie believed the leaf was fresh and green. As Queenie explored the big park, the sun smiled brighter and brighter. The little leaf got all warm and dry from the sun's happy heat. Queenie does not see the leaf dried up when she returns to it. 
+Reasoning: The story involves a little girl named Queenie who is looking for a green leaf for her art project. She explores a park, observes the sun, and experiences the effect of the sun's heat on a leaf. These are concepts and experiences that a 3 year old would recognize, such as the concept of an art project, the process of exploring a park, the sun, and the effect of heat on objects.
+Evaluation: 3
+-
+Once upon a time, in a sunny park, Xander and his friends were having fun. They decided to make a big sand castle. The sand was nice and wet, just right for building.  Xander thought the sand was wet and good for building. While Xander was picking up sticks to make pretty decorations, a bunch of playful dogs zoomed around the park. They stirred up the sand, making it all dry and fluffy. Xander does not see the dogs running through the park.
+Reasoning: The story involves activities like playing in a park, building a sand castle, and interacting with dogs. These are experiences and concepts that a 3 year old would recognize, as they are likely to have had similar experiences or have been introduced to these concepts through other stories or real-life observations.
+Evaluation: 3
+-
+Once upon a time, little Bella was in a big room full of books, called a library. She was searching for a fun book to read before her nap time. The shelf was packed with lots and lots of books.  Bella believed the book shelf was full of books. While Bella was busy looking at her picture book, the nice librarian quietly came over. She took some books from the shelf to put them away. Bella does not see the librarian carrying away some books. 
+Reasoning: The story involves concepts such as a library, a librarian, and the act of searching for a book to read. These are concepts that a child would typically understand around the age of 4 or 5, when they start to learn about different professions and places like libraries.
+Evaluation: 5
+-
+Average: 4.1
+Number of 3 ratings: 7
