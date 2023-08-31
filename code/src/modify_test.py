@@ -8,7 +8,7 @@ from langchain.schema import (
 
 
 NUM = 50
-TOM_DIR = "../../data/conditions/tinytom"
+TOM_DIR = "../../data/conditions/tinytom-v3"
 CONDITIONS =  ["0_forward_belief_true_belief",
                 "0_forward_belief_false_belief",
                 "1_forward_belief_true_belief",
