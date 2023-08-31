@@ -40,6 +40,7 @@ parser.add_argument('--init_belief', type=str, default="0_forward")
 parser.add_argument('--unconverted', action='store_true', help="whether to use unconverted (non tinystory-ified) versions")
 parser.add_argument('--bigtom', action='store_true', help="run auto eval on bigtom dataset")
 parser.add_argument('--filter', action='store_true', help="whether to filter out stories that are too long")
+parser.add_argument('--corrected', action='store_true', help="whether to use corrected stories")
 
 args = parser.parse_args()
 
@@ -158,7 +159,10 @@ RESULTS_DIR = os.path.join('../../data/results')
 if args.bigtom: data_dir = '../../data/conditions/bigtom'
 DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
 TRIMMED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_trimmed.csv"
-CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
+if args.corrected:
+    CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/corrected.txt"
+else:
+    CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
 if args.filter: FILTER_FILE = f"{data_dir}/ids_to_keep.txt"
 
 correct_answers = []
