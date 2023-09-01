@@ -1,44 +1,43 @@
 import os
 import csv
 import argparse
-import random
 from tqdm import tqdm
 
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import (
-    AIMessage,
-    HumanMessage,
-    SystemMessage
-)
+# from langchain.chat_models import ChatOpenAI
+# from langchain.schema import (
+#     SystemMessage
+# )
 
 MODEL = "gpt-4-0613"
 DATA_DIR = '../../data'
 PROMPT_DIR = '../prompt_instructions'
 STORIES_FILE = '../tinystories_words/tinystories_rows.txt'
 CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/tinytom')
-CONVERTED_PARTS_NAME = "tinytom/tinytom_converted_parts.txt'"
+CONVERTED_PARTS_NAME = "tinytom/tinytom_converted_parts.txt"
 CSV_NAME = os.path.join(DATA_DIR, 'tinytom/tinytom.csv')
 FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control", "0_forward_belief_true_belief", "0_forward_belief_true_control",
                 "1_forward_belief_false_belief", "1_forward_belief_false_control", "1_forward_belief_true_belief", "1_forward_belief_true_control"]
+FOLDER_NAMES_V1 = ["0_forward_belief_false_belief", "0_forward_belief_true_belief", "1_forward_belief_false_belief",  "1_forward_belief_true_belief"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, default="tinytom", help="[tinytom, tinytom-v3]")
 parser.add_argument('--num', type=int, default=None, help="max number of stories to convert")
 parser.add_argument('--verbose', action='store_true', help="when enabled, print out unconverted and converted fragments")
 parser.add_argument('--no_print', action='store_true', help="when enabled, don't print anything to the console except tqdm progress")
+parser.add_argument('--re_stitch', action='store_true', help="when enabled, re-stitch all stories in the converted files")
+parser.add_argument('--output', type=str, default="converted", help="run for converted or corrected versions [converted, corrected]")
 
 
 def get_llm():
-    llm = ChatOpenAI(
+    return ChatOpenAI(
         model=MODEL,
         temperature=0.0,
         max_tokens=450,
         n=1,
         request_timeout=180
     )
-    return llm
 
-def get_unconverted_stories():
+def get_tinytom_stories():
     with open(CSV_NAME, "r") as f:
         reader = csv.reader(f, delimiter=";")
         return list(reader)
@@ -61,21 +60,27 @@ def get_generation(llm, instructions):
         generated_story = generated_story.replace("\n", " ")
         return generated_story
 
-def convert_trimmed_stories(stories, args):
-    llm = get_llm()
-
-    # get number of already-converted stories
+def get_num_already_converted():
     with open(f'{DATA_DIR}/{CONVERTED_PARTS_NAME}', 'r') as f_r:
         start_idx = 0
         if f_r.readable():
             lines = f_r.readlines()
             start_idx = len(lines)
-    if not args.no_print:
-        print(f"Already converted {start_idx} stories")
-        print()
-    count = 1
-    # start_idx = 0
+    return start_idx
 
+def get_num_already_stitched(method, folder_name, output_name):
+    if not os.path.isfile(f'{DATA_DIR}/conditions/{method}/{folder_name}/{output_name}.txt'): return 0
+    with open(f'{DATA_DIR}/conditions/{method}/{folder_name}/{output_name}.txt', 'r') as f_r:
+        start_idx = 0
+        if f_r.readable():
+            lines = f_r.readlines()
+            start_idx = len(lines)
+    return start_idx       
+
+def convert_story_parts(stories, start_idx, args):
+    llm = get_llm()
+    
+    count = 1
     for i, story in enumerate(tqdm(stories)):
 
         # limit by num argument
@@ -88,13 +93,6 @@ def convert_trimmed_stories(stories, args):
             context_unconverted = ".".join(story[0].split(".")[:3]).strip() + "."
             causal_event_unconverted = story[0].split(".")[4].strip() + "."
             random_event_unconverted = story[14].strip()
-            init_belief_yes = story[0].split(".")[3] + "."
-            percieve_causal_yes = story[1].strip()
-            percieve_causal_no = story[2].strip()
-            percieve_random_yes = story[15].strip()
-            percieve_random_no = story[16].strip()
-            name = story[17].strip()
-            obj = story[18].strip().lower()
             
             # print out parts to convert
             if not args.no_print:
@@ -102,11 +100,6 @@ def convert_trimmed_stories(stories, args):
                 print("Causal Event:", causal_event_unconverted)
                 print("Random Event:", random_event_unconverted)
                 print()
-
-            # with open(f'{DATA_DIR}/tinytom/tinytom_converted_parts.txt', "r") as f:
-            #     # read context, causal event, random event
-            #     data = f.readlines()
-            #     context, causal_event, random_event = data[i].strip().split(";")
 
             # get converted context
             instr_context = get_formatted_instructions("context", context_unconverted)
@@ -120,19 +113,8 @@ def convert_trimmed_stories(stories, args):
             instr_randpm = get_formatted_instructions("event", random_event_unconverted)
             random_event = get_generation(llm, instr_randpm)
 
-            # print out all parts
-            if args.verbose:
-                print("Initial Belief Present:", init_belief_yes)
-                print("Percieves Causal Event:", percieve_causal_yes)
-                print("Does Not Percieve Causal Event:", percieve_causal_no)
-                print("Percieves Random Event:", percieve_random_yes)
-                print("Does Not Percieve Random Event:", percieve_random_no)
-                print("Name:", name)
-                print("Object:", obj)
-                print()
-
             # print out converted parts
-            if not args.no_print:
+            if args.verbose:
                 print("Converted Context: ", context)
                 print("Converted Causal Event: ", causal_event)
                 print("Converted Random Event: ", random_event)
@@ -143,9 +125,70 @@ def convert_trimmed_stories(stories, args):
                 f.write(";".join([context, causal_event, random_event]))
                 f.write('\n')
 
-            # stitch combinations by condition
-            for folder_name in FOLDER_NAMES:
-                if args.verbose: print("Condition:", folder_name)
+            count += 1     
+
+def re_stitch_stories(stories, end_idx, args, output_name):
+    for folder_name in FOLDER_NAMES:
+        if args.method=='tinytom-v1': 
+            if folder_name not in FOLDER_NAMES_V1: continue
+            with open(f'{DATA_DIR}/conditions/{args.method}/{folder_name}/{output_name}.txt', 'r') as f:
+                first_50 = list(f.readlines())[:50]
+
+        with open(f'{DATA_DIR}/conditions/{args.method}/{folder_name}/{output_name}.txt', 'w') as f:
+            if args.method == 'tinytom-v1': f.writelines(first_50)
+            else: f.write("") 
+    stitch_stories(stories, end_idx, args, output_name)
+
+def stitch_stories(stories, end_idx, args, output_name):
+
+    start_idx = {}
+    for folder_name in FOLDER_NAMES: 
+        if args.method == 'tinytom-v1' and folder_name not in FOLDER_NAMES_V1: continue
+        start_idx[folder_name] = get_num_already_stitched(args.method, folder_name, output_name)
+
+    for i, story in enumerate(tqdm(stories)):
+        if i == end_idx: break
+
+        # parse unconverted parts
+        init_belief_yes = story[0].split(".")[3] + "."
+        percieve_causal_yes = story[1].strip()
+        percieve_causal_no = story[2].strip()
+        percieve_random_yes = story[15].strip()
+        percieve_random_no = story[16].strip()
+        name = story[17].strip()
+        obj = story[18].strip().lower()
+
+        if args.method == "tinytom-v3": filename = f'{DATA_DIR}/tinytom/v3/tinytom_converted_parts.txt'
+        elif args.method == "tinytom-v1": filename = f'{DATA_DIR}/tinytom/v1/tinytom_converted_parts.txt'
+        elif args.method == "tinytom": filename = f"{DATA_DIR}/tinytom/tinytom_converted_parts.txt"
+        else: raise Exception("Unexpected method. Expected [tinytom-v1, tinytom, tinytom-v3]")
+
+        with open(filename, "r") as f:
+            # read context, causal event, random event
+            data = f.readlines()
+            context, causal_event, random_event = data[i].strip().split(";")
+
+        # print out all parts
+        if args.verbose:
+            print("Initial Belief Present:", init_belief_yes)
+            print("Percieves Causal Event:", percieve_causal_yes)
+            print("Does Not Percieve Causal Event:", percieve_causal_no)
+            print("Percieves Random Event:", percieve_random_yes)
+            print("Does Not Percieve Random Event:", percieve_random_no)
+            print("Name:", name)
+            print("Object:", obj)
+            print()
+            print("Converted Context: ", context)
+            print("Converted Causal Event: ", causal_event)
+            print("Converted Random Event: ", random_event)
+            print()
+
+        # stitch combinations by condition
+        for folder_name in FOLDER_NAMES:
+            if args.verbose: print("Condition:", folder_name)
+            if args.method == 'tinytom-v1' and folder_name not in FOLDER_NAMES_V1: continue
+
+            if i >= start_idx[folder_name]:
                 stitched = context
 
                 # initial belief
@@ -165,27 +208,43 @@ def convert_trimmed_stories(stories, args):
                 else: raise Exception("Expected: [true_belief, false_belief, true_control, false_control] in folder name.")
 
                 # Free response prompt
-                stitched = " ".join([stitched, name, "thinks that the", obj, "is"])
+                if output_name=="converted": stitched = " ".join([stitched, name, "thinks that the", obj, "is"])
+                elif output_name=="corrected": stitched = " ".join([stitched, name, "believes the", obj, "is"])
+                else: raise Exception("unexpected output_name. Expected [converted, corrected]")
 
                 if args.verbose: print(stitched, '\n')
 
                 # write to file
                 if not os.path.exists(f'{CONDITION_DIR}/{folder_name}'):
                     os.makedirs(f'{CONDITION_DIR}/{folder_name}')
-                with open(f'{CONDITION_DIR}/{folder_name}/converted.txt', 'a') as f_w:
+                with open(f'{CONDITION_DIR}/{folder_name}/{output_name}.txt', 'a') as f_w:
+                    print(f'{CONDITION_DIR}/{folder_name}/{output_name}.txt')
                     f_w.write(stitched)
-                    f_w.write("\n")
-            count += 1        
+                    f_w.write("\n")   
     
 
 if __name__ == "__main__":  
+
     args = parser.parse_args()
+
     # for v3
     if args.method == "tinytom-v3":
         CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/tinytom-v3')
         CSV_NAME = os.path.join(DATA_DIR, 'tinytom/v3/tinytom.csv')
         CONVERTED_PARTS_NAME = 'tinytom/v3/tinytom_converted_parts.txt'
+    # for v1
+    elif args.method == "tinytom-v1":
+        CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/tinytom-v1')
+        CSV_NAME = os.path.join(DATA_DIR, 'tinytom/v1/tinytom.csv')
+        CONVERTED_PARTS_NAME = 'tinytom/v1/tinytom_converted_parts.txt'
     elif args.method != "tinytom": raise Exception("invalid method argument")
-    stories = get_unconverted_stories()
-    if not args.no_print: print("Length of stories:", len(stories))
-    convert_trimmed_stories(stories, args)
+    
+    stories = get_tinytom_stories()
+    print("tinytom len", len(stories))
+    start_idx = get_num_already_converted()
+    # if not args.no_print: print("Length of stories:", len(stories))
+    # convert_story_parts(stories, start_idx, args)
+    end_idx = get_num_already_converted()
+    print("end_idx", end_idx)
+    if args.re_stitch: re_stitch_stories(stories, end_idx, args, args.output)
+    else: stitch_stories(stories, end_idx, args, args.output)
