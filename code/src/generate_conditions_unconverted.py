@@ -52,7 +52,7 @@ def generate_conditions(completions):
             for variable in VARIABLES:  
                 
                 # only generate for forward belief right now
-                if variable != "forward_belief": continue
+                if variable != "forward_belief" and variable != "percept_to_belief": continue
 
                 if variable == "percept_to_belief":
                     question = dict_var["Belief Question"]
