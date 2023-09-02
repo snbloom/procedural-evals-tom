@@ -12,7 +12,7 @@ TOM_DIR = "../../data/conditions/tinytom-v3"
 CONDITIONS =  ["0_forward_belief_true_belief",
                 "0_forward_belief_false_belief",
                 "1_forward_belief_true_belief",
-                "1_forward_belief_false_belief,
+                "1_forward_belief_false_belief",
                 "0_forward_belief_true_control",
                 "0_forward_belief_false_control",
                 "1_forward_belief_true_control",
