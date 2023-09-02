@@ -3,10 +3,10 @@ import csv
 import argparse
 from tqdm import tqdm
 
-# from langchain.chat_models import ChatOpenAI
-# from langchain.schema import (
-#     SystemMessage
-# )
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import (
+    SystemMessage
+)
 
 MODEL = "gpt-4-0613"
 DATA_DIR = '../../data'
@@ -229,7 +229,7 @@ if __name__ == "__main__":
 
     start_idx = get_num_already_converted()
     convert_story_parts(stories, start_idx, args)
-    
+
     end_idx = get_num_already_converted()
     if args.re_stitch: re_stitch_stories(stories, end_idx, args, args.output)
     else: stitch_stories(stories, end_idx, args, args.output)
