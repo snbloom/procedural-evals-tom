@@ -162,8 +162,10 @@ if args.corrected:
     CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/corrected.txt"
 elif args.corrected_type == "in":
     CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/corrected_in.txt"
+    DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_in.csv"
 elif args.corrected_type == "out":
     CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/corrected_out.txt"
+    DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_out.csv"
 else:
     CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
 if args.filter: FILTER_FILE = f"{data_dir}/ids_to_keep.txt"
