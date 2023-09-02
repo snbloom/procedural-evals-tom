@@ -150,9 +150,7 @@ def stitch_stories(stories, end_idx, args, output_name):
         name = story[17].strip()
         obj = story[18].strip().lower()
         correct_answer = story[11]
-        print(correct_answer)
         ending = correct_answer.split("is")[0] + "is"
-        print(ending)
 
 
         if args.method == "tinytom-v3": filename = f'{DATA_DIR}/tinytom/v3/tinytom_converted_parts.txt'

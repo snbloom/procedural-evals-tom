@@ -39,6 +39,7 @@ parser.add_argument('--unconverted', action='store_true', help="whether to use u
 parser.add_argument('--bigtom', action='store_true', help="run auto eval on bigtom dataset")
 parser.add_argument('--filter', action='store_true', help="whether to filter out stories that are too long")
 parser.add_argument('--corrected', action='store_true', help="whether to use corrected stories")
+parser.add_argument('--corrected_type', type=str, default="in", help="which filtered, corrected dataset type to use [in, out]")
 
 args = parser.parse_args()
 
@@ -159,6 +160,10 @@ DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/sto
 TRIMMED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_trimmed.csv"
 if args.corrected:
     CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/corrected.txt"
+elif args.corrected_type == "in":
+    CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/corrected_in.txt"
+elif args.corrected_type == "out":
+    CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/corrected_out.txt"
 else:
     CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
 if args.filter: FILTER_FILE = f"{data_dir}/ids_to_keep.txt"
@@ -304,6 +309,8 @@ run = {
     "unconverted": args.unconverted,
     "data_range":data_range,
     "init_belief":args.init_belief,
+    "corrected": args.corrected,
+    "corrected_type": args.corrected_type,
     "variable":args.variable,
     "condition":args.condition,
     "count_correct":count_correct,

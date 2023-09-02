@@ -6,8 +6,8 @@ from langchain.schema import (
     SystemMessage
 )
 
-OFFSET = 50
-NUM = 24
+OFFSET = 74
+NUM = 25
 TOM_DIR = "../../data/conditions/tinytom-v3"
 CONDITIONS =  ["0_forward_belief_true_belief",
                 "0_forward_belief_false_belief",
@@ -74,6 +74,6 @@ for cond in CONDITIONS:
         story = text[:last_period_index+1]
         story = story + " " + converted_sentences[i]
         converted_stories.append(story) 
-    with open(f"{TOM_DIR}/{cond}/{CORRECTED_STORY_FILE}", "w") as f:
+    with open(f"{TOM_DIR}/{cond}/{CORRECTED_STORY_FILE}", "a") as f:
         for story in converted_stories:
             f.write(story + "\n")
