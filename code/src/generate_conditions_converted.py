@@ -149,6 +149,11 @@ def stitch_stories(stories, end_idx, args, output_name):
         percieve_random_no = story[16].strip()
         name = story[17].strip()
         obj = story[18].strip().lower()
+        correct_answer = story[10]
+        print(correct_answer)
+        ending = correct_answer.split("is")[0] + "is"
+        print(ending)
+
 
         if args.method == "tinytom-v3": filename = f'{DATA_DIR}/tinytom/v3/tinytom_converted_parts.txt'
         elif args.method == "tinytom": filename = f"{DATA_DIR}/tinytom/tinytom_converted_parts.txt"
@@ -199,7 +204,7 @@ def stitch_stories(stories, end_idx, args, output_name):
 
                 # Free response prompt
                 if output_name=="converted": stitched = " ".join([stitched, name, "thinks that the", obj, "is"])
-                elif output_name=="corrected": stitched = " ".join([stitched, name, "believes the", obj, "is"])
+                elif output_name=="corrected": stitched = " ".join([stitched, ending])
                 else: raise Exception("unexpected output_name. Expected [converted, corrected]")
 
                 if args.verbose: print(stitched, '\n')
