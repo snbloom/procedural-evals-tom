@@ -3,16 +3,14 @@ import subprocess
 import argparse
 import json
 import csv
-import torch
 from tqdm import tqdm
 from crfm_llm import crfmLLM
-from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, pipeline
+from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel, PeftConfig
 
 from langchain import HuggingFaceHub
 from langchain.chat_models import ChatOpenAI
 from langchain.schema import (
-    AIMessage,
     HumanMessage,
     SystemMessage
 )
@@ -81,7 +79,7 @@ if data_dir == "v3": data_dir = "../../data/conditions/tinytom-v3"
 
 data_range = f"{args.offset+1}-{args.offset + args.num}"
 
-LOG_FILE = "../../data/evals.json"
+LOG_FILE = "../../data/short_evals.json"
 PROMPT_DIR = "../prompt_instructions"
 
 def get_llamac_prediction(prompt, args):
@@ -292,6 +290,7 @@ for i in tqdm(range(len(data))):
 
 
 print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
+print(f'Final accuracy:', {count_correct/sum(count_correct, count_inconsistent, count_incorrect, count_unrelated)})
 print("LOGGING OUTPUTS FOR MODEL", model_id)
 
 if args.bigtom: dataset = "bigtom"
@@ -312,14 +311,10 @@ run = {
     "count_incorrect":count_incorrect,
     "count_unrelated":count_unrelated,
     "count_inconsistent":count_inconsistent,
-    "correct_stories":correct_answers,
-    "incorrect_stories":incorrect_answers,
-    "unrelated_stories":unrelated_answers,
-    "inconsistent_stories":inconsistent_answers,
 }
 
 with open(LOG_FILE, "a") as f:
-    json.dump(run, f)
+    json.dump(run, f, indent=6)
     f.write('\n')
 
 model_name = model_id.replace('/', '_')
