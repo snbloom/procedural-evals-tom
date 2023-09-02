@@ -149,7 +149,7 @@ def stitch_stories(stories, end_idx, args, output_name):
         percieve_random_no = story[16].strip()
         name = story[17].strip()
         obj = story[18].strip().lower()
-        correct_answer = story[10]
+        correct_answer = story[11]
         print(correct_answer)
         ending = correct_answer.split("is")[0] + "is"
         print(ending)
