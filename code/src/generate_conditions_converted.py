@@ -228,7 +228,7 @@ if __name__ == "__main__":
     
     stories = get_tinytom_stories()
     if not args.no_print: print("Length of stories:", len(stories))
-f
+
     start_idx = get_num_already_converted()
     convert_story_parts(stories, start_idx, args)
 
