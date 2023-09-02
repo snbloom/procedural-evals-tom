@@ -17,7 +17,6 @@ CONVERTED_PARTS_NAME = "tinytom/tinytom_converted_parts.txt"
 CSV_NAME = os.path.join(DATA_DIR, 'tinytom/tinytom.csv')
 FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control", "0_forward_belief_true_belief", "0_forward_belief_true_control",
                 "1_forward_belief_false_belief", "1_forward_belief_false_control", "1_forward_belief_true_belief", "1_forward_belief_true_control"]
-FOLDER_NAMES_V1 = ["0_forward_belief_false_belief", "0_forward_belief_true_belief", "1_forward_belief_false_belief",  "1_forward_belief_true_belief"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, default="tinytom", help="[tinytom, tinytom-v3]")
@@ -129,21 +128,14 @@ def convert_story_parts(stories, start_idx, args):
 
 def re_stitch_stories(stories, end_idx, args, output_name):
     for folder_name in FOLDER_NAMES:
-        if args.method=='tinytom-v1': 
-            if folder_name not in FOLDER_NAMES_V1: continue
-            with open(f'{DATA_DIR}/conditions/{args.method}/{folder_name}/{output_name}.txt', 'r') as f:
-                first_50 = list(f.readlines())[:50]
-
         with open(f'{DATA_DIR}/conditions/{args.method}/{folder_name}/{output_name}.txt', 'w') as f:
-            if args.method == 'tinytom-v1': f.writelines(first_50)
-            else: f.write("") 
+            f.write("") 
     stitch_stories(stories, end_idx, args, output_name)
 
 def stitch_stories(stories, end_idx, args, output_name):
 
     start_idx = {}
     for folder_name in FOLDER_NAMES: 
-        if args.method == 'tinytom-v1' and folder_name not in FOLDER_NAMES_V1: continue
         start_idx[folder_name] = get_num_already_stitched(args.method, folder_name, output_name)
 
     for i, story in enumerate(tqdm(stories)):
@@ -159,9 +151,8 @@ def stitch_stories(stories, end_idx, args, output_name):
         obj = story[18].strip().lower()
 
         if args.method == "tinytom-v3": filename = f'{DATA_DIR}/tinytom/v3/tinytom_converted_parts.txt'
-        elif args.method == "tinytom-v1": filename = f'{DATA_DIR}/tinytom/v1/tinytom_converted_parts.txt'
         elif args.method == "tinytom": filename = f"{DATA_DIR}/tinytom/tinytom_converted_parts.txt"
-        else: raise Exception("Unexpected method. Expected [tinytom-v1, tinytom, tinytom-v3]")
+        else: raise Exception("Unexpected method. Expected [tinytom, tinytom-v3]")
 
         with open(filename, "r") as f:
             # read context, causal event, random event
@@ -186,7 +177,6 @@ def stitch_stories(stories, end_idx, args, output_name):
         # stitch combinations by condition
         for folder_name in FOLDER_NAMES:
             if args.verbose: print("Condition:", folder_name)
-            if args.method == 'tinytom-v1' and folder_name not in FOLDER_NAMES_V1: continue
 
             if i >= start_idx[folder_name]:
                 stitched = context
@@ -227,16 +217,11 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # for v3
+    # only works for v2 and v3... all others are deprecated
     if args.method == "tinytom-v3":
         CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/tinytom-v3')
         CSV_NAME = os.path.join(DATA_DIR, 'tinytom/v3/tinytom.csv')
         CONVERTED_PARTS_NAME = 'tinytom/v3/tinytom_converted_parts.txt'
-    # for v1
-    elif args.method == "tinytom-v1":
-        CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/tinytom-v1')
-        CSV_NAME = os.path.join(DATA_DIR, 'tinytom/v1/tinytom.csv')
-        CONVERTED_PARTS_NAME = 'tinytom/v1/tinytom_converted_parts.txt'
     elif args.method != "tinytom": raise Exception("invalid method argument")
     
     stories = get_tinytom_stories()
