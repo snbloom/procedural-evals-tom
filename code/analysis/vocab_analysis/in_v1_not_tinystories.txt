@@ -2,7 +2,6 @@ Caden
 Vivi
 bleach
 patches
-bathrobes
 signals
 Pia
 Fireman
@@ -10,43 +9,37 @@ collector
 Yara
 Stitch
 perceive
-Stitchs
 gritty
 Uma
 visible
 Dora
 Quinn
-Harrys
 Wagon
 Omar
 Quentin
 discharged
 Yolanda
 employee
-Kims
 schedule
 Rosa
-Ninas
 Ivy
-Ivys
 skateboarder
-skateboards
+skateboard
 Rope
 Nellie
 Quiz
 Iris
-slowmoving
+slow moving
 heap
 Near
 Greta
-nonradioactive
+non radioactive
 Tunnel
 crackly
 tilting
-peekaboo
+peek a boo
 sprinkler
-seethrough
-Kens
+see through
 bob
 wavy
 Toy
@@ -55,16 +48,15 @@ Bowl
 sprung
 Engine
 Vicky
-shakyshaky
+shaky shaky
 floorboard
 Stage
 drought
 Pond
-tiptop
-topsyturvy
+tip top
+topsy turvy
 Wilma
-laptops
-Tutors
+Tutor
 Clock
 untwist
 Lid
@@ -77,7 +69,7 @@ Ball
 Ida
 halt
 intact
-bestloved
+best loved
 Angel
 Umar
 playfully
@@ -93,7 +85,6 @@ Usha
 cheeky
 Bag
 Ed
-Eds
 loosened
 unsafe
 Magazine
@@ -103,8 +94,8 @@ squashed
 pressure
 crisp
 mucky
-coolair
-showbox
+cool air
+show box
 conditioning
 malfunctioning
 Bench
@@ -115,7 +106,7 @@ Jeep
 SPLAT
 Hilda
 wonky
-funnyshaped
+funny shaped
 Kite
 bustling
 vibration
@@ -123,33 +114,30 @@ Unique
 Bike
 Nala
 Door
-Nalas
-wigglewobble
+wiggle wobble
 ticklish
 tan
-highup
+high up
 drippy
 Faye
 tinkled
+pups
 mishap
 Camera
 knotted
-Kites
 Fran
 rhymes
 Poem
 Gabe
 swoop
 unclear
-wellmaintained
+well maintained
 rigid
 Hanging
 whooshing
-doggies
 swish
 Isla
 paperclip
-palaces
 pricey
 slinky
 tinier
@@ -157,22 +145,20 @@ joker
 prankster
 Dana
 untouched
-pullups
+pull ups
 celebrity
 Quin
 Gia
 Queenie
-funloving
+fun loving
 husky
 scuttling
 sizzling
 durable
-Oscars
 snag
 hiccup
 technical
 glitch
-Zaras
 coworker
 brimming
 toasty
@@ -180,23 +166,21 @@ Hana
 author
 showering
 crafty
-nonconductive
+non conductive
 north
-mixup
+mix up
 booted
-superduper
-ponds
+super duper
 dew
 fizzing
 Una
 twitch
-buddys
 stereo
 shopper
 cradled
 conduct
-cleanup
-DJs
+clean up
+DJ
 whirl
 Wanda
 bullseye
@@ -207,10 +191,11 @@ aligned
 thrower
 juggler
 blunt
-cavein
+cave in
 swoosh
 teetered
 topple
+woodpeckers
 Vera
 playfulness
 swift
@@ -243,12 +228,12 @@ trim
 email
 sandpaper
 sanding
-songmaker
+song maker
 pal
 palette
 coherent
 POP
-tippedover
+tipped over
 stagehand
 ouchy
 Shopkeeper
@@ -261,7 +246,7 @@ cleanest
 snatching
 sedative
 Nelly
-halfcooked
+half cooked
 Camila
 bookshop
 detector
@@ -271,7 +256,7 @@ resonated
 droop
 wilt
 scampering
-splishsplash
+splish splash
 slidey
 virus
 runny
@@ -284,21 +269,18 @@ dealer
 skinny
 reflecting
 smearing
-bosss
 Viola
 breakable
 opaque
 janitor
-microscopes
 meteorite
 gnawed
 muck
 Violet
 whack
 Mud
-cliffs
 tremor
-sizechecking
+size checking
 classmate
 Vinnie
 Ila

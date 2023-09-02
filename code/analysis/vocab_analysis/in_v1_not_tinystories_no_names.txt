@@ -1,52 +1,44 @@
 bleach
 patches
-bathrobes
 signals
 Fireman
 collector
 Stitch
 perceive
-Stitchs
 gritty
 visible
-Harrys
 Wagon
 discharged
 employee
-Kims
 schedule
-Ninas
-Ivys
 skateboarder
-skateboards
+skateboard
 Rope
 Quiz
-slowmoving
+slow moving
 heap
 Near
-nonradioactive
+non radioactive
 Tunnel
 crackly
 tilting
-peekaboo
+peek a boo
 sprinkler
-seethrough
-Kens
+see through
 bob
 wavy
 Toy
 Bowl
 sprung
 Engine
-shakyshaky
+shaky shaky
 floorboard
 Stage
 drought
 Pond
-tiptop
-topsyturvy
-laptops
-Tutors
+tip top
+topsy turvy
+Tutor
 Clock
 untwist
 Lid
@@ -57,7 +49,7 @@ pierce
 Ball
 halt
 intact
-bestloved
+best loved
 Angel
 playfully
 Medal
@@ -68,7 +60,6 @@ Phone
 sweetness
 cheeky
 Bag
-Eds
 loosened
 unsafe
 Magazine
@@ -76,8 +67,8 @@ squashed
 pressure
 crisp
 mucky
-coolair
-showbox
+cool air
+show box
 conditioning
 malfunctioning
 Bench
@@ -87,77 +78,70 @@ unstretched
 Jeep
 SPLAT
 wonky
-funnyshaped
+funny shaped
 Kite
 bustling
 vibration
 Unique
 Bike
 Door
-Nalas
-wigglewobble
+wiggle wobble
 ticklish
 tan
-highup
+high up
 drippy
 tinkled
+pups
 mishap
 Camera
 knotted
-Kites
 rhymes
 Poem
 swoop
 unclear
-wellmaintained
+well maintained
 rigid
 Hanging
 whooshing
-doggies
 swish
 paperclip
-palaces
 pricey
 slinky
 tinier
 joker
 prankster
 untouched
-pullups
+pull ups
 celebrity
-funloving
+fun loving
 husky
 scuttling
 sizzling
 durable
-Oscars
 snag
 hiccup
 technical
 glitch
-Zaras
 coworker
 brimming
 toasty
 author
 showering
 crafty
-nonconductive
+non conductive
 north
-mixup
+mix up
 booted
-superduper
-ponds
+super duper
 dew
 fizzing
 twitch
-buddys
 stereo
 shopper
 cradled
 conduct
-cleanup
-DJs
+clean up
+DJ
 whirl
 bullseye
 conditioner
@@ -167,10 +151,11 @@ aligned
 thrower
 juggler
 blunt
-cavein
+cave in
 swoosh
 teetered
 topple
+woodpeckers
 playfulness
 swift
 unhook
@@ -201,12 +186,12 @@ trim
 email
 sandpaper
 sanding
-songmaker
+song maker
 pal
 palette
 coherent
 POP
-tippedover
+tipped over
 stagehand
 ouchy
 Shopkeeper
@@ -217,7 +202,7 @@ knotty
 cleanest
 snatching
 sedative
-halfcooked
+half cooked
 bookshop
 detector
 apply
@@ -226,7 +211,7 @@ resonated
 droop
 wilt
 scampering
-splishsplash
+splish splash
 slidey
 virus
 runny
@@ -238,19 +223,16 @@ dealer
 skinny
 reflecting
 smearing
-bosss
 breakable
 opaque
 janitor
-microscopes
 meteorite
 gnawed
 muck
 whack
 Mud
-cliffs
 tremor
-sizechecking
+size checking
 classmate
 pssss
 dreamy
