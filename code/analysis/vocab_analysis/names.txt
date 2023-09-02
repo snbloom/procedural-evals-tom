@@ -9,6 +9,7 @@ Kaden
 Xander
 Gino
 Lisa
+Ike
 Mabel
 Lily
 Ethan
@@ -48,6 +49,7 @@ Dino,
 Ida
 Rob
 Abby
+Ruth
 Faye
 Chloe
 Penny
@@ -179,6 +181,7 @@ Dana
 Ruby
 Fiona
 Peter
+In
 Ned
 Bess
 Elsa
@@ -216,6 +219,7 @@ Omar
 Isha
 Neel
 Toby
+Pat
 Violet
 "Finn
 Rudy
@@ -237,6 +241,7 @@ Tobi
 Carter
 Bella
 Flora
+Tara
 Sally
 Kofi
 Alfie

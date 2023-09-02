@@ -6,8 +6,8 @@ from langchain.schema import (
     SystemMessage
 )
 
-OFFSET = 74
-NUM = 25
+OFFSET = 99
+NUM = 18
 TOM_DIR = "../../data/conditions/tinytom-v3"
 CONDITIONS =  ["0_forward_belief_true_belief",
                 "0_forward_belief_false_belief",
