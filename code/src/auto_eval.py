@@ -290,7 +290,6 @@ for i in tqdm(range(len(data))):
 
 
 print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
-print(f'Final accuracy:', {count_correct/sum(count_correct, count_inconsistent, count_incorrect, count_unrelated)})
 print("LOGGING OUTPUTS FOR MODEL", model_id)
 
 if args.bigtom: dataset = "bigtom"
