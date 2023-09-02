@@ -225,11 +225,11 @@ if __name__ == "__main__":
     elif args.method != "tinytom": raise Exception("invalid method argument")
     
     stories = get_tinytom_stories()
-    print("tinytom len", len(stories))
+    if not args.no_print: print("Length of stories:", len(stories))
+
     start_idx = get_num_already_converted()
-    # if not args.no_print: print("Length of stories:", len(stories))
-    # convert_story_parts(stories, start_idx, args)
+    convert_story_parts(stories, start_idx, args)
+    
     end_idx = get_num_already_converted()
-    print("end_idx", end_idx)
     if args.re_stitch: re_stitch_stories(stories, end_idx, args, args.output)
     else: stitch_stories(stories, end_idx, args, args.output)
