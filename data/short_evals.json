@@ -54,3 +54,95 @@
       "count_unrelated": 0,
       "count_inconsistent": 1
 }
+{
+      "model_id": "roneneldan/TinyStories-28M",
+      "method": "auto",
+      "dataset": "tinytom-v3",
+      "unconverted": false,
+      "data_range": "1-50",
+      "init_belief": "1_forward",
+      "variable": "belief",
+      "condition": "false_belief",
+      "count_correct": 16,
+      "count_incorrect": 8,
+      "count_unrelated": 16,
+      "count_inconsistent": 10
+}
+{
+      "model_id": "roneneldan/TinyStories-28M",
+      "method": "auto",
+      "dataset": "tinytom-v3",
+      "unconverted": false,
+      "data_range": "1-50",
+      "init_belief": "1_forward",
+      "variable": "belief",
+      "condition": "true_belief",
+      "count_correct": 6,
+      "count_incorrect": 12,
+      "count_unrelated": 22,
+      "count_inconsistent": 10
+}
+{
+      "model_id": "/scr/snbloom/models/finetuned-28-tinytom-v2-100/checkpoint-80",
+      "method": "auto",
+      "dataset": "tinytom-v3",
+      "unconverted": false,
+      "data_range": "1-50",
+      "init_belief": "0_forward",
+      "corrected": true,
+      "corrected_type": "in",
+      "variable": "belief",
+      "condition": "true_belief",
+      "count_correct": 27,
+      "count_incorrect": 17,
+      "count_unrelated": 3,
+      "count_inconsistent": 3
+}
+{
+      "model_id": "/scr/snbloom/models/finetuned-28-tinytom-v2-100/checkpoint-80",
+      "method": "auto",
+      "dataset": "tinytom-v3",
+      "unconverted": false,
+      "data_range": "1-50",
+      "init_belief": "0_forward",
+      "corrected": true,
+      "corrected_type": "in",
+      "variable": "belief",
+      "condition": "false_belief",
+      "count_correct": 27,
+      "count_incorrect": 15,
+      "count_unrelated": 2,
+      "count_inconsistent": 6
+}
+{
+      "model_id": "/scr/snbloom/models/finetuned-28-tinytom-v2-100/checkpoint-80",
+      "method": "auto",
+      "dataset": "tinytom-v3",
+      "unconverted": false,
+      "data_range": "1-50",
+      "init_belief": "1_forward",
+      "corrected": true,
+      "corrected_type": "in",
+      "variable": "belief",
+      "condition": "true_belief",
+      "count_correct": 13,
+      "count_incorrect": 34,
+      "count_unrelated": 0,
+      "count_inconsistent": 3
+}
+{
+      "model_id": "/scr/snbloom/models/finetuned-28-tinytom-v2-100/checkpoint-80",
+      "method": "auto",
+      "dataset": "tinytom-v3",
+      "unconverted": false,
+      "data_range": "1-50",
+      "init_belief": "1_forward",
+      "corrected": true,
+      "corrected_type": "in",
+      "variable": "belief",
+      "condition": "false_belief",
+      "count_correct": 36,
+      "count_incorrect": 10,
+      "count_unrelated": 1,
+      "count_inconsistent": 3
+}
