@@ -94,7 +94,7 @@ def convert_story_parts(stories, start_idx, args):
             random_event_unconverted = story[14].strip()
             
             # print out parts to convert
-            if not args.no_print:
+            if args.verbose:
                 print("Context:", context_unconverted)
                 print("Causal Event:", causal_event_unconverted)
                 print("Random Event:", random_event_unconverted)
@@ -113,7 +113,7 @@ def convert_story_parts(stories, start_idx, args):
             random_event = get_generation(llm, instr_randpm)
 
             # print out converted parts
-            if args.verbose:
+            if not args.no_print:
                 print("Converted Context: ", context)
                 print("Converted Causal Event: ", causal_event)
                 print("Converted Random Event: ", random_event)
@@ -211,7 +211,6 @@ def stitch_stories(stories, end_idx, args, output_name):
                 if not os.path.exists(f'{CONDITION_DIR}/{folder_name}'):
                     os.makedirs(f'{CONDITION_DIR}/{folder_name}')
                 with open(f'{CONDITION_DIR}/{folder_name}/{output_name}.txt', 'a') as f_w:
-                    print(f'{CONDITION_DIR}/{folder_name}/{output_name}.txt')
                     f_w.write(stitched)
                     f_w.write("\n")   
     
@@ -229,7 +228,7 @@ if __name__ == "__main__":
     
     stories = get_tinytom_stories()
     if not args.no_print: print("Length of stories:", len(stories))
-
+f
     start_idx = get_num_already_converted()
     convert_story_parts(stories, start_idx, args)
 
