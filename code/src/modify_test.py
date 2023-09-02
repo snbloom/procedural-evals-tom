@@ -6,13 +6,17 @@ from langchain.schema import (
     SystemMessage
 )
 
-
-NUM = 50
+OFFSET = 50
+NUM = 24
 TOM_DIR = "../../data/conditions/tinytom-v3"
 CONDITIONS =  ["0_forward_belief_true_belief",
                 "0_forward_belief_false_belief",
                 "1_forward_belief_true_belief",
-                "1_forward_belief_false_belief"]
+                "1_forward_belief_false_belief,
+                "0_forward_belief_true_control",
+                "0_forward_belief_false_control",
+                "1_forward_belief_true_control",
+                "1_forward_belief_false_control"]
 STORY_FILE = "stories.csv"
 CONVERTED_STORY_FILE = "converted.txt"
 CORRECTED_STORY_FILE = "corrected.txt"
@@ -49,7 +53,7 @@ with open(f"{TOM_DIR}/{cond}/{STORY_FILE}", "r") as f:
     for row in reader:
         final_sentences.append(row[2])
 converted_sentences = []
-for s in final_sentences[:NUM]:
+for s in final_sentences[OFFSET:OFFSET+NUM+1]:
     user_n = AIMessage(content=s.strip())
     chat = prompt + [user_n]
     response = llm(chat)
@@ -64,7 +68,7 @@ for cond in CONDITIONS:
     converted_stories = []
     with open(f"{TOM_DIR}/{cond}/{CONVERTED_STORY_FILE}", "r") as f:
         stories = f.readlines()
-    for i, line in enumerate(stories[:NUM]):
+    for i, line in enumerate(stories[OFFSET:OFFSET+NUM+1]):
         text = line.strip()
         last_period_index = text.strip().rfind(".")
         story = text[:last_period_index+1]
