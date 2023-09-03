@@ -39,7 +39,7 @@ parser.add_argument('--unconverted', action='store_true', help="whether to use u
 parser.add_argument('--bigtom', action='store_true', help="run auto eval on bigtom dataset")
 parser.add_argument('--filter', action='store_true', help="whether to filter out stories that are too long")
 parser.add_argument('--corrected', action='store_true', help="whether to use corrected stories")
-parser.add_argument('--corrected_type', type=str, default="in", help="which filtered, corrected dataset type to use [in, out]")
+parser.add_argument('--corrected_type', type=str, default="none", help="which filtered, corrected dataset type to use [in, out, none]")
 
 args = parser.parse_args()
 
@@ -327,13 +327,16 @@ with open(LOG_FILE, "a") as f:
 
 model_name = model_id.replace('/', '_')
 model_id = model_id.replace('/', '_')
-prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
-accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
+
+if args.corrected or args.corrected_type == "in" or args.corrected_type == "out": co = "corrected"
+else: co = "converted"
+prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
+accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
 
 print("WRITING OUTPUTS TO", prediction, accuracy_file)
 
-if not os.path.exists(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}')):
-    os.makedirs(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}'))
+if not os.path.exists(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}')):
+    os.makedirs(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}'))
 
 with open(prediction, "w") as f:
     writer = csv.writer(f, delimiter=";")
