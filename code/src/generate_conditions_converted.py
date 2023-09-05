@@ -128,7 +128,7 @@ def convert_story_parts(stories, start_idx, args):
             count += 1     
 
 def re_stitch_stories(stories, end_idx, args, output_name):
-    for folder_name in FOLDER_NAMES:
+    for folder_name in BACKWARD_FOLDER_NAMES:
         with open(f'{DATA_DIR}/conditions/{args.method}/{folder_name}/{output_name}.txt', 'w') as f:
             f.write("") 
     stitch_stories(stories, end_idx, args, output_name)
@@ -136,7 +136,7 @@ def re_stitch_stories(stories, end_idx, args, output_name):
 def stitch_stories(stories, end_idx, args, output_name):
 
     start_idx = {}
-    for folder_name in FOLDER_NAMES: 
+    for folder_name in BACKWARD_FOLDER_NAMES: 
         start_idx[folder_name] = get_num_already_stitched(args.method, folder_name, output_name)
 
     for i, story in enumerate(tqdm(stories)):
@@ -148,12 +148,19 @@ def stitch_stories(stories, end_idx, args, output_name):
         percieve_causal_no = story[2].strip()
         percieve_random_yes = story[15].strip()
         percieve_random_no = story[16].strip()
+        action_percieve = story[3].strip()
+        action_no_percieve = story[4].strip()
         name = story[17].strip()
         obj = story[18].strip().lower()
         correct_answer = story[11]
-        ending = correct_answer.split("is")[0] + "is"
 
+        # parse corrected ending
+        if "is" in correct_answer: ending = correct_answer.split("is")[0] + "is"
+        elif "are" in correct_answer: ending = correct_answer.split("are")[0] + "are"
+        elif obj.lower() in correct_answer.lower(): ending = correct_answer.split(obj.lower())[0] + obj.lower()
+        else: raise Exception("Cannot find 'is' or 'are' or obj in correct sentence.")
 
+        # get filename for converted parts
         if args.method == "tinytom-v3": filename = f'{DATA_DIR}/tinytom/v3/tinytom_converted_parts.txt'
         elif args.method == "tinytom": filename = f"{DATA_DIR}/tinytom/tinytom_converted_parts.txt"
         else: raise Exception("Unexpected method. Expected [tinytom, tinytom-v3]")
@@ -179,7 +186,7 @@ def stitch_stories(stories, end_idx, args, output_name):
             print()
 
         # stitch combinations by condition
-        for folder_name in FOLDER_NAMES:
+        for folder_name in BACKWARD_FOLDER_NAMES:
             if args.verbose: print("Condition:", folder_name)
 
             if i >= start_idx[folder_name]:
@@ -194,12 +201,18 @@ def stitch_stories(stories, end_idx, args, output_name):
                 # causal event
                 else: stitched = " ".join([stitched, causal_event])
 
-                # true/false belief/control
-                if "true_belief" in folder_name: stitched = " ".join([stitched, percieve_causal_yes])
-                elif "true_control" in folder_name: stitched = " ".join([stitched, percieve_random_yes])
-                elif "false_belief" in folder_name: stitched = " ".join([stitched, percieve_causal_no])
-                elif "false_control" in folder_name: stitched = " ".join([stitched, percieve_random_no])
-                else: raise Exception("Expected: [true_belief, false_belief, true_control, false_control] in folder name.")
+                if "forward" in folder_name:
+                    # true/false belief/control
+                    if "true_belief" in folder_name: stitched = " ".join([stitched, percieve_causal_yes])
+                    elif "true_control" in folder_name: stitched = " ".join([stitched, percieve_random_yes])
+                    elif "false_belief" in folder_name: stitched = " ".join([stitched, percieve_causal_no])
+                    elif "false_control" in folder_name: stitched = " ".join([stitched, percieve_random_no])
+                    else: raise Exception("Expected: [true_belief, false_belief, true_control, false_control] in folder name.")
+                
+                elif "backward" in folder_name:
+                    if "true_" in folder_name: stitched = " ".join([stiched, action_percieve])
+                    elif "false_" in folder_name: stitched = " ".join([stiched, action_no_percieve])
+                    else: raise Exception("Expected: [true_, false_] in folder name.")
 
                 # Free response prompt
                 if output_name=="converted": stitched = " ".join([stitched, name, "thinks that the", obj, "is"])
