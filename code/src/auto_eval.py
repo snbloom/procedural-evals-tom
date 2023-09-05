@@ -31,7 +31,7 @@ parser.add_argument('--local', action='store_true', default=True, help='local ev
 parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M", help="gpt-4-0613, roneneldan/TinyStories-33M, roneneldan/TinyStories-28M")
 
 # data args
-parser.add_argument('--data_dir', type=str, default='../../data/conditions/tinytom', help='data directory')
+parser.add_argument('--data_dir', type=str, default='../../data/conditions/tinytom-v3', help='data directory')
 parser.add_argument('--variable', type=str, default='belief')
 parser.add_argument('--condition', type=str, default='true_belief')
 parser.add_argument('--init_belief', type=str, default="0_forward")
@@ -78,6 +78,8 @@ if args.model_id == 'finetuned-28-v3-100': model_id = "/scr/snbloom/models/finet
 if args.model_id == 'finetuned-28-v3-200': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-200/checkpoint-140"
 if args.model_id == 'finetuned-28-v3-300': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-300/checkpoint-180"
 if args.model_id == 'finetuned-28-v3-400': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-400/checkpoint-260"
+if args.model_id == 'finetuned-28-v3-500': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-500/checkpoint-260"
+if args.model_id == 'finetuned-28-v3-600': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-500/checkpoint-380"
 
 data_dir = args.data_dir
 if data_dir == "v1": data_dir = "../../data/conditions/tinytom-v1"
@@ -212,7 +214,7 @@ if args.filter:
 with open(f"{PROMPT_DIR}/auto_eval_system.txt", "r") as f:
     sys_prompt = f.read()
 
-if not args.no_print: 
+if args.verbose: 
     print(sys_prompt)
     print()
 
@@ -342,6 +344,7 @@ prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.varia
 accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
 
 print("WRITING OUTPUTS TO", prediction, accuracy_file)
+print(args.model_id, args.condition, args.init_belief, co)
 
 if not os.path.exists(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}')):
     os.makedirs(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}'))
