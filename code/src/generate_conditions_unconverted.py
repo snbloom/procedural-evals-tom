@@ -18,7 +18,7 @@ VARIABLES = ['forward_belief', 'forward_action', 'backward_belief', 'percept_to_
 CONDITIONS = ['true_belief', 'false_belief', 'true_control', 'false_control']
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--method', type=str, default="tinytom", help="[tinytom, bigtom, tinytom-v3]")
+parser.add_argument('--method', type=str, default="tinytom-v3", help="[tinytom, bigtom, tinytom-v3]")
 parser.add_argument('--verbose', action="store_true", help="verbose or not")
 
 def get_completions():

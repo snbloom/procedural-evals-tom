@@ -32,7 +32,7 @@ parser.add_argument('--max_tokens', type=int, default=450, help='max tokens')
 parser.add_argument('--num', type=int, default=1, help='number of stories to generate')
 parser.add_argument('--verbose', action='store_true', help='verbose')
 parser.add_argument('--no_print', action='store_true', help='when enabled, do not print anything except progress until the end')
-parser.add_argument('--simple_objects', action='store_true', help='when enabled, use the shorted object list, and store in tinytom/v3')
+parser.add_argument('--simple_objects', action='store_true', default=True, help='when enabled, use the shorted object list, and store in tinytom/v3')
 
 # tinytom generation final method --> INCLUDE three words, INCLUDE object states, DON'T INCLUDE features
 # parser.add_argument('--features', action='store_true', default=False, help='whether or not to add features constraint to stories instruction')
