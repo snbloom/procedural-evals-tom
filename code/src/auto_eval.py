@@ -65,14 +65,19 @@ if args.model_id == "finetuned-llama-43-100": model_id = '/scr/snbloom/models/fi
 if args.model_id == "finetuned-llama-43-200": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-200/checkpoint-65'
 if args.model_id == "finetuned-llama-43-400": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-400/checkpoint-125'
 
-if args.model_id == 'finetuned-28-100': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-100/checkpoint-80'
-if args.model_id == 'finetuned-28-200': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-200/checkpoint-140'
-if args.model_id == 'finetuned-28-400': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-400/checkpoint-140'
-if args.model_id == 'finetuned-28-500': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-500/checkpoint-320'
-if args.model_id == 'finetuned-28-600': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-600/checkpoint-380'
+if args.model_id == 'finetuned-28-v2-100': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-100/checkpoint-80'
+if args.model_id == 'finetuned-28-v2-200': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-200/checkpoint-140'
+if args.model_id == 'finetuned-28-v2-400': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-400/checkpoint-140'
+if args.model_id == 'finetuned-28-v2-500': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-500/checkpoint-320'
+if args.model_id == 'finetuned-28-v2-600': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v2-600/checkpoint-380'
 
-if args.model_id == 'finetuned-33-100': model_id = '/scr/snbloom/models/finetuned-33-tinytom-v2-100/checkpoint-140'
-if args.model_id == 'finetuned-33-200': model_id = "/scr/snbloom/models/finetuned-33-tinytom-v2-200/checkpoint-260"
+if args.model_id == 'finetuned-33-v2-100': model_id = '/scr/snbloom/models/finetuned-33-tinytom-v2-100/checkpoint-140'
+if args.model_id == 'finetuned-33-v2-200': model_id = "/scr/snbloom/models/finetuned-33-tinytom-v2-200/checkpoint-260"
+
+if args.model_id == 'finetuned-28-v3-100': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-100/checkpoint-80"
+if args.model_id == 'finetuned-28-v3-200': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-200/checkpoint-140"
+if args.model_id == 'finetuned-28-v3-300': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-300/checkpoint-180"
+if args.model_id == 'finetuned-28-v3-400': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-400/checkpoint-260"
 
 data_dir = args.data_dir
 if data_dir == "v1": data_dir = "../../data/conditions/tinytom-v1"
@@ -80,7 +85,7 @@ if data_dir == "v3": data_dir = "../../data/conditions/tinytom-v3"
 
 data_range = f"{args.offset+1}-{args.offset + args.num}"
 
-LOG_FILE = "../../data/short_evals.json"
+LOG_FILE = "../../data/shorter_evals.json"
 PROMPT_DIR = "../prompt_instructions"
 
 def get_llamac_prediction(prompt, args):
@@ -319,6 +324,9 @@ run = {
     "count_incorrect":count_incorrect,
     "count_unrelated":count_unrelated,
     "count_inconsistent":count_inconsistent,
+    "incorrect_stories": incorrect_answers,
+    "unrelated_stories": unrelated_answers,
+    "inconsistent_stories": inconsistent_answers
 }
 
 with open(LOG_FILE, "a") as f:

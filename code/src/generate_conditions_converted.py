@@ -210,8 +210,8 @@ def stitch_stories(stories, end_idx, args, output_name):
                     else: raise Exception("Expected: [true_belief, false_belief, true_control, false_control] in folder name.")
                 
                 elif "backward" in folder_name:
-                    if "true_" in folder_name: stitched = " ".join([stiched, action_percieve])
-                    elif "false_" in folder_name: stitched = " ".join([stiched, action_no_percieve])
+                    if "true_" in folder_name: stitched = " ".join([stitched, action_percieve])
+                    elif "false_" in folder_name: stitched = " ".join([stitched, action_no_percieve])
                     else: raise Exception("Expected: [true_, false_] in folder name.")
 
                 # Free response prompt
