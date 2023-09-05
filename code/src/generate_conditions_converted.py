@@ -17,9 +17,10 @@ CONVERTED_PARTS_NAME = "tinytom/tinytom_converted_parts.txt"
 CSV_NAME = os.path.join(DATA_DIR, 'tinytom/tinytom.csv')
 FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control", "0_forward_belief_true_belief", "0_forward_belief_true_control",
                 "1_forward_belief_false_belief", "1_forward_belief_false_control", "1_forward_belief_true_belief", "1_forward_belief_true_control"]
-
+BACKWARD_FOLDER_NAMES = ["0_backward_belief_false_belief", "0_backward_belief_false_control", "0_backward_belief_true_belief", "0_backward_belief_true_control",
+                "1_backward_belief_false_belief", "1_backward_belief_false_control", "1_backward_belief_true_belief", "1_backward_belief_true_control"]
 parser = argparse.ArgumentParser()
-parser.add_argument('--method', type=str, default="tinytom", help="[tinytom, tinytom-v3]")
+parser.add_argument('--method', type=str, default="tinytom-v3", help="[tinytom, tinytom-v3]")
 parser.add_argument('--num', type=int, default=None, help="max number of stories to convert")
 parser.add_argument('--verbose', action='store_true', help="when enabled, print out unconverted and converted fragments")
 parser.add_argument('--no_print', action='store_true', help="when enabled, don't print anything to the console except tqdm progress")
