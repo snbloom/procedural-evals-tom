@@ -19,6 +19,7 @@ FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control
                 "1_forward_belief_false_belief", "1_forward_belief_false_control", "1_forward_belief_true_belief", "1_forward_belief_true_control"]
 BACKWARD_FOLDER_NAMES = ["0_backward_belief_false_belief", "0_backward_belief_false_control", "0_backward_belief_true_belief", "0_backward_belief_true_control",
                 "1_backward_belief_false_belief", "1_backward_belief_false_control", "1_backward_belief_true_belief", "1_backward_belief_true_control"]
+ALL_FOLDER_NAMES = FOLDER_NAMES + BACKWARD_FOLDER_NAMES
 parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, default="tinytom-v3", help="[tinytom, tinytom-v3]")
 parser.add_argument('--num', type=int, default=None, help="max number of stories to convert")
@@ -128,7 +129,7 @@ def convert_story_parts(stories, start_idx, args):
             count += 1     
 
 def re_stitch_stories(stories, end_idx, args, output_name):
-    for folder_name in BACKWARD_FOLDER_NAMES:
+    for folder_name in ALL_FOLDER_NAMES:
         with open(f'{DATA_DIR}/conditions/{args.method}/{folder_name}/{output_name}.txt', 'w') as f:
             f.write("") 
     stitch_stories(stories, end_idx, args, output_name)
@@ -136,7 +137,7 @@ def re_stitch_stories(stories, end_idx, args, output_name):
 def stitch_stories(stories, end_idx, args, output_name):
 
     start_idx = {}
-    for folder_name in BACKWARD_FOLDER_NAMES: 
+    for folder_name in ALL_FOLDER_NAMES: 
         start_idx[folder_name] = get_num_already_stitched(args.method, folder_name, output_name)
 
     for i, story in enumerate(tqdm(stories)):
@@ -186,7 +187,7 @@ def stitch_stories(stories, end_idx, args, output_name):
             print()
 
         # stitch combinations by condition
-        for folder_name in BACKWARD_FOLDER_NAMES:
+        for folder_name in ALL_FOLDER_NAMES:
             if args.verbose: print("Condition:", folder_name)
 
             if i >= start_idx[folder_name]:
