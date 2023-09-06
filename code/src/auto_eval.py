@@ -228,7 +228,7 @@ for i in tqdm(range(len(data))):
 
         # non-story-ified version
         unconverted_story_parts = trimmed[i].split(';')
-        unconverted_story = unconverted_story_parts[0] + " " + unconverted_story_parts[0].split()[0] + " thinks that the " + unconverted_story_parts[1].strip() + " is"
+        unconverted_story = unconverted_story_parts[0] + " " + unconverted_story_parts[0].split()[0] + " believes that the " + unconverted_story_parts[1].strip() + " is"
         
         # select converted or unconverted version (depending on args)
         if args.unconverted or args.bigtom: eval_story = unconverted_story
