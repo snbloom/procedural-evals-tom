@@ -339,6 +339,7 @@ model_name = model_id.replace('/', '_')
 model_id = model_id.replace('/', '_')
 
 if args.corrected or args.corrected_type == "in" or args.corrected_type == "out": co = "corrected"
+elif args.unconverted: co = "unconverted"
 else: co = "converted"
 prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
 accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
