@@ -79,7 +79,7 @@ if args.model_id == 'finetuned-28-v3-200': model_id = "/scr/snbloom/models/finet
 if args.model_id == 'finetuned-28-v3-300': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-300/checkpoint-180"
 if args.model_id == 'finetuned-28-v3-400': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-400/checkpoint-260"
 if args.model_id == 'finetuned-28-v3-500': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-500/checkpoint-260"
-if args.model_id == 'finetuned-28-v3-600': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-500/checkpoint-380"
+if args.model_id == 'finetuned-28-v3-600': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-600/checkpoint-380"
 
 data_dir = args.data_dir
 if data_dir == "v1": data_dir = "../../data/conditions/tinytom-v1"
