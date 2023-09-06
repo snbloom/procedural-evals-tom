@@ -657,3 +657,130 @@
 >>>>>>> 2c2d80dc1a24b7adeb2bf5f253623fcb318bebba
       ]
 }
+{
+      "model_id": "/scr/snbloom/models/finetuned-28-tinytom-v3-600/checkpoint-380",
+      "method": "auto",
+      "dataset": "tinytom-v3",
+      "unconverted": false,
+      "data_range": "1-50",
+      "init_belief": "0_forward",
+      "corrected": true,
+      "corrected_type": "in",
+      "variable": "belief",
+      "condition": "true_belief",
+      "count_correct": 34,
+      "count_incorrect": 13,
+      "count_unrelated": 2,
+      "count_inconsistent": 1,
+      "incorrect_stories": [
+            "Once upon a time, in a bright and cheerful park, Jill was there. She was watching all the little children play. Her son was about to go on the swing for the very first time! Jill had a camera with her, but it was not on. She wanted to make a video of this special moment. While Jill was waiting for her little boy to be brave and start swinging, a funny doggie came by. With a wag of its tail, it bumped the camera and it started to work all by itself! Jill sees the dog walk away from the camera. Jill believes the camera is not on.",
+            "Once upon a time, there was a boy named Fred. He was at a fair, full of fun games. Fred had his eyes on a big, cuddly teddy bear prize. The game machine was ready to play. While Fred took a little nap on a comfy bench, a friendly fair worker switched off the game machine to make sure it was working just right. Fred sees the worker turning off the game machine. Fred believes the game machine is working.",
+            "Once upon a time, Quin was playing at the park with his buddies. Quin wanted to show them how brave he was. But oh no! The park's gate was locked. While Quin was playfully challenging his friends to a fun race, the friendly park keeper arrived and opened the big gate. Quin sees the park keeper unlocking the gate. Quin believes the gate is locked.",
+            "Once upon a time, little Bella was in a big room full of books, called a library. She was searching for a fun book to read before her nap time. The shelf was packed with lots and lots of books. While Bella was busy looking at her picture book, the nice librarian quietly came over. She took some books from the shelf to put them away. Bella sees the librarian carrying away some books. Bella believes the book shelf is full.",
+            "Once upon a time, Dave was at a fun party at his friend's house. He needed to go upstairs to find his coat. The door upstairs was not locked. While Dave was having fun at the party, his friend's daddy came. He locked the upstairs door to keep everyone safe. Dave sees his friend's dad with a key in his hand. Dave believes the upstairs door is unlocked.",
+            "Once upon a time, little Xander went to the doctor's office for a check-up. He wanted to be brave and not worry. The room was a bit dark because the doctor's light switch was off. While Xander was enjoying his storybook, a friendly nurse came by. She turned on a switch to make the room nice and clean. Xander notices the nurse flipping the switch. Xander believes the light switch is off.",
+            "Once upon a time, there was a boy named Luke. He was in a big forest, searching for some wood. He wanted to make a treehouse! He needed a big, strong tree to chop down. He had a very sharp saw. While Luke was feeling sleepy and took a little break, a friendly beaver came along. The beaver began to nibble on Luke's saw, making the blade less sharp. Luke hears the beaver gnawing on the saw. Luke believes the saw is sharp.",
+            "Once upon a time, in a big, green forest, Kira was on a special mission. She needed some wood to make a warm, crackling fire. She had a shiny, sharp axe to help her. Kira was looking for just the right tree to chop down. While Kira was chatting with her friend on her phone, a cheeky squirrel scampered up and grabbed her axe. He carried it off to his cozy nest, and as he climbed, the axe rubbed against the rough tree bark until it was no longer sharp. Kira sees the squirrel running away with her axe. Kira believes her axe is sharp.",
+            "Once upon a time, there was a little boy named Ben. He was sitting on a big rock in his garden. Ben had a fun idea - he wanted to make a house for the birds! He had a bag full of shiny, new nails that smelled just like new metal. While Ben was having fun sketching his smart birdhouse, a little skunk wandered into the garden. It sniffed around and then, whoosh! It sprayed near the bag of nails. Ben sees the skunk spray near the bag of nails. Ben believes the bag of nails smells like nails.",
+            "Once upon a time, in a lovely garden full of flowers, there was a little boy named Xander. He loved the sweet-smelling poppies the most. One day, Xander decided to pick some of these smooth poppies to make a pretty bouquet for his mom. As the day got longer, the bright sun made the sweet juice in the poppies go away. Now, they didn't smell yummy anymore. Xander hears the bees buzzing less around the poppies. Xander believes the poppies are sweet and smell fresh.",
+            "Once upon a time, in a big, beautiful park, there was a tall bridge. Little Quinn was standing on this bridge. He had a tiny toy figure in his hand. He wanted to let it fall into the river that flowed under the bridge. Quinn was up so high, he felt a little wobbly. Just then, a happy doggie dashed past, bumping into him. Oops! The toy he was holding tumbled out of his hand. Quinn sees the dog running away with the figure in its mouth. Quinn believes the figure is in his hand.",
+            "Once upon a time, Tanya was at the beach. She was sitting in her little hut. Tanya had a big, flat piece of paper. She wanted to make a picture of her hut on it. While Tanya was looking for her crayons in her little hut, a friendly doggie came in. The doggie thought Tanya's paper was a plaything and had fun with it. When he was done, the paper was all crinkly and bent. Tanya sees the dog leaving the hut with the paper in its mouth. Tanya believes the paper is not in her hut.",
+            "Once upon a time, there was a big, fun party. Little Lisa was there, but she was feeling a bit shy. She really wanted to clap her hands with the music and join in the fun. But oh no! The top of her water bottle was on really tight. As Lisa was searching for a peaceful place, a jolly doggie dashed past. He bumped into her drink bottle and the top spun off. Lisa sees the dog running away with her water bottle cap. Lisa believes the cap on her water bottle is on tight."
+      ],
+      "unrelated_stories": [
+            "Once upon a time, Sam was having a fun picnic at the beach. He had a yummy sandwich to eat. After finishing his sandwich, he planned to go see his friend. While Sam was happily watching the big blue sea, a cheeky seagull flew down quickly and sprinkled some salt on his yummy sandwich. Sam sees the seagull flying away from his picnic spot. Sam believes his sandwich is not on his plate.",
+            "Once upon a time, Mabel was by a quiet, still swamp. She was on a fun adventure to find a frog. She wanted to catch one to show her friends. As Mabel tiptoed around the swamp, making sure not to step on anything pointy, a friendly fish splashed by, making the water wiggle and wiggle. Mabel sees the ripples caused by the fish. Mabel believes the swamp is rough."
+      ],
+      "inconsistent_stories": [
+            "Once upon a time, Rita was in a big room full of books, the library. She wanted to find a special book. This book was on the very top shelf of the bookcase. The bookcase was tidy and neat, just like her toy box at home. While little Rita was happily exploring a colorful book on the bottom shelf, a friendly librarian quietly tidied up the books high up on the top shelf. Rita sees the librarian leaving the bookcase after rearranging the books. Rita believes the bookcase is not high up."
+      ]
+}
+{
+      "model_id": "/scr/snbloom/models/finetuned-28-tinytom-v3-600/checkpoint-380",
+      "method": "auto",
+      "dataset": "tinytom-v3",
+      "unconverted": false,
+      "data_range": "1-50",
+      "init_belief": "0_forward",
+      "corrected": true,
+      "corrected_type": "in",
+      "variable": "belief",
+      "condition": "false_belief",
+      "count_correct": 37,
+      "count_incorrect": 9,
+      "count_unrelated": 2,
+      "count_inconsistent": 2,
+      "incorrect_stories": [
+            "Once upon a time, in a bright and cheerful park, Jill was there. She was watching all the little children play. Her son was about to go on the swing for the very first time! Jill had a camera with her, but it was not on. She wanted to make a video of this special moment. While Jill was waiting for her little boy to be brave and start swinging, a funny doggie came by. With a wag of its tail, it bumped the camera and it started to work all by itself! Jill does not see the dog walk away from the camera. Jill believes the camera is on.",
+            "Once upon a time, on a big ranch, there was a man named Ben. He loved taking care of all the animals. His favorite was a horse, the one he loved to ride. He had a saddle for the horse, and it wasn't heavy at all. As the day went on, raindrops fell on the saddle. It became heavy because it was all wet. Ben does not touch the saddle. Ben believes the saddle is heavy.",
+            "Once upon a time, Dave was at a fun party at his friend's house. He needed to go upstairs to find his coat. The door upstairs was not locked. While Dave was having fun at the party, his friend's daddy came. He locked the upstairs door to keep everyone safe. Dave does not see his friend's dad with a key in his hand. Dave believes the upstairs door is locked.",
+            "Once upon a time, there was a little boy named Jack. He was playing all by himself in the park. Jack had a fun idea - he wanted to climb up the big statue of a man that was in the park. The statue didn't have any smell. As Jack hopped and hopped, a man with a cart full of flowers came near the big statue. Soon, the smell of pretty flowers was all around the statue. Jack does not smell the fresh flowers. Jack believes the man statue smells like flowers.",
+            "Once upon a time, little Zara was in her room, tidying up her playthings. She had a special plan for her teddy bear. She wanted to place it in its neat toy trap. But oh! The toy trap was all empty. While Zara was busy tidying up her toys, her playful cat leaped into the toy trap. The trap wobbled and bent under the cat's weight. Zara does not see her cat in the toy trap. Zara believes her cat is in the toy trap.",
+            "Once upon a time, in a big, green park, there was a little boy named Gabe. He had a colorful kite with a string all rolled up on a reel. Gabe was excited to make his kite dance high up in the sky. While Gabe was hunting for the perfect place to fly his kite, a cheeky doggie dashed by. The doggie gave the kite a little tug, and some of the string rolled out. Gabe does not see the dog running away with some of the kite string. Gabe believes the kite's string is on the ground.",
+            "Ina was at a fun party with her buddies. She wanted to make a warm fire in the fireplace. The box of matches was not empty. While Ina was happily chatting with her pals, her playful pup found a match box to nibble on. Oh no! Now it had a yucky smell. Ina does not see her dog chewing on the match box. Ina believes the match box is empty.",
+            "Once upon a time, in a sunny park, Daisy and her nice dog, Max, were ready to play. Daisy had a fun game in mind - fetch! Max's toy was already on the ground, waiting for the game to start. While Daisy chatted with her buddy, a sneaky squirrel grabbed her toy and scampered up to its treetop home. Daisy does not see the squirrel running up the tree with the toy. Daisy believes the toy is in the squirrel's home.",
+            "Once upon a time, in a big park, Zara found a special four-leaf clover. She wanted to keep it safe. She had a locket, and it was empty. Zara thought her lucky clover would fit just right in her locket. Zara was making her locket shiny and bright. Her friend Mia sneaked up and slipped a tiny photo of them both inside the locket. What a fun surprise for Zara! Zara does not see Mia walking away from her locket. Zara believes the locket contains a photo."
+      ],
+      "unrelated_stories": [
+            "Once upon a time, Sam was having a fun picnic at the beach. He had a yummy sandwich to eat. After finishing his sandwich, he planned to go see his friend. While Sam was happily watching the big blue sea, a cheeky seagull flew down quickly and sprinkled some salt on his yummy sandwich. Sam does not see the seagull flying away from his picnic spot. Sam believes his sandwich is full.",
+            "Once upon a time, in a big, beautiful park, there was a little boy named Ed. He had a shiny scooter that was standing tall and ready. Ed was excited to zoom around the park on his scooter. As Ed was happily putting on his helmet, a playful dog zoomed by and bumped into the scooter, making it tumble over. Ed does not see the scooter on the ground. Ed believes the scooter is on."
+      ],
+      "inconsistent_stories": [
+            "Once upon a time, Rita was in a big room full of books, the library. She wanted to find a special book. This book was on the very top shelf of the bookcase. The bookcase was tidy and neat, just like her toy box at home. While little Rita was happily exploring a colorful book on the bottom shelf, a friendly librarian quietly tidied up the books high up on the top shelf. Rita does not see the librarian leaving the bookcase after rearranging the books. Rita believes the bookcase is not on.",
+            "Once upon a time, Greta was in the park. She had her camera with her. She wanted to take a special picture of a butterfly. Her camera smelled nice because she had sprayed it with her sweet perfume. While Greta was happily hunting for pretty butterflies, a playful dog dashed by. Oops! It splashed muddy puddles all over her camera. Greta does not see the dog running away. Greta believes the camera is clean."
+      ]
+}
+{
+      "model_id": "/scr/snbloom/models/finetuned-28-tinytom-v3-600/checkpoint-380",
+      "method": "auto",
+      "dataset": "tinytom-v3",
+      "unconverted": false,
+      "data_range": "1-50",
+      "init_belief": "0_forward",
+      "corrected": false,
+      "corrected_type": "in",
+      "variable": "belief",
+      "condition": "true_belief",
+      "count_correct": 16,
+      "count_incorrect": 6,
+      "count_unrelated": 0,
+      "count_inconsistent": 0,
+      "incorrect_stories": [
+            "Once upon a time, in a bright and cheerful park, Jill was there. She was watching all the little children play. Her son was about to go on the swing for the very first time! Jill had a camera with her, but it was not on. She wanted to make a video of this special moment. While Jill was waiting for her little boy to be brave and start swinging, a funny doggie came by. With a wag of its tail, it bumped the camera and it started to work all by itself! Jill sees the dog walk away from the camera. Jill believes the camera is not on.",
+            "Once upon a time, there was a boy named Fred. He was at a fair, full of fun games. Fred had his eyes on a big, cuddly teddy bear prize. The game machine was ready to play. While Fred took a little nap on a comfy bench, a friendly fair worker switched off the game machine to make sure it was working just right. Fred sees the worker turning off the game machine. Fred believes the game machine is working.",
+            "Once upon a time, little Bella was in a big room full of books, called a library. She was searching for a fun book to read before her nap time. The shelf was packed with lots and lots of books. While Bella was busy looking at her picture book, the nice librarian quietly came over. She took some books from the shelf to put them away. Bella sees the librarian carrying away some books. Bella believes the book shelf is full.",
+            "Once upon a time, Dave was at a fun party at his friend house. He needed to go upstairs to find his coat. The door upstairs was not locked. While Dave was having fun at the party, his friend daddy came. He locked the upstairs door to keep everyone safe. Dave sees his friend dad with a key in his hand. Dave believes the upstairs door is unlocked.",
+            "Once upon a time, in a lovely garden full of flowers, there was a little boy named Xander. He loved the sweet smelling poppies the most. One day, Xander decided to pick some of these smooth poppies to make a pretty bouquet for his mom. As the day got longer, the bright sun made the sweet juice in the poppies go away. Now, they didn't smell yummy anymore. Xander hears the bees buzzing less around the poppies. Xander believes the poppies are sweet and smell fresh.",
+            "Once upon a time, there was a big, fun party. Little Lisa was there, but she was feeling a bit shy. She really wanted to clap her hands with the music and join in the fun. But oh no! The top of her water bottle was on really tight. As Lisa was searching for a peaceful place, a jolly doggie dashed past. He bumped into her drink bottle and the top spun off. Lisa sees the dog running away with her water bottle cap. Lisa believes the cap on her water bottle is on tight."
+      ],
+      "unrelated_stories": [],
+      "inconsistent_stories": []
+}
+{
+      "model_id": "/scr/snbloom/models/finetuned-28-tinytom-v3-600/checkpoint-380",
+      "method": "auto",
+      "dataset": "tinytom-v3",
+      "unconverted": false,
+      "data_range": "1-50",
+      "init_belief": "0_forward",
+      "corrected": false,
+      "corrected_type": "in",
+      "variable": "belief",
+      "condition": "false_belief",
+      "count_correct": 16,
+      "count_incorrect": 5,
+      "count_unrelated": 0,
+      "count_inconsistent": 2,
+      "incorrect_stories": [
+            "Once upon a time, in a bright and cheerful park, Jill was there. She was watching all the little children play. Her son was about to go on the swing for the very first time! Jill had a camera with her, but it was not on. She wanted to make a video of this special moment. While Jill was waiting for her little boy to be brave and start swinging, a funny doggie came by. With a wag of its tail, it bumped the camera and it started to work all by itself! Jill does not see the dog walk away from the camera. Jill believes the camera is on.",
+            "Once upon a time, on a big ranch, there was a man named Ben. He loved taking care of all the animals. His favorite was a horse, the one he loved to ride. He had a saddle for the horse, and it wasn't heavy at all. As the day went on, raindrops fell on the saddle. It became heavy because it was all wet. Ben does not touch the saddle. Ben believes the saddle is heavy.",
+            "Once upon a time, Dave was at a fun party at his friend house. He needed to go upstairs to find his coat. The door upstairs was not locked. While Dave was having fun at the party, his friend daddy came. He locked the upstairs door to keep everyone safe. Dave does not see his friend dad with a key in his hand. Dave believes the upstairs door is locked.",
+            "Once upon a time, there was a little boy named Jack. He was playing all by himself in the park. Jack had a fun idea   he wanted to climb up the big statue of a man that was in the park. The statue didn't have any smell. As Jack hopped and hopped, a man with a cart full of flowers came near the big statue. Soon, the smell of pretty flowers was all around the statue. Jack does not smell the fresh flowers. Jack believes the man statue smells like flowers.",
+            "Ina was at a fun party with her buddies. She wanted to make a warm fire in the fireplace. The box of matches was not empty. While Ina was happily chatting with her pals, her playful pup found a match box to nibble on. Oh no! Now it had a yucky smell. Ina does not see her dog chewing on the match box. Ina believes the match box is empty."
+      ],
+      "unrelated_stories": [],
+      "inconsistent_stories": [
+            "Once upon a time, in a big, beautiful park, there was a little boy named Ed. He had a shiny scooter that was standing tall and ready. Ed was excited to zoom around the park on his scooter. As Ed was happily putting on his helmet, a playful dog zoomed by and bumped into the scooter, making it tumble over. Ed does not see the scooter on the ground. Ed believes the scooter is on.",
+            "Once upon a time, Greta was in the park. She had her camera with her. She wanted to take a special picture of a butterfly. Her camera smelled nice because she had sprayed it with her sweet perfume. While Greta was happily hunting for pretty butterflies, a playful dog dashed by. Oops! It splashed muddy puddles all over her camera. Greta does not see the dog running away. Greta believes the camera is clean."
+      ]
+}

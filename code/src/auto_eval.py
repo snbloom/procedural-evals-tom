@@ -228,7 +228,7 @@ for i in tqdm(range(len(data))):
 
         # non-story-ified version
         unconverted_story_parts = trimmed[i].split(';')
-        unconverted_story = unconverted_story_parts[0] + " " + unconverted_story_parts[0].split()[0] + " thinks that the " + unconverted_story_parts[1].strip() + " is"
+        unconverted_story = unconverted_story_parts[0] + " " + unconverted_story_parts[0].split()[0] + " believes that the " + unconverted_story_parts[1].strip() + " is"
         
         # select converted or unconverted version (depending on args)
         if args.unconverted or args.bigtom: eval_story = unconverted_story
@@ -339,6 +339,7 @@ model_name = model_id.replace('/', '_')
 model_id = model_id.replace('/', '_')
 
 if args.corrected or args.corrected_type == "in" or args.corrected_type == "out": co = "corrected"
+elif args.unconverted: co = "unconverted"
 else: co = "converted"
 prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
 accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
