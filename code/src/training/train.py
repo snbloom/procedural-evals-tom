@@ -40,6 +40,9 @@ elif config["model"] == 'l43':
 elif config["model"] == 'l14':
     with open("../../configs/llama-14.json", "r") as f:
         model_config = json.load(f)
+elif config["model"] == 'n28':
+    with open("../../configs/gpt-neo-28.json", "r") as f:
+        model_config = json.load(f)
 elif config["model"] == 'n125':
     with open("../../configs/gpt-neo-125.json", "r") as f:
         model_config = json.load(f)
