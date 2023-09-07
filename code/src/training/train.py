@@ -5,8 +5,9 @@ import argparse
 
 import wandb
 import torch
-from transformers import LlamaModel, LlamaConfig, LlamaForCausalLM
-from transformers import LlamaTokenizerFast
+from transformers import LlamaModel, LlamaConfig, LlamaForCausalLM, GPTNeoConfig, GPTNeoForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import LlamaTokenizerFast, GPTNeoTokenizerFast
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
 from datasets import load_dataset, DatasetDict, Dataset
@@ -27,28 +28,40 @@ random.seed(config["seed"])
 torch.manual_seed(config["seed"])
 
 # read json config file
-if config["model"] == '250':
+if config["model"] == 'l250':
     with open("../../configs/llama-250.json", "r") as f:
         model_config = json.load(f)
-elif config["model"] == '115':
+elif config["model"] == 'l115':
     with open("../../configs/llama-115.json", "r") as f:
         model_config = json.load(f)
-elif config["model"] == '43':
+elif config["model"] == 'l43':
     with open("../../configs/llama-43.json", "r") as f:
         model_config = json.load(f)
-elif config["model"] == '14':
+elif config["model"] == 'l14':
     with open("../../configs/llama-14.json", "r") as f:
         model_config = json.load(f)
+elif config["model"] == 'n125':
+    with open("../../configs/gpt-neo-125.json", "r") as f:
+        model_config = json.load(f)
+elif config["model"] == 'n250':
+    with open("../../configs/gpt-neo-250.json", "r") as f:
+        model_config = json.load(f)
 else:
-    raise ValueError("Invalid model size")
+    raise ValueError("Invalid model name")
 
 # pass the config to llama config and load llama model
-model_config = LlamaConfig(**model_config) 
-model = LlamaForCausalLM(model_config)
+if "l" in config["model"]:
+    model_config = LlamaConfig(**model_config) 
+    model = LlamaForCausalLM(model_config)
+    tokenizer = LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
+elif "n" in config["model"]:
+    model_config = GPTNeoConfig(**model_config)
+    model = GPTNeoForCausalLM(model_config)
+    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
+
 print(f"Number of parameters: {model.model.num_parameters()}")
 
 # load tokenizer
-tokenizer = LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
 
 
 # load data
@@ -79,12 +92,21 @@ elif config["data"] == "gpt-4":
             data_files={"train": train_file, "val": val_file}
                                                 )
 
+elif config["data"] == "v1":
+    train_file = os.path.join(config["tinystories_dir"], "train.json")
+    val_file = os.path.join(config["tinystories_dir"], "val.json")
+    
+    hf_datasets = load_dataset(
+            "json", 
+            data_files={"train": train_file, "val": val_file}
+                                                )
+
 context_length = config["context_length"]
 def tokenize(element):
     if config["data"] == "full":
-        stories = [e.strip() for e in element["story"]]
+        stories = [tokenizer.bos_token + e.strip() for e in element["story"]]
     else:
-        stories = [e.strip() for e in element["text"]]
+        stories = [tokenizer.bos_token + e.strip() for e in element["text"]]
     outputs = tokenizer(
         stories,
         truncation=True,
