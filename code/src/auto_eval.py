@@ -338,6 +338,7 @@ with open(LOG_FILE, "a") as f:
 
 model_name = model_id.replace('/', '_')
 model_id = model_id.replace('/', '_')
+model_id += f"_{args.beams}"
 
 if args.corrected or args.corrected_type == "in" or args.corrected_type == "out": co = "corrected"
 elif args.unconverted: co = "unconverted"
