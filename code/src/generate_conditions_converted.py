@@ -160,6 +160,10 @@ def stitch_stories(stories, end_idx, args, output_name):
         elif "are" in correct_answer: ending = correct_answer.split("are")[0] + "are"
         elif obj.lower() in correct_answer.lower(): ending = correct_answer.split(obj.lower())[0] + obj.lower()
         else: raise Exception("Cannot find 'is' or 'are' or obj in correct sentence.")
+        if args.output == "converted": 
+            ending.replace("believe", "think")
+            assert("think" in ending)
+        print(ending)
 
         # get filename for converted parts
         if args.method == "tinytom-v3": filename = f'{DATA_DIR}/tinytom/v3/tinytom_converted_parts.txt'
@@ -216,9 +220,7 @@ def stitch_stories(stories, end_idx, args, output_name):
                     else: raise Exception("Expected: [true_, false_] in folder name.")
 
                 # Free response prompt
-                if output_name=="converted": stitched = " ".join([stitched, name, "thinks that the", obj, "is"])
-                elif output_name=="corrected": stitched = " ".join([stitched, ending])
-                else: raise Exception("unexpected output_name. Expected [converted, corrected]")
+                stitched = " ".join([stitched, ending])
 
                 if args.verbose: print(stitched, '\n')
 

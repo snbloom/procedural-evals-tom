@@ -23,7 +23,7 @@ def get_tiny_tom(config):
                 final_sentence = final_sentences[i]
                 if 'believe' in final_sentence:
                     final_sentence = final_sentence.replace('believe', 'think')
-                story = story + " " + final_sentences[i]
+                story = story + " " + final_sentence
                 tinytom[cond].append(story)
     # TODO: ensure all conditions are shuffled in the same order
     # keeping unshuffled for now
