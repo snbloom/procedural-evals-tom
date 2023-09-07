@@ -2,7 +2,7 @@
     "seed": 42,
     "model": "28",
     "context_length": 512,
-    "output_dir": "/scr/kanishkg/models/finetuned-28-tinytom-v3-600-thinks",
+    "output_dir": "/scr/snbloom/models/finetuned-28-tinytom-v3-600-thinks",
     "batch_size": 128, 
     "eval_batch_size": 128,
     "eval_steps": 5,
