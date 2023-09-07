@@ -56,6 +56,10 @@ elif config["model"] == '28':
     repo_id = "roneneldan/TinyStories-28M"
 elif config["model"] == 'llama-43':
     repo_id = "/scr/kanishkg/models/llama-training-43-2/checkpoint-68500"
+elif config["model"] == "gpt2-xl":
+    repo_id  = "gpt2-xl"
+elif config["model"] == "gpt2":
+    repo_id = "gpt2"
 else: raise Exception("Unexpected config[model]. Expected [28, 33, llama-43]")
 
 # Load TinyLM Models
@@ -82,6 +86,17 @@ elif config["model"] in llama_models:
     print(f"Number of parameters: {model.model.num_parameters()}")
     # load tokenizer
     tokenizer = LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
+else:
+    print(f"Loading model from {repo_id}")
+
+    # load model
+    model = AutoModelForCausalLM.from_pretrained(repo_id)
+    print("Model loaded")
+    print(f"Number of parameters: {model.num_parameters()}")
+    # load tokenizer
+    tokenizer = AutoTokenizer.from_pretrained(repo_id)
+
+
 
 # check if lora finetuning
 if "peft" in config:
