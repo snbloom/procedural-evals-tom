@@ -53,7 +53,7 @@ for story in tqdm(stories):
 
 if not os.path.exists(TINYSTORIES_NO_THINK_BELIEVE_FOLDER):
     os.makedirs(TINYSTORIES_NO_THINK_BELIEVE_FOLDER)
-with open(os.path,join(TINYSTORIES_NO_THINK_BELIEVE_FOLDER, TINYSTORIES_NO_THINK_BELIEVE_NAME), "w") as f:
+with open(os.path.join(TINYSTORIES_NO_THINK_BELIEVE_FOLDER, TINYSTORIES_NO_THINK_BELIEVE_NAME), "w") as f:
     for story in stories:
         f.write(story+'\n')
 
