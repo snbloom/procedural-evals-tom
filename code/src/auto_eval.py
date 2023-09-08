@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser()
 # model args
 parser.add_argument('--temperature', type=float, default=0.0, help='temperature')
 parser.add_argument('--max_tokens', type=int, default=20, help='max tokens')
-parser.add_argument('--beams', type=int, default=5, help='number of beams')
+parser.add_argument('--beams', type=int, default=1, help='number of beams')
 parser.add_argument('--lora', action='store_true')
 
 # eval args
