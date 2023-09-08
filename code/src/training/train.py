@@ -62,7 +62,9 @@ elif "n" in config["model"]:
     model_config = GPTNeoConfig(**model_config)
     model = GPTNeoForCausalLM(model_config)
     tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
-    print(f"Number of parameters: {model.transformer.num_parameters()}")
+    print(f"Number of parameters: {model.num_parameters()-model_config.hidden_size*model_config.vocab_size}")
+
+
 
 # load tokenizer
 
