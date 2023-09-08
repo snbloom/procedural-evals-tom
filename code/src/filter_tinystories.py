@@ -26,11 +26,14 @@ def get_tiny_stories_v2(no_think_believe=True):
     most_recent = ""
     with open(os.path.join(TINYSTORIES_V2), 'r') as f:
         for line in tqdm(f):
-            if line.strip() != "<|endoftext|>": most_recent += line.strip()
+            if line.strip() != "<|endoftext|>": most_recent += line.strip().replace('\n', "")
             else:
-                if no_think_believe and ("think" in most_recent or "believe" in most_recent): pass
+                if no_think_believe and ("think" in most_recent or "believe" in most_recent): 
+                    print("THINK OR BELIEVE")
                 else:
-                    stories.append(most_recent.replace('\n', ""))
+                    most_recent = most_recent.replace('\n', "")
+                    print(most_recent)
+                    stories.append(most_recent)
                 most_recent = ""
     print(f"Number of tinystories_v2 stories: {len(stories)}")
     return stories
