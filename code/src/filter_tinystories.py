@@ -1,4 +1,6 @@
 from tqdm import tqdm
+import os
+import json
 
 TINYSTORIES = "/scr/kanishkg/TinyStories/"
 TINYSTORIES_V2 = "/scr/kanishkg/TinyStories/TinyStoriesV2-GPT4-train.txt"
@@ -23,6 +25,7 @@ def get_tiny_stories_v2(no_think_believe=True):
     with open(os.path.join(TINYSTORIES_V2), 'r') as f:
         strs = f.read().split("<|endoftext|>")
         for s in strs:
+            s = s.strip()
             print(s.replace('\n\n', '\n').replace('\n', " "))
             if no_think_believe and ("think" in s or "believe" in s): continue
             else: stories.append(s.replace('\n\n', '\n').replace('\n', " "))
@@ -34,6 +37,7 @@ num_replaced = 0
 
 stories = get_tiny_stories()
 stories_v2 = get_tiny_stories_v2()
+
 for story in tqdm(stories):
     if "think" in story or "believe" in story: 
         # add story from v2 set
@@ -46,4 +50,5 @@ with open(TINYSTORIES_NO_THINK_BELIEVE, "w") as f:
     for story in stories:
         f.write(story+'\n')
 
-print("Number of stories swapped: {num_replaced}")
+print(f"Number of filtered stories: {len(filtered)}")
+print(f"Number of stories swapped: {num_replaced}")
