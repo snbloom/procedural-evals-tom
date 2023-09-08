@@ -57,12 +57,12 @@ if "l" in config["model"]:
     model_config = LlamaConfig(**model_config) 
     model = LlamaForCausalLM(model_config)
     tokenizer = LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
+    print(f"Number of parameters: {model.model.num_parameters()}")
 elif "n" in config["model"]:
     model_config = GPTNeoConfig(**model_config)
     model = GPTNeoForCausalLM(model_config)
     tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
-
-print(f"Number of parameters: {model.model.num_parameters()}")
+    print(f"Number of parameters: {model.transformer.num_parameters()}")
 
 # load tokenizer
 
