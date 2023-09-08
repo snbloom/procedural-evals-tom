@@ -4,7 +4,7 @@ import json
 
 TINYSTORIES = "/scr/kanishkg/TinyStories/"
 TINYSTORIES_V2 = "/scr/kanishkg/TinyStories/TinyStoriesV2-GPT4-train.txt"
-TINYSTORIES_NO_THINK_BELIEVE = "/scr/snbloom/TinyStories_No_Think_Believe/TinyStories_No_Think_Believe_All.txt"
+TINYSTORIES_NO_THINK_BELIEVE = "/scr/snbloom/TinyStories_No_Think_Believe/TinyStories_No_Think_Believe_gpt4.txt"
 
 def get_tiny_stories():
     stories = []
@@ -12,10 +12,10 @@ def get_tiny_stories():
         filename = f'data{i:02}.json'
         with open(os.path.join(TINYSTORIES, filename), 'r') as f:
             data = json.load(f)
-            for d in data:
+            for d in tqdm(data):
                 # only select stories from gpt-4
-                # if d['source'] != 'GPT-4':
-                #     continue
+                if d['source'] != 'GPT-4':
+                    continue
                 stories.append(d['story'].strip())
     print(f"Number of tinystories stories: {len(stories)}")
     return stories
@@ -24,7 +24,7 @@ def get_tiny_stories_v2(no_think_believe=True):
     stories = []
     with open(os.path.join(TINYSTORIES_V2), 'r') as f:
         strs = f.read().split("<|endoftext|>")
-        for s in strs:
+        for s in tqdm(strs):
             s = s.strip()
             print(s.replace('\n\n', '\n').replace('\n', " "))
             if no_think_believe and ("think" in s or "believe" in s): continue
@@ -35,7 +35,9 @@ def get_tiny_stories_v2(no_think_believe=True):
 filtered = []
 num_replaced = 0
 
+print("Parsing tiny stories")
 stories = get_tiny_stories()
+print("Parsing tiny stories v2")
 stories_v2 = get_tiny_stories_v2()
 
 for story in tqdm(stories):
