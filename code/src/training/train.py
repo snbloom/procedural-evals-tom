@@ -7,7 +7,7 @@ import wandb
 import torch
 from transformers import LlamaModel, LlamaConfig, LlamaForCausalLM, GPTNeoConfig, GPTNeoForCausalLM
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from transformers import LlamaTokenizerFast, GPTNeoTokenizerFast
+from transformers import LlamaTokenizerFast
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
 from datasets import load_dataset, DatasetDict, Dataset
@@ -57,12 +57,14 @@ if "l" in config["model"]:
     model_config = LlamaConfig(**model_config) 
     model = LlamaForCausalLM(model_config)
     tokenizer = LlamaTokenizerFast.from_pretrained("hf-internal-testing/llama-tokenizer")
+    print(f"Number of parameters: {model.model.num_parameters()}")
 elif "n" in config["model"]:
     model_config = GPTNeoConfig(**model_config)
     model = GPTNeoForCausalLM(model_config)
     tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
+    print(f"Number of parameters: {model.num_parameters()-model_config.hidden_size*model_config.vocab_size}")
 
-print(f"Number of parameters: {model.model.num_parameters()}")
+
 
 # load tokenizer
 
