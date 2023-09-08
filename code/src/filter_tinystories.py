@@ -24,6 +24,7 @@ def get_tiny_stories_v2(no_think_believe=True):
     stories = []
     with open(os.path.join(TINYSTORIES_V2), 'r') as f:
         strs = f.read().split("<|endoftext|>")
+        print(len(strs))
         for s in tqdm(strs):
             s = s.strip()
             print(s.replace('\n\n', '\n').replace('\n', " "))
