@@ -17,7 +17,7 @@ def get_tiny_stories():
                 # only select stories from gpt-4
                 if d['source'] != 'GPT-4':
                     continue
-                stories.append(d['story'].strip())
+                stories.append(d['story'].strip().replace('\n', " "))
     print(f"Number of tinystories stories: {len(stories)}")
     return stories
 
@@ -55,7 +55,7 @@ for story in tqdm(stories):
 if not os.path.exists(TINYSTORIES_NO_THINK_BELIEVE_FOLDER):
     os.makedirs(TINYSTORIES_NO_THINK_BELIEVE_FOLDER)
 with open(os.path.join(TINYSTORIES_NO_THINK_BELIEVE_FOLDER, TINYSTORIES_NO_THINK_BELIEVE_NAME), "w") as f:
-    for story in stories:
+    for story in filtered:
         f.write(story+'\n')
 
 print(f"Number of filtered stories: {len(filtered)}")
