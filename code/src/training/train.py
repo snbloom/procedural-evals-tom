@@ -7,7 +7,7 @@ import wandb
 import torch
 from transformers import LlamaModel, LlamaConfig, LlamaForCausalLM, GPTNeoConfig, GPTNeoForCausalLM
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from transformers import LlamaTokenizerFast, GPTNeoTokenizerFast
+from transformers import LlamaTokenizerFast
 from transformers import DataCollatorForLanguageModeling
 from transformers import Trainer, TrainingArguments
 from datasets import load_dataset, DatasetDict, Dataset
