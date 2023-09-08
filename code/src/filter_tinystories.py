@@ -4,7 +4,8 @@ import json
 
 TINYSTORIES = "/scr/kanishkg/TinyStories/"
 TINYSTORIES_V2 = "/scr/kanishkg/TinyStories/TinyStoriesV2-GPT4-train.txt"
-TINYSTORIES_NO_THINK_BELIEVE = "/scr/snbloom/TinyStories_No_Think_Believe/TinyStories_No_Think_Believe_gpt4.txt"
+TINYSTORIES_NO_THINK_BELIEVE_FOLDER = "/scr/snbloom/TinyStories_No_Think_Believe"
+TINYSTORIES_NO_THINK_BELIEVE_NAME = "TinyStories_No_Think_Believe_gpt4.txt"
 
 def get_tiny_stories():
     stories = []
@@ -50,7 +51,9 @@ for story in tqdm(stories):
         continue
     else: filtered.append(story)
 
-with open(TINYSTORIES_NO_THINK_BELIEVE, "w") as f:
+if not os.path.exists(TINYSTORIES_NO_THINK_BELIEVE_FOLDER):
+    os.makedirs(TINYSTORIES_NO_THINK_BELIEVE_FOLDER)
+with open(os.path,join(TINYSTORIES_NO_THINK_BELIEVE_FOLDER, TINYSTORIES_NO_THINK_BELIEVE_NAME), "w") as f:
     for story in stories:
         f.write(story+'\n')
 
