@@ -156,14 +156,15 @@ def stitch_stories(stories, end_idx, args, output_name):
         correct_answer = story[11]
 
         # parse corrected ending
-        if "is" in correct_answer: ending = correct_answer.split("is")[0] + "is"
-        elif "are" in correct_answer: ending = correct_answer.split("are")[0] + "are"
-        elif obj.lower() in correct_answer.lower(): ending = correct_answer.split(obj.lower())[0] + obj.lower()
-        else: raise Exception("Cannot find 'is' or 'are' or obj in correct sentence.")
+        if " is" in correct_answer: ending = correct_answer.split(" is")[0] + " is"
+        elif " are" in correct_answer: ending = correct_answer.split(" are")[0] + " are"
+        elif obj.lower() in correct_answer.lower(): 
+            ending = correct_answer.split(" "+obj.lower())[0] + " " + obj.lower() + " is"
+        else: raise Exception("Cannot find ' is' or ' are' or obj in correct sentence.")
         if args.output == "converted": 
-            ending.replace("believe", "think")
+            ending = ending.replace("believe", "think")
             assert("think" in ending)
-        print(ending)
+        
 
         # get filename for converted parts
         if args.method == "tinytom-v3": filename = f'{DATA_DIR}/tinytom/v3/tinytom_converted_parts.txt'
@@ -221,6 +222,11 @@ def stitch_stories(stories, end_idx, args, output_name):
 
                 # Free response prompt
                 stitched = " ".join([stitched, ending])
+
+                # believe --> think 
+                if args.output == "converted":
+                    stitched = stitched.replace("believed", "thought")
+                    stitched = stitched.replace("believes", "thinks")
 
                 if args.verbose: print(stitched, '\n')
 
