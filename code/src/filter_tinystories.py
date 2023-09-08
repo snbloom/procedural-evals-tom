@@ -22,14 +22,16 @@ def get_tiny_stories():
 
 def get_tiny_stories_v2(no_think_believe=True):
     stories = []
+    most_recent = ""
     with open(os.path.join(TINYSTORIES_V2), 'r') as f:
-        strs = f.read().split("<|endoftext|>")
-        print(len(strs))
-        for s in tqdm(strs):
-            s = s.strip()
-            print(s.replace('\n\n', '\n').replace('\n', " "))
-            if no_think_believe and ("think" in s or "believe" in s): continue
-            else: stories.append(s.replace('\n\n', '\n').replace('\n', " "))
+        for line in f:
+            if line.strip() != "<|endoftext|>": most_recent += line.strip()
+            else:
+                if no_think_believe and ("think" in most_recent or "believe" in most_recent): pass
+                else:
+                    stories.append(most_recent)
+                print(most_recent)
+                most_recent = ""
     print(f"Number of tinystories_v2 stories: {len(stories)}")
     return stories
 
