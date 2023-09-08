@@ -30,7 +30,7 @@ def get_tiny_stories_v2(no_think_believe=True):
             else:
                 if no_think_believe and ("think" in most_recent or "believe" in most_recent): pass
                 else:
-                    stories.append(most_recent)
+                    stories.append(most_recent.replace('\n', ""))
                 most_recent = ""
     print(f"Number of tinystories_v2 stories: {len(stories)}")
     return stories
