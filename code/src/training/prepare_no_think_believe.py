@@ -9,7 +9,7 @@ TINYSTORIES_V2 = "/scr/kanishkg/TinyStories/TinyStoriesV2-GPT4-train.txt"
 train_file = os.path.join(TS_DIR, "TinyStories-train.txt")
 val_file = os.path.join(TS_DIR, "TinyStories-valid.txt")
 
-banned_words = ['think', "believe"]
+banned_words = ['think', "believe", "thought"]
 
 def has_no_banned_words(text, banned_words=banned_words):
     for word in banned_words:
@@ -65,14 +65,17 @@ def custom_reader(file_path, tinystories_v2):
 
 print("Getting stories v2")
 tinystories_v2 = get_tiny_stories_v2()
+print()
 
 print("Reading in train file")
 train_ex = custom_reader(train_file, tinystories_v2)
-print(len(train_ex))
+print(f"Train length: {len(train_ex)}")
+print()
 
 print("Reading in val file")
 val_ex = custom_reader(val_file, tinystories_v2)
-print(len(val_ex))
+print(f"Val length: {len(val_ex)}")
+print()
 
 def store_json(path, data_dict):
     with open(path, 'w', encoding='utf-8') as f:
@@ -83,6 +86,7 @@ def store_json(path, data_dict):
 if not os.path.exists(TS_DIR_OUT):
     os.makedirs(TS_DIR_OUT)
 
+print("Writing to json files")
 store_json(TS_DIR_OUT+'train_no_think_believe.json', train_ex)
 store_json(TS_DIR_OUT+'val_no_think_believe.json', val_ex)
 
