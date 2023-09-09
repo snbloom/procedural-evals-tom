@@ -11,12 +11,17 @@ val_file = os.path.join(TS_DIR, "TinyStories-valid.txt")
 
 banned_words = ['think', "believe", "thought"]
 
-def has_no_banned_words(text, banned_words=banned_words):
+def has_no_banned_words(text):
     for word in banned_words:
         if word in text: return False
     return True
 
-def get_tiny_stories_v2(banned_words=banned_words):
+def has_banned_words(text):
+    for word in banned_words:
+        if word in text: return True
+    return False
+
+def get_tiny_stories_v2():
     stories = []
     most_recent = ""
     with open(os.path.join(TINYSTORIES_V2), 'r') as f:
@@ -51,7 +56,9 @@ def custom_reader(file_path, tinystories_v2):
                 else: 
                     num_replaced += 1
                     replacement = tinystories_v2[replacement_idx] 
-                    while not has_no_banned_words(replacement):
+                    print(replacement)
+                    if has_banned_words(replacement): print("TINYV2 CONTAINS BANNED WORDS")
+                    while has_banned_words(replacement):
                         replacement_idx += 1
                         replacement = tinystories_v2[replacement_idx] 
                     replacement_idx += 1
@@ -72,9 +79,19 @@ train_ex = custom_reader(train_file, tinystories_v2)
 print(f"Train length: {len(train_ex)}")
 print()
 
+print("Validating train set for banned words")
+for s in tqdm(train_ex):
+    assert(has_no_banned_words(s["text"]))
+print()
+
 print("Reading in val file")
 val_ex = custom_reader(val_file, tinystories_v2)
 print(f"Val length: {len(val_ex)}")
+print()
+
+print("Validating val set for banned words")
+for s in tqdm(val_ex):
+    assert(has_no_banned_words(s["text"]))
 print()
 
 def store_json(path, data_dict):
