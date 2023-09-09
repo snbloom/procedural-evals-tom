@@ -1,5 +1,6 @@
 import os
 import json
+from tqdm import tqdm
 
 # load data from hf datasets
 TS_DIR = "/scr/kanishkg/TinyStories/"
@@ -19,7 +20,7 @@ def get_tiny_stories_v2(banned_words=banned_words):
     stories = []
     most_recent = ""
     with open(os.path.join(TINYSTORIES_V2), 'r') as f:
-        for line in f:
+        for line in tqdm(f):
             if line.strip() != "<|endoftext|>": most_recent += line.strip().replace('\n', "")
             else:
                 if has_no_banned_words(most_recent):
@@ -29,8 +30,7 @@ def get_tiny_stories_v2(banned_words=banned_words):
     print(f"Number of tinystories_v2 stories: {len(stories)}")
     return stories
 
-def custom_reader(file_path):
-    tinystories_v2 = get_tiny_stories_v2()
+def custom_reader(file_path, tinystories_v2):
 
     # Open the file at the specified path
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -40,7 +40,7 @@ def custom_reader(file_path):
         replacement_idx = 0
         most_recent = ""
 
-        for line in file:
+        for line in tqdm(file):
             # if not end of text label, add this line to the most recent story
             if line.strip() != "<|endoftext|>": most_recent += line.strip().replace('\n', "")
             # otherwise, this is the end of the story
@@ -58,12 +58,20 @@ def custom_reader(file_path):
                     dataset.append({"text": replacement})
                 # clear string tracker for next story
                 most_recent = ""
-
+        print(f"Number tinystories swapped: {num_replaced}")
+        print(f"Number of v2 tinystories tried: {replacement_idx}")
+        print(f"Number of v2 tinystories with banned words: {replacemenet_idx - num_replaced}")
         return dataset
 
-train_ex = custom_reader(train_file)
+print("Getting stories v2")
+tinystories_v2 = get_tiny_stories_v2()
+
+print("Reading in train file")
+train_ex = custom_reader(train_file, tinystories_v2)
 print(len(train_ex))
-val_ex = custom_reader(val_file)
+
+print("Reading in val file")
+val_ex = custom_reader(val_file, tinystories_v2)
 print(len(val_ex))
 
 def store_json(path, data_dict):
