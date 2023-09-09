@@ -19,7 +19,7 @@ def get_tiny_stories_v2(banned_words=banned_words):
     stories = []
     most_recent = ""
     with open(os.path.join(TINYSTORIES_V2), 'r') as f:
-        for line in tqdm(f):
+        for line in f:
             if line.strip() != "<|endoftext|>": most_recent += line.strip().replace('\n', "")
             else:
                 if has_no_banned_words(most_recent):
@@ -40,7 +40,7 @@ def custom_reader(file_path):
         replacement_idx = 0
         most_recent = ""
 
-        for line in tqdm(file):
+        for line in file:
             # if not end of text label, add this line to the most recent story
             if line.strip() != "<|endoftext|>": most_recent += line.strip().replace('\n', "")
             # otherwise, this is the end of the story
