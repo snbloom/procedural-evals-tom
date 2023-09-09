@@ -1,6 +1,7 @@
 import os
 import json
 from tqdm import tqdm
+import argparse
 
 # load data from hf datasets
 TS_DIR = "/scr/kanishkg/TinyStories/"
@@ -9,11 +10,36 @@ TINYSTORIES_V2 = "/scr/kanishkg/TinyStories/TinyStoriesV2-GPT4-train.txt"
 train_file = os.path.join(TS_DIR, "TinyStories-train.txt")
 val_file = os.path.join(TS_DIR, "TinyStories-valid.txt")
 
-banned_words = ['think', "believe", "thought"]
+parser = argparse.ArgumentParser()
+
+# model args
+parser.add_argument('--banned_words', type=str, default="think", help='[think, know, learn, feel, prefer, want, plan, time]')
+
+banned_words = []
+
+think_words = ['think', "believe", "thought"]
+know_words = ["know", "knew"]
+learn_words = ["learn", "didn't know", "did not know", "realize", "teach", "taught", "something new", "a new thing", "never seen before", "ask", "help"]
+feel_words = ["feel", "felt"]
+prefer_words = ["like", "love"]
+want_words = ["want", "wish"]
+plan_words = ["plan", "decide"]
+time_words = ["now", "lately", "earlier", "soon", "currently", "today", "tomorrow", "yesterday", "soon", "later", "always", "never", "forever", "before", "after", "during", "while", "when", "then", "suddenly", "frequently", "rarely", "sometimes", "often", "currently", "recently", "prior to", "subsequently", "simultaneously", "eventually", "in the meantime", "afterward", "previously"]
+
+args = parser.parse_args()
+if args.banned_words == "think": banned_words = think_words
+elif args.banned_words == "know": banned_words = know_words
+elif args.banned_words == "learn": banned_words = learn_words
+elif args.banned_words == "feel": banned_words = feel_words
+elif args.banned_words == "prefer": banned_words = prefer_words
+elif args.banned_words == "want": banned_words = want_words
+elif args.banned_words == "plan": banned_words = plan_words
+elif args.banned_words == "time": banned_words = time_words
+else: raise Exception("Unexpected banned_words type. Expected: [think, know, learn, feel, prefer, want, plan, time]")
 
 def has_no_banned_words(text):
     for word in banned_words:
-        if word in text: return False
+        if word.lower() in text.lower(): return False
     return True
 
 def has_banned_words(text):
@@ -67,6 +93,8 @@ def custom_reader(file_path, tinystories_v2):
         print(f"Number of v2 tinystories with banned words: {replacement_idx - num_replaced}")
         return dataset
 
+print()
+print(f"TRAIN AND VAL FILTERING FOR CONDITION: {args.banned_words.upper()}")
 print("Getting stories v2")
 tinystories_v2 = get_tiny_stories_v2()
 print()
@@ -91,6 +119,6 @@ if not os.path.exists(TS_DIR_OUT):
     os.makedirs(TS_DIR_OUT)
 
 print("Writing to json files")
-store_json(TS_DIR_OUT+'train_no_think_believe.json', train_ex)
-store_json(TS_DIR_OUT+'val_no_think_believe.json', val_ex)
+store_json(TS_DIR_OUT+f'train_no_{args.banned_words}.json', train_ex)
+store_json(TS_DIR_OUT+f'val_no_{args.banned_words}.json', val_ex)
 
