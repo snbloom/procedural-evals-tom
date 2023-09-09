@@ -60,7 +60,7 @@ def custom_reader(file_path, tinystories_v2):
                 most_recent = ""
         print(f"Number tinystories swapped: {num_replaced}")
         print(f"Number of v2 tinystories tried: {replacement_idx}")
-        print(f"Number of v2 tinystories with banned words: {replacemenet_idx - num_replaced}")
+        print(f"Number of v2 tinystories with banned words: {replacement_idx - num_replaced}")
         return dataset
 
 print("Getting stories v2")
