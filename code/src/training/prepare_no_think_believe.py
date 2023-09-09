@@ -28,9 +28,8 @@ def get_tiny_stories_v2():
         for line in tqdm(f):
             if line.strip() != "<|endoftext|>": most_recent += line.strip().replace('\n', "")
             else:
-                if has_no_banned_words(most_recent):
-                    most_recent = most_recent.replace('\n', "")
-                    stories.append(most_recent)
+                most_recent = most_recent.replace('\n', "")
+                stories.append(most_recent)
                 most_recent = ""
     print(f"Number of tinystories_v2 stories: {len(stories)}")
     return stories
