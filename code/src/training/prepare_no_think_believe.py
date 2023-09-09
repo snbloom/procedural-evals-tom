@@ -4,6 +4,7 @@ import json
 # load data from hf datasets
 TS_DIR = "/scr/kanishkg/TinyStories/"
 TS_DIR_OUT = "/scr/snbloom/TinyStories/"
+TINYSTORIES_V2 = "/scr/kanishkg/TinyStories/TinyStoriesV2-GPT4-train.txt"
 train_file = os.path.join(TS_DIR, "TinyStories-train.txt")
 val_file = os.path.join(TS_DIR, "TinyStories-valid.txt")
 
