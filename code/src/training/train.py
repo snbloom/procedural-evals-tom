@@ -99,8 +99,8 @@ elif config["data"] == "gpt-4":
 
 elif config["data"] == "no_think_believe":
     # load data from hf datasets
-    train_file = os.path.join(config["tinystories_dir"], "train_no_think_believe.json")
-    val_file = os.path.join(config["tinystories_dir"], "val_no_think_believe.json")
+    train_file = os.path.join(config["replaced_tinystories_dir"], "train_no_think_believe.json")
+    val_file = os.path.join(config["replaced_tinystories_dir"], "val_no_think_believe.json")
 
     hf_datasets = load_dataset(
             "json", 
