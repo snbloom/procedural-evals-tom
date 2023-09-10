@@ -1,7 +1,7 @@
 {
     "name": "llama-training-43-no-think-believe",
     "seed": 42,
-    "model": "43",
+    "model": "l43",
     "tinystories_dir": "/scr/kanishkg/TinyStories/",
     "test_ratio": 0.1,
     "context_length": 512,
