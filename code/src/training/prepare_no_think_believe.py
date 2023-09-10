@@ -119,7 +119,7 @@ def store_json(path, data_dict):
 if not os.path.exists(TS_DIR_OUT):
     os.makedirs(TS_DIR_OUT)
 
-print("Writing to json files")
+print(f"Writing to json files: {TS_DIR_OUT}train_no_{args.banned_words}.json and {TS_DIR_OUT}val_no_{args.banned_words}.json")
 store_json(TS_DIR_OUT+f'train_no_{args.banned_words}.json', train_ex)
 store_json(TS_DIR_OUT+f'val_no_{args.banned_words}.json', val_ex)
 
