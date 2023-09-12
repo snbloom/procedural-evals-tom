@@ -18,7 +18,7 @@
     "lr": 5e-4,
     "save_total_limit": 20,
     "save_steps": 500,
-    "data": "v1"
+    "data": "no_think_believe"
 }
 
 
