@@ -7,6 +7,9 @@ models/
 # Jupyter Notebuok
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
+# slurm
+*.err
+*.out
 
 # satisfy github size req 
 find . -size +100M | cat >> .gitignore
