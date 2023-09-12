@@ -33,5 +33,5 @@ export CUDA_VISIBLE_DEVICES=1,2,3,4
 
 # Run your script
 cd ~/procedural-evals-tom/code/src/training
-torchrun --standalone --nproc_per_node=4 train.py --config ../../configs/training-neo-125.json
+torchrun --standalone --nproc_per_node=4 train.py --config ../../configs/training-neo-28.json
 
