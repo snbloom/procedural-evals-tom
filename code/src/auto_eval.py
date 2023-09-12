@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser()
 # model args
 parser.add_argument('--temperature', type=float, default=0.0, help='temperature')
 parser.add_argument('--max_tokens', type=int, default=20, help='max tokens')
-parser.add_argument('--beams', type=int, default=5, help='number of beams')
+parser.add_argument('--beams', type=int, default=1, help='number of beams')
 parser.add_argument('--lora', action='store_true')
 
 # eval args
@@ -83,6 +83,7 @@ if args.model_id == 'finetuned-28-v3-500': model_id = "/scr/snbloom/models/finet
 if args.model_id == 'finetuned-28-v3-600': model_id = "/scr/snbloom/models/finetuned-28-tinytom-v3-600/checkpoint-380"
 
 if args.model_id == 'finetuned-28-v3-600-thinks': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v3-600-thinks/checkpoint-200'
+if args.model_id == 'finetuned-28-v3-600-thinks-1_': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v3-600-thinks-with-1_/checkpoint-380'
 
 data_dir = args.data_dir
 if data_dir == "v1": data_dir = "../../data/conditions/tinytom-v1"

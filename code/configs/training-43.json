@@ -1,11 +1,12 @@
 {
-    "name": "llama-training-43-4",
+    "name": "llama-training-43-no-think-believe",
     "seed": 42,
-    "model": "43",
+    "model": "l43",
     "tinystories_dir": "/scr/kanishkg/TinyStories/",
+    "replaced_tinystories_dir": "/scr/snbloom/TinyStories/",
     "test_ratio": 0.1,
     "context_length": 512,
-    "output_dir": "/scr/kanishkg/models/llama-training-43-4",
+    "output_dir": "/scr/snbloom/models/llama-training-43-no-think-believe",
     "batch_size": 80,
     "eval_batch_size": 80,
     "eval_steps": 500,
@@ -18,7 +19,7 @@
     "lr": 5e-4,
     "save_total_limit": 20,
     "save_steps": 500,
-    "data": "gpt-4"
+    "data": "no_think_believe"
 }
 
 

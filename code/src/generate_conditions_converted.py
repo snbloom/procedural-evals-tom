@@ -3,10 +3,10 @@ import csv
 import argparse
 from tqdm import tqdm
 
-from langchain.chat_models import ChatOpenAI
-from langchain.schema import (
-    SystemMessage
-)
+# from langchain.chat_models import ChatOpenAI
+# from langchain.schema import (
+#     SystemMessage
+# )
 
 MODEL = "gpt-4-0613"
 DATA_DIR = '../../data'
@@ -29,14 +29,14 @@ parser.add_argument('--re_stitch', action='store_true', help="when enabled, re-s
 parser.add_argument('--output', type=str, default="converted", help="run for converted or corrected versions [converted, corrected]")
 
 
-def get_llm():
-    return ChatOpenAI(
-        model=MODEL,
-        temperature=0.0,
-        max_tokens=450,
-        n=1,
-        request_timeout=180
-    )
+# def get_llm():
+#     return ChatOpenAI(
+#         model=MODEL,
+#         temperature=0.0,
+#         max_tokens=450,
+#         n=1,
+#         request_timeout=180
+#     )
 
 def get_tinytom_stories():
     with open(CSV_NAME, "r") as f:
@@ -79,7 +79,7 @@ def get_num_already_stitched(method, folder_name, output_name):
     return start_idx       
 
 def convert_story_parts(stories, start_idx, args):
-    llm = get_llm()
+    # llm = get_llm()
     
     count = 1
     for i, story in enumerate(tqdm(stories)):
@@ -159,7 +159,8 @@ def stitch_stories(stories, end_idx, args, output_name):
         if " is" in correct_answer: ending = correct_answer.split(" is")[0] + " is"
         elif " are" in correct_answer: ending = correct_answer.split(" are")[0] + " are"
         elif obj.lower() in correct_answer.lower(): 
-            ending = correct_answer.split(" "+obj.lower())[0] + " " + obj.lower() + " is"
+            if "smell" in correct_answer.lower(): ending = correct_answer.split(" "+obj.lower())[0] + " " + obj.lower() + " smells"
+            else: ending = correct_answer.split(" "+obj.lower())[0] + " " + obj.lower()
         else: raise Exception("Cannot find ' is' or ' are' or obj in correct sentence.")
         if args.output == "converted": 
             ending = ending.replace("believe", "think")

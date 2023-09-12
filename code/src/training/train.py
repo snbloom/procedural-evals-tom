@@ -21,7 +21,7 @@ args = parser.parse_args()
 with open(args.config, "r") as f:
     config = json.load(f)
 
-wandb.init(project="tiny-tom", dir='/scr/kanishkg/wandb/', name=config["name"], config=config)
+wandb.init(project="tiny-tom", dir='/scr/snbloom/wandb/', name=config["name"], config=config)
 
 # set seeds
 random.seed(config["seed"])
@@ -70,6 +70,7 @@ elif "n" in config["model"]:
 
 
 # load data
+print("config['data']:", config['data'])
 if config["data"] == "full":
     data_files = []
     data_files += [f"{config['tinystories_dir']}/{f}" for f in os.listdir(config["tinystories_dir"]) if f.endswith(".json")]
@@ -91,6 +92,26 @@ elif config["data"] == "gpt-4":
     # load data from hf datasets
     train_file = os.path.join(config["tinystories_dir"], "train_gpt4.json")
     val_file = os.path.join(config["tinystories_dir"], "val_gpt4.json")
+
+    hf_datasets = load_dataset(
+            "json", 
+            data_files={"train": train_file, "val": val_file}
+                                                )
+
+elif config["data"] == "no_think_believe":
+    # load data from hf datasets
+    train_file = os.path.join(config["replaced_tinystories_dir"], "train_no_think_believe.json")
+    val_file = os.path.join(config["replaced_tinystories_dir"], "val_no_think_believe.json")
+
+    hf_datasets = load_dataset(
+            "json", 
+            data_files={"train": train_file, "val": val_file}
+                                                )
+
+elif config["data"] == "no_know":
+    # load data from hf datasets
+    train_file = os.path.join(config["replaced_tinystories_dir"], "train_no_know.json")
+    val_file = os.path.join(config["replaced_tinystories_dir"], "val_no_know.json")
 
     hf_datasets = load_dataset(
             "json", 
