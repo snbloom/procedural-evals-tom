@@ -71,6 +71,7 @@ elif "n" in config["model"]:
 
 # load data
 print("config['data']:", config['data'])
+print("config['batch_size']:", config['batch_size'])
 if config["data"] == "full":
     data_files = []
     data_files += [f"{config['tinystories_dir']}/{f}" for f in os.listdir(config["tinystories_dir"]) if f.endswith(".json")]
