@@ -3,17 +3,7 @@
   "architectures": [
     "GPTNeoForCausalLM"
   ],
-  "attention_dropout": 0,
-  "attention_layers": [
-    "global",
-    "local",
-    "global",
-    "local",
-    "global",
-    "local",
-    "global",
-    "local"
-  ],
+  "attention_dropout": 0.1,
   "attention_types": [
     [
       [
@@ -24,9 +14,8 @@
     ]
   ],
   "bos_token_id": 50256,
-  "embed_dropout": 0,
+  "embed_dropout": 0.1,
   "eos_token_id": 50256,
-  "gradient_checkpointing": false,
   "hidden_size": 512,
   "initializer_range": 0.02,
   "intermediate_size": null,
@@ -35,15 +24,7 @@
   "model_type": "gpt_neo",
   "num_heads": 16,
   "num_layers": 8,
-  "resid_dropout": 0,
-  "summary_activation": null,
-  "summary_first_dropout": 0.1,
-  "summary_proj_to_labels": true,
-  "summary_type": "cls_index",
-  "summary_use_proj": true,
-  "torch_dtype": "float32",
-  "transformers_version": "4.28.1",
-  "use_cache": true,
+  "resid_dropout": 0.1,
   "vocab_size": 50257,
   "window_size": 256
 }
