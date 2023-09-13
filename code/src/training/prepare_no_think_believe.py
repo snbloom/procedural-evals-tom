@@ -13,12 +13,13 @@ val_file = os.path.join(TS_DIR, "TinyStories-valid.txt")
 parser = argparse.ArgumentParser()
 
 # model args
-parser.add_argument('--banned_words', type=str, default="think_believe", help='[think_believe, know, learn, feel, prefer, want, plan, time]')
+parser.add_argument('--banned_words', type=str, default="think_believe", help='[think_believe, know, think_and_know, learn, feel, prefer, want, plan, time]')
 
 banned_words = []
 
 think_words = ['think', "believe", "thought", "belief"]
 know_words = ["know", "knew"]
+think_and_know_words = think_words + know_words
 learn_words = ["learn", "didn't know", "did not know", "realize", "teach", "taught", "something new", "a new thing", "never seen before", "ask", "help"]
 feel_words = ["feel", "felt"]
 prefer_words = ["like", "love", "prefer"]
@@ -29,6 +30,7 @@ time_words = ["now", "lately", "earlier", "soon", "currently", "today", "tomorro
 args = parser.parse_args()
 if args.banned_words == "think_believe": banned_words = think_words
 elif args.banned_words == "know": banned_words = know_words
+elif args.banned_words == "think_and_know": banned_words = think_and_know_words
 elif args.banned_words == "learn": banned_words = learn_words
 elif args.banned_words == "feel": banned_words = feel_words
 elif args.banned_words == "prefer": banned_words = prefer_words
@@ -123,3 +125,5 @@ print(f"Writing to json files: {TS_DIR_OUT}train_no_{args.banned_words}.json and
 store_json(TS_DIR_OUT+f'train_no_{args.banned_words}.json', train_ex)
 store_json(TS_DIR_OUT+f'val_no_{args.banned_words}.json', val_ex)
 
+with open(TS_DIR_OUT+f'train_no_{args.banned_words}.json', 'r') as f:
+    print(f.read()[:2000])

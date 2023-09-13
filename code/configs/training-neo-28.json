@@ -2,7 +2,8 @@
     "name": "neo-training-28-1",
     "seed": 42,
     "model": "n28",
-    "tinystories_dir": "/scr/kanishkg/TinyStories/",
+    "tinystories_dir": "/scr/snbloom/TinyStories/",
+    "replaced_tinystories_dir": "/scr/snbloom/TinyStories/",
     "context_length": 512,
     "output_dir": "/scr/kanishkg/models/neo-training-28-1",
     "batch_size": 96,
@@ -17,7 +18,7 @@
     "lr": 5e-4,
     "save_total_limit": 20,
     "save_steps": 500,
-    "data": "v1"
+    "data": "no_think_believe"
 }
 
 
