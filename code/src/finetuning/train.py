@@ -27,7 +27,7 @@ def print_trainable_parameters(model):
         f"trainable params: {trainable_params} || all params: {all_param} || trainable%: {100 * trainable_params / all_param:.2f}"
     )
 
-tinyLM_models = ["28", "33"]
+tinyLM_models = ["28", "33", "n28", "n125"]
 llama_models = ["llama-43"]
 
 parser = argparse.ArgumentParser()
@@ -63,20 +63,19 @@ elif config["model"] == "gpt2":
     repo_id = "gpt2"
 elif config["model"] == "n28-no-think-believe":
     repo_id = "/scr/snbloom/models/neo-training-28-1/checkpoint-49500"
+elif config["model"] == "n125":
+    repo_id = "/scr/kanishkg/models/neo-training-125-1/checkpoint-28000"
 else: raise Exception("Unexpected config[model]. Expected [28, 33, llama-43]")
 
 # Load TinyLM Models
 if config["model"] in tinyLM_models:
-    if config["model"] == '33': repo_id = "roneneldan/TinyStories-33M"
-    elif config["model"] == '28': repo_id = "roneneldan/TinyStories-28M"
     print(f"Loading model from {repo_id}")
-
     # load model
     model = AutoModelForCausalLM.from_pretrained(repo_id)
     print("Model loaded")
     print(f"Number of parameters: {model.num_parameters()}")
     # load tokenizer
-    tokenizer = AutoTokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
+    tokenizer = AutoTokenizer.from_pretrained(repo_id)
 
 # Load llama models
 elif config["model"] in llama_models:
@@ -171,8 +170,9 @@ print("Tokenizing datasets")
 context_length = config["context_length"]
 
 def tokenize(element):
+    stories = [tokenizer.bos_token + e.strip() for e in element["content"]]
     outputs = tokenizer(
-        element["content"],
+        stories,
         truncation=True,
         max_length=context_length,
         return_overflowing_tokens=True,
@@ -209,7 +209,7 @@ training_args = TrainingArguments(
     save_total_limit=config["save_total_limit"],
     save_steps=config["save_steps"],
     seed=config["seed"],
-    fp16=True,
+    bf16=True,
     push_to_hub=False,
     report_to="wandb",
     run_name=config["name"],
