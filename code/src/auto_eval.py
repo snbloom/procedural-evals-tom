@@ -94,6 +94,8 @@ if args.model_id == 'finetuned-28-v3-600-thinks-1_': model_id = '/scr/snbloom/mo
 # if args.model_id == "llama43-no-feel": model_id = "/scr/snbloom/models/llama-training-43-no-feel/checkpoint___________"
 
 if args.model_id == 'neo28-no-think-believe': model_id = "/scr/snbloom/models/neo-training-28-1/checkpoint-49500"
+if args.model_id == 'finetuned-neo28-no-think-believe-50': model_id = "/scr/snbloom/models/finetuned-n28-no-think-believe-50/checkpoint-20"
+if args.model_id == 'finetuned-neo28-no-think-believe-600': model_id = "/scr/snbloom/models/finetuned-n28-no-think-believe-600/checkpoint-200"
 
 data_dir = args.data_dir
 if data_dir == "v1": data_dir = "../../data/conditions/tinytom-v1"
