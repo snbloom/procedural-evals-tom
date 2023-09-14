@@ -40,7 +40,7 @@ parser.add_argument('--init_belief', type=str, default="0_forward")
 parser.add_argument('--unconverted', action='store_true', help="whether to use unconverted (non tinystory-ified) versions")
 parser.add_argument('--bigtom', action='store_true', help="run auto eval on bigtom dataset")
 parser.add_argument('--filter', action='store_true', help="whether to filter out stories that are too long")
-parser.add_argument('--think', action='store_true', help="whether to use think or believe")
+parser.add_argument('--believe', action='store_true', help="whether to use believe (vs think)")
 parser.add_argument('--corrected', action='store_true', help="whether to use corrected stories")
 parser.add_argument('--corrected_type', type=str, default="none", help="which filtered, corrected dataset type to use [in, out, none]")
 
@@ -89,11 +89,11 @@ if args.model_id == 'finetuned-28-v3-600': model_id = "/scr/snbloom/models/finet
 if args.model_id == 'finetuned-28-v3-600-thinks': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v3-600-thinks/checkpoint-200'
 if args.model_id == 'finetuned-28-v3-600-thinks-1_': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v3-600-thinks-with-1_/checkpoint-380'
 
-# if args.model_id == "llama43-no-think-believe": model_id = "/scr/snbloom/models/llama-training-43-no-think-believe/checkpoint___________"
-# if args.model_id == "llama43-no-know": model_id = "/scr/snbloom/models/llama-training-43-no-know/checkpoint___________"
-# if args.model_id == "llama43-no-feel": model_id = "/scr/snbloom/models/llama-training-43-no-feel/checkpoint___________"
-
 if args.model_id == 'neo28-no-think-believe': model_id = "/scr/snbloom/models/neo-training-28-1/checkpoint-49500"
+if args.model_id == 'finetuned-neo28-no-think-believe-50': model_id = "/scr/snbloom/models/finetuned-n28-no-think-believe-50/checkpoint-20"
+if args.model_id == 'finetuned-neo28-no-think-believe-600': model_id = "/scr/snbloom/models/finetuned-n28-no-think-believe-600/checkpoint-200"
+if args.model_id == 'finetuned-neo28-no-think-believe-600-believe-ending': model_id = "/scr/snbloom/models/finetuned-n28-no-think-believe-600-believe-ending/checkpoint-200"
+if args.model_id == 'finetuned-neo28-no-think-believe-50-believe-ending': model_id = "/scr/snbloom/models/finetuned-n28-no-think-believe-50-believe-ending/checkpoint-20"
 
 data_dir = args.data_dir
 if data_dir == "v1": data_dir = "../../data/conditions/tinytom-v1"
@@ -251,9 +251,9 @@ for condition in ["true_belief", "false_belief"]:
             if args.unconverted or args.bigtom: eval_story = unconverted_story
             else: eval_story = converted_story
             
-            if args.think:
-                eval_story = eval_story.replace("believed", "thought")
-                eval_story = eval_story.replace("believe", "think")
+            if args.believe:
+                eval_story = eval_story.replace("thought", "believed")
+                eval_story = eval_story.replace("think", "believe")
             # predict answer
             if model_id in open_ai_model_ids:
                 if model_id == "openai/text-davinci-003":
@@ -343,7 +343,7 @@ for condition in ["true_belief", "false_belief"]:
         "corrected_type": args.corrected_type,
         "variable":args.variable,
         "condition":condition,
-        "ending":"think" if args.think else "believe",
+        "ending":"believe" if args.believe else "think",
         "count_correct":count_correct,
         "count_incorrect":count_incorrect,
         "count_unrelated":count_unrelated,
@@ -365,8 +365,8 @@ for condition in ["true_belief", "false_belief"]:
     elif args.unconverted: co = "unconverted"
     else: co = "converted"
 
-    if args.think: th = "think"
-    else: th = "belief"
+    if args.believe: th = "believe"
+    else: th = "think"
     prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
     accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
 
@@ -393,14 +393,10 @@ for condition in ["true_belief", "false_belief"]:
     else:
         fb_answers = graded_answers
     
-print(tb_answers.count('correct'))
-print(tb_answers.count('incorrect'))
-print(tb_answers.count('unrelated'))
-print(tb_answers.count('inconsistent'))
-print(fb_answers.count('correct'))
-print(fb_answers.count('incorrect'))
-print(fb_answers.count('unrelated'))
-print(fb_answers.count('inconsistent'))
+print()
+print("TB:",tb_answers.count('correct'), tb_answers.count('incorrect'), tb_answers.count('unrelated'), tb_answers.count('inconsistent'))
+print("FB:", fb_answers.count('correct'), fb_answers.count('incorrect'), fb_answers.count('unrelated'), fb_answers.count('inconsistent'))
+print()
 
 for i in range(len(tb_answers)):
     if tb_answers[i] == 'correct':
