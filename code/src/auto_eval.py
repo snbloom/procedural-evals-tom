@@ -39,6 +39,7 @@ parser.add_argument('--init_belief', type=str, default="0_forward")
 parser.add_argument('--unconverted', action='store_true', help="whether to use unconverted (non tinystory-ified) versions")
 parser.add_argument('--bigtom', action='store_true', help="run auto eval on bigtom dataset")
 parser.add_argument('--filter', action='store_true', help="whether to filter out stories that are too long")
+parser.add_argument('--think', action='store_true', help="whether to use think or believe")
 parser.add_argument('--corrected', action='store_true', help="whether to use corrected stories")
 parser.add_argument('--corrected_type', type=str, default="none", help="which filtered, corrected dataset type to use [in, out, none]")
 
@@ -58,8 +59,10 @@ if args.model_id == "gpt4": model_id = "gpt-4-0613"
 if args.model_id == "gpt35turbo": model_id = "gpt-3.5-turbo"
 if args.model_id == "davinci003": model_id = "openai/text-davinci-003"
 
+if args.model_id == "neo-125": model_id = "/scr/kanishkg/models/neo-training-125-1/checkpoint-28000"
+
 if args.model_id == "llama-14": model_id = "/scr/kanishkg/models/llama-training-14-2/checkpoint-90500"
-if args.model_id == "llama-43": model_id = "/scr/kanishkg/models/llama-training-43-4/checkpoint-50000"
+if args.model_id == "llama-43": model_id = "/scr/kanishkg/models/llama-training-43-2/checkpoint-91000"
 if args.model_id == "finetuned-33": model_id = '/scr/snbloom/models/finetuned-33-tinytom/checkpoint-125'
 
 if args.model_id == "finetuned-llama-43-100": model_id = '/scr/snbloom/models/finetuned-llama-43-tinytom-100/checkpoint-35'
@@ -237,7 +240,10 @@ for i in tqdm(range(len(data))):
         # select converted or unconverted version (depending on args)
         if args.unconverted or args.bigtom: eval_story = unconverted_story
         else: eval_story = converted_story
-
+        
+        if args.think:
+            eval_story = eval_story.replace("believed", "thought")
+            eval_story = eval_story.replace("believe", "think")
         # predict answer
         if model_id in open_ai_model_ids:
             if model_id == "openai/text-davinci-003":
@@ -262,10 +268,11 @@ for i in tqdm(range(len(data))):
                 prediction = prediction.replace("\n", " ")
             else:
                 input_ids = tokenizer.encode(eval_story, return_tensors="pt")
+                tokenizer.pad_token = tokenizer.bos_token
                 output = model.generate(input_ids=input_ids, max_new_tokens=args.max_tokens, num_beams=args.beams, )
-
-                prediction = tokenizer.decode(output[0], skip_special_tokens=True)
+                prediction = tokenizer.decode(output[0], skip_special_tokens=False)
                 prediction = prediction[len(eval_story)+1:].split(".")[0] + "."
+
 
         predicted_answers.append(prediction)
         # use gpt4 to check for accuracy
@@ -346,8 +353,11 @@ model_id += f"_{args.beams}"
 if args.corrected or args.corrected_type == "in" or args.corrected_type == "out": co = "corrected"
 elif args.unconverted: co = "unconverted"
 else: co = "converted"
-prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
-accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}.csv')
+
+if args.think: th = "think"
+else: th = "belief"
+prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}_{th}.csv')
+accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}_{th}.csv')
 
 print("WRITING OUTPUTS TO", prediction, accuracy_file)
 print(args.model_id, args.condition, args.init_belief, co)
