@@ -32,6 +32,7 @@ llama_models = ["llama-43"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--config", type=str, default="../../configs/conf.json")
+parser.add_argument('--ending', type=str, default="think", help="['think', 'believe']")
 
 args = parser.parse_args()
 
@@ -60,6 +61,8 @@ elif config["model"] == "gpt2-xl":
     repo_id  = "gpt2-xl"
 elif config["model"] == "gpt2":
     repo_id = "gpt2"
+elif config["model"] == "n28-no-think-believe":
+    repo_id = "/scr/snbloom/models/neo-training-28-1/checkpoint-49500"
 else: raise Exception("Unexpected config[model]. Expected [28, 33, llama-43]")
 
 # Load TinyLM Models
@@ -123,7 +126,7 @@ raw_datasets = {'train': [], 'val_tom': [], 'val_stories': []}
 # NOTE: When the dataset is bigger, do this in a separate script,
 # and load using hf datasets directly
 print("Loading tinytom")
-tinytom = get_tiny_tom(config)
+tinytom = get_tiny_tom(config, args.ending)
 num_tiny_tom = sum([len(tinytom[cond]) for cond in config["conditions"]])
 print(f"Number of tinytom stories: {num_tiny_tom}")
 
