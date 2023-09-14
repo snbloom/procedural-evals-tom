@@ -160,6 +160,7 @@ print("tokenized dataset", tokenized_datasets)
 # prepare training
 training_args = TrainingArguments(
     output_dir=config["output_dir"],
+    auto_find_batch_size=True,
     per_device_train_batch_size=config["batch_size"],
     per_device_eval_batch_size=config["eval_batch_size"],
     evaluation_strategy="steps",
