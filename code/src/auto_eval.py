@@ -7,6 +7,7 @@ from tqdm import tqdm
 from crfm_llm import crfmLLM
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import PeftModel, PeftConfig
+import numpy as np
 
 from langchain import HuggingFaceHub
 from langchain.chat_models import ChatOpenAI
