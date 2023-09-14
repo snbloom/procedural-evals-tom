@@ -34,7 +34,7 @@ parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M"
 # data args
 parser.add_argument('--data_dir', type=str, default='../../data/conditions/tinytom-v3', help='data directory')
 parser.add_argument('--variable', type=str, default='belief')
-parser.add_argument('--condition', type=str, default='true_belief')
+# parser.add_argument('--condition', type=str, default='true_belief')
 parser.add_argument('--init_belief', type=str, default="0_forward")
 parser.add_argument('--unconverted', action='store_true', help="whether to use unconverted (non tinystory-ified) versions")
 parser.add_argument('--bigtom', action='store_true', help="run auto eval on bigtom dataset")
@@ -170,209 +170,243 @@ else:
 
 RESULTS_DIR = os.path.join('../../data/results')
 if args.bigtom: data_dir = '../../data/conditions/bigtom'
-DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories.csv"
-TRIMMED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_trimmed.csv"
-if args.corrected:
-    CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/corrected.txt"
-elif args.corrected_type == "in":
-    CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/corrected_in.txt"
-    DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_in.csv"
-elif args.corrected_type == "out":
-    CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/corrected_out.txt"
-    DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/stories_out.csv"
-else:
-    CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{args.condition}/converted.txt"
-if args.filter: FILTER_FILE = f"{data_dir}/ids_to_keep.txt"
 
-correct_answers = []
-incorrect_answers = []
-unrelated_answers = []
-inconsistent_answers = []
-predicted_answers = []
-graded_answers = []
+tb_answers, fb_answers = None, None
+for condition in ["true_belief", "false_belief"]:
+    DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories.csv"
+    TRIMMED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories_trimmed.csv"
+    if args.corrected:
+        CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/corrected.txt"
+    elif args.corrected_type == "in":
+        CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/corrected_in.txt"
+        DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories_in.csv"
+    elif args.corrected_type == "out":
+        CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/corrected_out.txt"
+        DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories_out.csv"
+    else:
+        CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/converted.txt"
+    if args.filter: FILTER_FILE = f"{data_dir}/ids_to_keep.txt"
 
-count_correct = 0
-count_incorrect = 0
-count_unrelated = 0
-count_inconsistent = 0
+    correct_answers = []
+    incorrect_answers = []
+    unrelated_answers = []
+    inconsistent_answers = []
+    predicted_answers = []
+    graded_answers = []
 
-with open(DATA_FILE, 'r') as f:
-    reader = csv.reader(f, delimiter=';')
-    data = list(reader)
+    count_correct = 0
+    count_incorrect = 0
+    count_unrelated = 0
+    count_inconsistent = 0
 
-if not args.bigtom: 
-    with open(CONVERTED_FILE, 'r') as f:
-        converted = f.readlines()
+    with open(DATA_FILE, 'r') as f:
+        reader = csv.reader(f, delimiter=';')
+        data = list(reader)
 
-with open(TRIMMED_FILE, 'r') as f:
-    trimmed = f.readlines()
+    if not args.bigtom: 
+        with open(CONVERTED_FILE, 'r') as f:
+            converted = f.readlines()
 
-if args.filter:
-    with open(FILTER_FILE, 'r') as f:
-        ids_to_keep = f.readlines()
-        ids_to_keep = [int(x.strip()) for x in ids_to_keep]
-        # check if there are enough ids to keep
-        if len(ids_to_keep) < args.num:
-            raise Exception(f"Only {len(ids_to_keep)} ids to keep, but {args.num} evaluations requested")
-        data = [data[i] for i in ids_to_keep]
-        if not args.bigtom: converted = [converted[i] for i in ids_to_keep]
-        trimmed = [trimmed[i] for i in ids_to_keep]
+    with open(TRIMMED_FILE, 'r') as f:
+        trimmed = f.readlines()
 
-with open(f"{PROMPT_DIR}/auto_eval_system.txt", "r") as f:
-    sys_prompt = f.read()
+    if args.filter:
+        with open(FILTER_FILE, 'r') as f:
+            ids_to_keep = f.readlines()
+            ids_to_keep = [int(x.strip()) for x in ids_to_keep]
+            # check if there are enough ids to keep
+            if len(ids_to_keep) < args.num:
+                raise Exception(f"Only {len(ids_to_keep)} ids to keep, but {args.num} evaluations requested")
+            data = [data[i] for i in ids_to_keep]
+            if not args.bigtom: converted = [converted[i] for i in ids_to_keep]
+            trimmed = [trimmed[i] for i in ids_to_keep]
 
-if args.verbose: 
-    print(sys_prompt)
-    print()
+    with open(f"{PROMPT_DIR}/auto_eval_system.txt", "r") as f:
+        sys_prompt = f.read()
 
-counter = 0
-for i in tqdm(range(len(data))):
-    if (i >= args.offset and counter < args.num) or args.filter:
-        story, question, correct_answer, wrong_answer, _ = data[i]
+    if args.verbose: 
+        print(sys_prompt)
+        print()
 
-        # story-ified story
-        if not args.bigtom: converted_story = converted[i].strip()
+    counter = 0
+    for i in tqdm(range(len(data))):
+        if (i >= args.offset and counter < args.num) or args.filter:
+            story, question, correct_answer, wrong_answer, _ = data[i]
 
-        # non-story-ified version
-        unconverted_story_parts = trimmed[i].split(';')
-        unconverted_story = unconverted_story_parts[0] + " " + unconverted_story_parts[0].split()[0] + " believes that the " + unconverted_story_parts[1].strip() + " is"
-        
-        # select converted or unconverted version (depending on args)
-        if args.unconverted or args.bigtom: eval_story = unconverted_story
-        else: eval_story = converted_story
-        
-        if args.think:
-            eval_story = eval_story.replace("believed", "thought")
-            eval_story = eval_story.replace("believe", "think")
-        # predict answer
-        if model_id in open_ai_model_ids:
-            if model_id == "openai/text-davinci-003":
-                response = test_llm(prompt=eval_story, stop=['.', '!', '\n'])
-                prediction = response.split(".")[0] + "."
-                prediction = prediction.replace("\n", " ")
-            else:
-                system_message = SystemMessage(content=eval_story)
-                messages = [system_message]
-                responses = test_llm.generate([messages])
-                for g, generation in enumerate(responses.generations[0]):
-                    prediction = generation.text.strip() 
-                    prediction = prediction.split(".")[0] + "."
+            # story-ified story
+            if not args.bigtom: converted_story = converted[i].strip()
+
+            # non-story-ified version
+            unconverted_story_parts = trimmed[i].split(';')
+            unconverted_story = unconverted_story_parts[0] + " " + unconverted_story_parts[0].split()[0] + " believes that the " + unconverted_story_parts[1].strip() + " is"
+            
+            # select converted or unconverted version (depending on args)
+            if args.unconverted or args.bigtom: eval_story = unconverted_story
+            else: eval_story = converted_story
+            
+            if args.think:
+                eval_story = eval_story.replace("believed", "thought")
+                eval_story = eval_story.replace("believe", "think")
+            # predict answer
+            if model_id in open_ai_model_ids:
+                if model_id == "openai/text-davinci-003":
+                    response = test_llm(prompt=eval_story, stop=['.', '!', '\n'])
+                    prediction = response.split(".")[0] + "."
                     prediction = prediction.replace("\n", " ")
-        elif "bin" in model_id:
-            prediction = test_llm(eval_story, args)
-            prediction = prediction[len(eval_story)+1:].split(".")[0] + "."
-        else:
-            if not args.local:
-                prediction = test_llm(eval_story)
+                else:
+                    system_message = SystemMessage(content=eval_story)
+                    messages = [system_message]
+                    responses = test_llm.generate([messages])
+                    for g, generation in enumerate(responses.generations[0]):
+                        prediction = generation.text.strip() 
+                        prediction = prediction.split(".")[0] + "."
+                        prediction = prediction.replace("\n", " ")
+            elif "bin" in model_id:
+                prediction = test_llm(eval_story, args)
                 prediction = prediction[len(eval_story)+1:].split(".")[0] + "."
-                prediction = prediction.replace("\n", " ")
             else:
-                input_ids = tokenizer.encode(eval_story, return_tensors="pt")
-                tokenizer.pad_token = tokenizer.bos_token
-                output = model.generate(input_ids=input_ids, max_new_tokens=args.max_tokens, num_beams=args.beams, )
-                prediction = tokenizer.decode(output[0], skip_special_tokens=False)
-                prediction = prediction[len(eval_story)+1:].split(".")[0] + "."
+                if not args.local:
+                    prediction = test_llm(eval_story)
+                    prediction = prediction[len(eval_story)+1:].split(".")[0] + "."
+                    prediction = prediction.replace("\n", " ")
+                else:
+                    input_ids = tokenizer.encode(eval_story, return_tensors="pt")
+                    tokenizer.pad_token = tokenizer.bos_token
+                    output = model.generate(input_ids=input_ids, max_new_tokens=args.max_tokens, num_beams=args.beams, )
+                    prediction = tokenizer.decode(output[0], skip_special_tokens=False)
+                    prediction = prediction[len(eval_story)+1:].split(".")[0] + "."
 
 
-        predicted_answers.append(prediction)
-        # use gpt4 to check for accuracy
-        with open(f"{PROMPT_DIR}/auto_eval_user.txt", "r") as f:
-            user_prompt = f.read() 
-            user_prompt = user_prompt.replace("[story]", eval_story)
-            user_prompt = user_prompt.replace("[user_completion]", prediction)
-            user_prompt = user_prompt.replace("[correct_completion]", correct_answer)
-            user_prompt = user_prompt.replace("[incorrect_completion]", wrong_answer)
+            predicted_answers.append(prediction)
+            # use gpt4 to check for accuracy
+            with open(f"{PROMPT_DIR}/auto_eval_user.txt", "r") as f:
+                user_prompt = f.read() 
+                user_prompt = user_prompt.replace("[story]", eval_story)
+                user_prompt = user_prompt.replace("[user_completion]", prediction)
+                user_prompt = user_prompt.replace("[correct_completion]", correct_answer)
+                user_prompt = user_prompt.replace("[incorrect_completion]", wrong_answer)
 
-        if not args.no_print: print(user_prompt)
+            if not args.no_print: print(user_prompt)
 
-        system_message = SystemMessage(content=sys_prompt)
-        user_msg = HumanMessage(content=user_prompt)
-        messages = [system_message, user_msg]
-        responses = eval_llm.generate([messages])
+            system_message = SystemMessage(content=sys_prompt)
+            user_msg = HumanMessage(content=user_prompt)
+            messages = [system_message, user_msg]
+            responses = eval_llm.generate([messages])
 
-        for g, generation in enumerate(responses.generations[0]):
-            eval = generation.text.strip() 
-            if not args.no_print: print(eval)
-            classification = eval.split("Evaluation:")[1].strip().lower()
+            for g, generation in enumerate(responses.generations[0]):
+                eval = generation.text.strip() 
+                if not args.no_print: print(eval)
+                classification = eval.split("Evaluation:")[1].strip().lower()
 
-            if classification=="correct":
-                count_correct += 1
-                correct_answers.append(eval_story + " " + prediction)
-            elif classification=="incorrect":
-                count_incorrect += 1
-                incorrect_answers.append(eval_story + " " + prediction)
-            elif classification=="unrelated":
-                count_unrelated += 1
-                unrelated_answers.append(eval_story + " " + prediction)
-            elif classification=="inconsistent":
-                count_inconsistent += 1
-                inconsistent_answers.append(eval_story + " " + prediction)
-            else:
-                raise Exception(f"Classification '{classification}' is not recognized")
-        graded_answers.append(classification)
-        counter += 1
-        if not args.no_print: print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
+                if classification=="correct":
+                    count_correct += 1
+                    correct_answers.append(eval_story + " " + prediction)
+                elif classification=="incorrect":
+                    count_incorrect += 1
+                    incorrect_answers.append(eval_story + " " + prediction)
+                elif classification=="unrelated":
+                    count_unrelated += 1
+                    unrelated_answers.append(eval_story + " " + prediction)
+                elif classification=="inconsistent":
+                    count_inconsistent += 1
+                    inconsistent_answers.append(eval_story + " " + prediction)
+                else:
+                    raise Exception(f"Classification '{classification}' is not recognized")
+            graded_answers.append(classification)
+            counter += 1
+            if not args.no_print: print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
 
 
-print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
-print("LOGGING OUTPUTS FOR MODEL", model_id)
+    print(f"Final Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
+    print("LOGGING OUTPUTS FOR MODEL", model_id)
 
-if args.bigtom: dataset = "bigtom"
-elif data_dir == "../../data/conditions/tinytom-v1": dataset = "tinytom-v1"
-elif data_dir == "../../data/conditions/tinytom-v3": dataset = "tinytom-v3"
-else: dataset = "tinytom"
+    if args.bigtom: dataset = "bigtom"
+    elif data_dir == "../../data/conditions/tinytom-v1": dataset = "tinytom-v1"
+    elif data_dir == "../../data/conditions/tinytom-v3": dataset = "tinytom-v3"
+    else: dataset = "tinytom"
 
-run = {
-    "model_id":model_id,
-    "method":"auto",
-    "dataset": dataset,
-    "unconverted": args.unconverted,
-    "data_range":data_range,
-    "init_belief":args.init_belief,
-    "corrected": args.corrected,
-    "corrected_type": args.corrected_type,
-    "variable":args.variable,
-    "condition":args.condition,
-    "count_correct":count_correct,
-    "count_incorrect":count_incorrect,
-    "count_unrelated":count_unrelated,
-    "count_inconsistent":count_inconsistent,
-    "incorrect_stories": incorrect_answers,
-    "unrelated_stories": unrelated_answers,
-    "inconsistent_stories": inconsistent_answers
-}
+    run = {
+        "model_id":model_id,
+        "method":"auto",
+        "dataset": dataset,
+        "unconverted": args.unconverted,
+        "data_range":data_range,
+        "init_belief":args.init_belief,
+        "corrected": args.corrected,
+        "corrected_type": args.corrected_type,
+        "variable":args.variable,
+        "condition":condition,
+        "count_correct":count_correct,
+        "count_incorrect":count_incorrect,
+        "count_unrelated":count_unrelated,
+        "count_inconsistent":count_inconsistent,
+        "incorrect_stories": incorrect_answers,
+        "unrelated_stories": unrelated_answers,
+        "inconsistent_stories": inconsistent_answers
+    }
 
-with open(LOG_FILE, "a") as f:
-    json.dump(run, f, indent=6)
-    f.write('\n')
+    with open(LOG_FILE, "a") as f:
+        json.dump(run, f, indent=6)
+        f.write('\n')
 
-model_name = model_id.replace('/', '_')
-model_id = model_id.replace('/', '_')
-model_id += f"_{args.beams}"
+    model_name = model_id.replace('/', '_')
+    model_id = model_id.replace('/', '_')
+    model_id += f"_{args.beams}"
 
-if args.corrected or args.corrected_type == "in" or args.corrected_type == "out": co = "corrected"
-elif args.unconverted: co = "unconverted"
-else: co = "converted"
+    if args.corrected or args.corrected_type == "in" or args.corrected_type == "out": co = "corrected"
+    elif args.unconverted: co = "unconverted"
+    else: co = "converted"
 
-if args.think: th = "think"
-else: th = "belief"
-prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}_{th}.csv')
-accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{args.condition}_{args.offset}_{args.num}_{th}.csv')
+    if args.think: th = "think"
+    else: th = "belief"
+    prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
+    accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
 
-print("WRITING OUTPUTS TO", prediction, accuracy_file)
-print(args.model_id, args.condition, args.init_belief, co)
+    print("WRITING OUTPUTS TO", prediction, accuracy_file)
+    print(args.model_id, condition, args.init_belief, co)
 
-if not os.path.exists(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}')):
-    os.makedirs(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{args.condition}_{co}_{args.corrected_type}'))
+    if not os.path.exists(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}')):
+        os.makedirs(os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}'))
 
-with open(prediction, "w") as f:
-    writer = csv.writer(f, delimiter=";")
-    # write a new row per element in predicted answers 
-    for predicted_answer in predicted_answers:
-        writer.writerow([predicted_answer])
+    with open(prediction, "w") as f:
+        writer = csv.writer(f, delimiter=";")
+        # write a new row per element in predicted answers 
+        for predicted_answer in predicted_answers:
+            writer.writerow([predicted_answer])
 
-with open(accuracy_file, "w") as f:
-    writer = csv.writer(f, delimiter=";")
-    # write a new row per element in graded answers
-    for graded_answer in graded_answers:
-        writer.writerow([graded_answer])
+    with open(accuracy_file, "w") as f:
+        writer = csv.writer(f, delimiter=";")
+        # write a new row per element in graded answers
+        for graded_answer in graded_answers:
+            writer.writerow([graded_answer])
+
+    if "true" in condition:
+        tb_answers = graded_answers
+    else:
+        fb_answers = graded_answers
+    
+print(tb_answers.count('correct'))
+print(tb_answers.count('incorrect'))
+print(tb_answers.count('unrelated'))
+print(tb_answers.count('inconsistent'))
+print(fb_answers.count('correct'))
+print(fb_answers.count('incorrect'))
+print(fb_answers.count('unrelated'))
+print(fb_answers.count('inconsistent'))
+
+for i in range(len(tb_answers)):
+    if tb_answers[i] == 'correct':
+        tb_answers[i] = True
+    else:
+        tb_answers[i] = False
+    if fb_answers[i] == 'correct':
+        fb_answers[i] = True
+    else:
+        fb_answers[i] = False
+
+
+
+print(f'True Accuracy: {np.mean(tb_answers)}')
+print(f'False Accuracy: {np.mean(fb_answers)}')
+# take intersection of true and false accuracy
+print(f'Intersection Accuracy: {np.mean(np.logical_and(tb_answers, fb_answers))}')
