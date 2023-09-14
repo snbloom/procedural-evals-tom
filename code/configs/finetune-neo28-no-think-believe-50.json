@@ -2,7 +2,7 @@
     "seed": 42,
     "model": "n28-no-think-believe",
     "context_length": 512,
-    "output_dir": "/scr/kanishkg/models/finetuned-n28-no-think-believe-50",
+    "output_dir": "/scr/snbloom/models/finetuned-n28-no-think-believe-50",
     "batch_size": 128, 
     "eval_batch_size": 128,
     "eval_steps": 5,
