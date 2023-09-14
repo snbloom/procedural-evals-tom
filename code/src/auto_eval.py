@@ -343,6 +343,7 @@ for condition in ["true_belief", "false_belief"]:
         "corrected_type": args.corrected_type,
         "variable":args.variable,
         "condition":condition,
+        "ending":"think" if args.think else "believe",
         "count_correct":count_correct,
         "count_incorrect":count_incorrect,
         "count_unrelated":count_unrelated,
