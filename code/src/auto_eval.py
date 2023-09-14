@@ -89,13 +89,11 @@ if args.model_id == 'finetuned-28-v3-600': model_id = "/scr/snbloom/models/finet
 if args.model_id == 'finetuned-28-v3-600-thinks': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v3-600-thinks/checkpoint-200'
 if args.model_id == 'finetuned-28-v3-600-thinks-1_': model_id = '/scr/snbloom/models/finetuned-28-tinytom-v3-600-thinks-with-1_/checkpoint-380'
 
-# if args.model_id == "llama43-no-think-believe": model_id = "/scr/snbloom/models/llama-training-43-no-think-believe/checkpoint___________"
-# if args.model_id == "llama43-no-know": model_id = "/scr/snbloom/models/llama-training-43-no-know/checkpoint___________"
-# if args.model_id == "llama43-no-feel": model_id = "/scr/snbloom/models/llama-training-43-no-feel/checkpoint___________"
-
 if args.model_id == 'neo28-no-think-believe': model_id = "/scr/snbloom/models/neo-training-28-1/checkpoint-49500"
 if args.model_id == 'finetuned-neo28-no-think-believe-50': model_id = "/scr/snbloom/models/finetuned-n28-no-think-believe-50/checkpoint-20"
 if args.model_id == 'finetuned-neo28-no-think-believe-600': model_id = "/scr/snbloom/models/finetuned-n28-no-think-believe-600/checkpoint-200"
+if args.model_id == 'finetuned-neo28-no-think-believe-600-believe-ending': model_id = "/scr/snbloom/models/finetuned-n28-no-think-believe-600-believe-ending/checkpoint-200"
+if args.model_id == 'finetuned-neo28-no-think-believe-50-believe-ending': model_id = "/scr/snbloom/models/finetuned-n28-no-think-believe-50-believe-ending/checkpoint-20"
 
 data_dir = args.data_dir
 if data_dir == "v1": data_dir = "../../data/conditions/tinytom-v1"
