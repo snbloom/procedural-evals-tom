@@ -31,6 +31,7 @@ parser.add_argument('--verbose', action='store_true', help='verbose')
 parser.add_argument("--no_print", action="store_true", help="print no intermediate steps")
 parser.add_argument('--local', action='store_true', default=True, help='local eval using transformers instead of huggingface hub')
 parser.add_argument("--model_id", type=str, default="roneneldan/TinyStories-28M", help="gpt-4-0613, roneneldan/TinyStories-33M, roneneldan/TinyStories-28M")
+parser.add_argument("--human", action="store_true")
 
 # data args
 parser.add_argument('--data_dir', type=str, default='../../data/conditions/tinytom-v3', help='data directory')
@@ -285,6 +286,7 @@ for condition in ["true_belief", "false_belief"]:
 
 
             predicted_answers.append(prediction)
+
             # use gpt4 to check for accuracy
             with open(f"{PROMPT_DIR}/auto_eval_user.txt", "r") as f:
                 user_prompt = f.read() 
@@ -294,6 +296,8 @@ for condition in ["true_belief", "false_belief"]:
                 user_prompt = user_prompt.replace("[incorrect_completion]", wrong_answer)
 
             if not args.no_print: print(user_prompt)
+            if args.human:
+                input("Is the completion correct? (0:correct, 1:incorrect, 2:unrelated, 3:inconsistent)")
 
             system_message = SystemMessage(content=sys_prompt)
             user_msg = HumanMessage(content=user_prompt)
