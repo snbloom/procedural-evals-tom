@@ -255,6 +255,9 @@ for condition in ["true_belief", "false_belief"]:
             if args.believe:
                 eval_story = eval_story.replace("thought", "believed")
                 eval_story = eval_story.replace("think", "believe")
+            else:
+                eval_story = eval_story.replace("believed", "thought")
+                eval_story = eval_story.replace("believe", "think")
             # predict answer
             if model_id in open_ai_model_ids:
                 if model_id == "openai/text-davinci-003":
