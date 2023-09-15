@@ -30,8 +30,8 @@ time_words = ["now", "lately", "earlier", "soon", "currently", "today", "tomorro
 
 args = parser.parse_args()
 if args.target_words == "think_believe": target_words = think_words
-# elif args.target_words == "know": target_words = know_words
-# elif args.target_words == "think_and_know": target_words = think_and_know_words
+elif args.target_words == "know": target_words = know_words
+elif args.target_words == "think_and_know": target_words = think_and_know_words
 # elif args.target_words == "learn": target_words = learn_words
 # elif args.target_words == "feel": target_words = feel_words
 # elif args.target_words == "prefer": target_words = prefer_words
