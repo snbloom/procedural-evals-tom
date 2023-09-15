@@ -7,6 +7,7 @@ import argparse
 TS_DIR = "/scr/kanishkg/TinyStories/"
 TS_DIR_OUT = "/scr/snbloom/TinyStories/"
 TINYSTORIES_V2 = "/scr/kanishkg/TinyStories/TinyStoriesV2-GPT4-train.txt"
+TINYSTORIES_V2_VAL = "/scr/kanishkg/TinyStories/TinyStoriesV2-GPT4-valid.txt"
 train_file = os.path.join(TS_DIR, "TinyStories-train.txt")
 val_file = os.path.join(TS_DIR, "TinyStories-valid.txt")
 
@@ -49,10 +50,13 @@ def has_banned_words(text):
         if word in text: return True
     return False
 
-def get_tiny_stories_v2():
+def get_tiny_stories_v2(train=True):
     stories = []
     most_recent = ""
-    with open(os.path.join(TINYSTORIES_V2), 'r') as f:
+    if train: path = TINYSTORIES_V2
+    else: path = TINYSTORIES_V2_VAL
+
+    with open(os.path.join(path), 'r') as f:
         for line in tqdm(f):
             if line.strip() != "<|endoftext|>": most_recent += line.strip().replace('\n', "")
             else:
@@ -85,8 +89,8 @@ def custom_reader(file_path, tinystories_v2):
                     replacement = tinystories_v2[replacement_idx] 
                     while has_banned_words(replacement):
                         replacement_idx += 1
-                        replacement = tinystories_v2[replacement_idx] 
                         if replacement_idx == len(tinystories_v2)-1: print("ERROR: replacement_idx at length of v2 stories")
+                        replacement = tinystories_v2[replacement_idx] 
                     replacement_idx += 1
                     dataset.append({"text": replacement})
                 # clear string tracker for next story
@@ -101,6 +105,9 @@ print(f"TRAIN AND VAL FILTERING FOR CONDITION: {args.banned_words.upper()}")
 print("Getting stories v2")
 tinystories_v2 = get_tiny_stories_v2()
 print()
+print("Getting stories v2 valid")
+tinystories_v2_val = get_tiny_stories_v2(train=False)
+print()
 
 print("Reading in train file")
 train_ex = custom_reader(train_file, tinystories_v2)
@@ -108,7 +115,7 @@ print(f"Train length: {len(train_ex)}")
 print()
 
 print("Reading in val file")
-val_ex = custom_reader(val_file, tinystories_v2)
+val_ex = custom_reader(val_file, tinystories_v2_val)
 print(f"Val length: {len(val_ex)}")
 print()
 
