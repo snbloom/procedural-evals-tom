@@ -296,19 +296,16 @@ for condition in ["true_belief", "false_belief"]:
                 user_prompt = user_prompt.replace("[incorrect_completion]", wrong_answer)
 
             if not args.no_print: print(user_prompt)
+            grade = None
             if args.human:
-                input("Is the completion correct? (0:correct, 1:incorrect, 2:unrelated, 3:inconsistent)")
+                while grade not in ["0", "1", "2", "3"]:
+                    grade = input("Is the completion correct? (0:correct, 1:incorrect, 2:unrelated, 3:inconsistent)")
 
-            system_message = SystemMessage(content=sys_prompt)
-            user_msg = HumanMessage(content=user_prompt)
-            messages = [system_message, user_msg]
-            responses = eval_llm.generate([messages])
-
-            for g, generation in enumerate(responses.generations[0]):
-                eval = generation.text.strip() 
-                if not args.no_print: print(eval)
-                classification = eval.split("Evaluation:")[1].strip().lower()
-
+                if grade == "0": classification = "correct"
+                elif grade == "1": classification = "incorrect"
+                elif grade == "2": classification = "unrelated"
+                elif grade == "3": classification = "inconsistent"
+                
                 if classification=="correct":
                     count_correct += 1
                     correct_answers.append(eval_story + " " + prediction)
@@ -321,8 +318,33 @@ for condition in ["true_belief", "false_belief"]:
                 elif classification=="inconsistent":
                     count_inconsistent += 1
                     inconsistent_answers.append(eval_story + " " + prediction)
-                else:
-                    raise Exception(f"Classification '{classification}' is not recognized")
+       
+
+            else:
+                system_message = SystemMessage(content=sys_prompt)
+                user_msg = HumanMessage(content=user_prompt)
+                messages = [system_message, user_msg]
+                responses = eval_llm.generate([messages])
+
+                for g, generation in enumerate(responses.generations[0]):
+                    eval = generation.text.strip() 
+                    if not args.no_print: print(eval)
+                    classification = eval.split("Evaluation:")[1].strip().lower()
+
+                    if classification=="correct":
+                        count_correct += 1
+                        correct_answers.append(eval_story + " " + prediction)
+                    elif classification=="incorrect":
+                        count_incorrect += 1
+                        incorrect_answers.append(eval_story + " " + prediction)
+                    elif classification=="unrelated":
+                        count_unrelated += 1
+                        unrelated_answers.append(eval_story + " " + prediction)
+                    elif classification=="inconsistent":
+                        count_inconsistent += 1
+                        inconsistent_answers.append(eval_story + " " + prediction)
+                    else:
+                        raise Exception(f"Classification '{classification}' is not recognized")
             graded_answers.append(classification)
             counter += 1
             if not args.no_print: print(f"Current Tallies: correct {count_correct}, incorrect {count_incorrect}, unrelated {count_unrelated}, inconsistent {count_inconsistent}")
