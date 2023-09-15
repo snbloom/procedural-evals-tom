@@ -13,7 +13,7 @@ val_file = os.path.join(TS_DIR, "TinyStories-valid.txt")
 parser = argparse.ArgumentParser()
 
 # model args
-parser.add_argument('--target_words', type=str, default="think_and_know", help='[think_believe, know, think_and_know, learn, feel, prefer, want, plan, time]')
+parser.add_argument('--target_words', type=str, default="think_believe", help='[think_believe, know, think_and_know, learn, feel, prefer, want, plan, time]')
 
 target_words = []
 
@@ -28,9 +28,9 @@ plan_words = ["plan", "decide"]
 time_words = ["now", "lately", "earlier", "soon", "currently", "today", "tomorrow", "yesterday", "soon", "later", "always", "never", "forever", "before", "after", "during", "while", "when", "then", "suddenly", "frequently", "rarely", "sometimes", "often", "currently", "recently", "prior to", "subsequently", "simultaneously", "eventually", "in the meantime", "afterward", "previously"]
 
 args = parser.parse_args()
-# if args.target_words == "think_believe": target_words = think_words
+if args.target_words == "think_believe": target_words = think_words
 # elif args.target_words == "know": target_words = know_words
-if args.target_words == "think_and_know": target_words = think_and_know_words
+# elif args.target_words == "think_and_know": target_words = think_and_know_words
 # elif args.target_words == "learn": target_words = learn_words
 # elif args.target_words == "feel": target_words = feel_words
 # elif args.target_words == "prefer": target_words = prefer_words
@@ -126,4 +126,4 @@ store_json(TS_DIR_OUT+f'train_no_{args.target_words}.json', train_ex)
 store_json(TS_DIR_OUT+f'val_no_{args.target_words}.json', val_ex)
 
 with open(TS_DIR_OUT+f'train_no_{args.target_words}.json', 'r') as f:
-    print(f.read()[:2000])
+    print(f.read()[:20000])
