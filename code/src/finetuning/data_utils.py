@@ -4,7 +4,7 @@ import json
 import random
 
 
-def get_tiny_tom(config, ending):
+def get_tiny_tom(config, ending, final=False):
     print("ending:", ending)
     tinytom = {}
 
@@ -28,7 +28,10 @@ def get_tiny_tom(config, ending):
                 elif ending=="believe" and 'think' in final_sentence:
                     final_sentence = final_sentence.replace('think', 'believe')
                     story = story.replace('think', 'believe')
-                story = story + " " + final_sentence
+                if not final:
+                    story = story + " " + final_sentence
+                elif final:
+                    story = final_sentence
                 tinytom[cond].append(story)
     # TODO: ensure all conditions are shuffled in the same order
     # keeping unshuffled for now
