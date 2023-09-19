@@ -303,9 +303,11 @@ for condition in ["true_belief", "false_belief"]:
             if not args.no_print: print(user_prompt)
             grade = None
             if args.human:
-                if condition == "false_belief":
+                if "false" in condition:
+                    print("checking skip fb")
                     if i in skipped:
                         print(f"skipping {i}")
+                        counter += 1
                         continue
                 while grade not in ["0", "1", "2", "3", "4"]:
                     grade = input("Is the completion correct? (0:correct, 1:incorrect, 2:unrelated, 3:inconsistent, 4:skip)")
@@ -329,6 +331,7 @@ for condition in ["true_belief", "false_belief"]:
                     count_inconsistent += 1
                     inconsistent_answers.append(eval_story + " " + prediction)
                 elif classification=="skip":
+                    counter += 1
                     continue
 
             else:
