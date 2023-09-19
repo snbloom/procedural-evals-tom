@@ -19,7 +19,8 @@ FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control
                 "1_forward_belief_false_belief", "1_forward_belief_false_control", "1_forward_belief_true_belief", "1_forward_belief_true_control"]
 BACKWARD_FOLDER_NAMES = ["0_backward_belief_false_belief", "0_backward_belief_false_control", "0_backward_belief_true_belief", "0_backward_belief_true_control",
                 "1_backward_belief_false_belief", "1_backward_belief_false_control", "1_backward_belief_true_belief", "1_backward_belief_true_control"]
-ALL_FOLDER_NAMES = FOLDER_NAMES + BACKWARD_FOLDER_NAMES
+PERCEPT_TO_BELIEF_FOLDER_NAMES = ["1_percept_to_belief_true_belief"]
+ALL_FOLDER_NAMES = FOLDER_NAMES + BACKWARD_FOLDER_NAMES + PERCEPT_TO_BELIEF_FOLDER_NAMES
 parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, default="tinytom-v3", help="[tinytom, tinytom-v3]")
 parser.add_argument('--num', type=int, default=None, help="max number of stories to convert")
@@ -144,7 +145,7 @@ def stitch_stories(stories, end_idx, args, output_name):
         if i == end_idx: break
 
         # parse unconverted parts
-        init_belief_yes = story[0].split(".")[3] + "."
+        init_belief_yes = (story[0].split(".")[3] + ".").strip()
         percieve_causal_yes = story[1].strip()
         percieve_causal_no = story[2].strip()
         percieve_random_yes = story[15].strip()
@@ -197,7 +198,7 @@ def stitch_stories(stories, end_idx, args, output_name):
             if args.verbose: print("Condition:", folder_name)
 
             if i >= start_idx[folder_name]:
-                stitched = context
+                stitched = context.strip()
 
                 # initial belief
                 if "1_" in folder_name:
@@ -206,7 +207,8 @@ def stitch_stories(stories, end_idx, args, output_name):
                 # control event
                 if "control" in folder_name: stitched = " ".join([stitched, random_event])
                 # causal event
-                else: stitched = " ".join([stitched, causal_event])
+                elif "percept_to_belief" not in folder_name: stitched = " ".join([stitched, causal_event])
+                # skip adding causal/random event for percept to belief condition
 
                 if "forward" in folder_name:
                     # true/false belief/control

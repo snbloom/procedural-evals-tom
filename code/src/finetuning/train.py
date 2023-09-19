@@ -33,6 +33,8 @@ llama_models = ["llama-43"]
 parser = argparse.ArgumentParser()
 parser.add_argument("--config", type=str, default="../../configs/conf.json")
 parser.add_argument('--ending', type=str, default="think", help="['think', 'believe']")
+parser.add_argument("--condition", type=str, default=None, help="whether to use one condition only")
+parser.add_argument("--final", action='store_true')
 
 args = parser.parse_args()
 
@@ -125,7 +127,7 @@ raw_datasets = {'train': [], 'val_tom': [], 'val_stories': []}
 # NOTE: When the dataset is bigger, do this in a separate script,
 # and load using hf datasets directly
 print("Loading tinytom")
-tinytom = get_tiny_tom(config, args.ending)
+tinytom = get_tiny_tom(config, args.ending, args.final)
 num_tiny_tom = sum([len(tinytom[cond]) for cond in config["conditions"]])
 print(f"Number of tinytom stories: {num_tiny_tom}")
 
@@ -150,7 +152,15 @@ for cond in config["conditions"]:
     num_train = config["num_train"]
     print("Offset:", offset, "Num Train:", num_train)
     num_val = offset
-    raw_datasets['train'] += [{"content": s} for s in tinytom[cond][offset:offset+num_train]]
+    if args.condition == None:
+        raw_datasets['train'] += [{"content": s} for s in tinytom[cond][offset:offset+num_train]]
+    elif args.condition == "tb":
+        if "true" in cond or "tb" in cond:
+            raw_datasets['train'] += [{"content": s} for s in tinytom[cond][offset:offset+num_train]]
+    elif args.condition == "fb":
+        if "false" in cond or "fb" in cond:
+            raw_datasets['train'] += [{"content": s} for s in tinytom[cond][offset:offset+num_train]]
+ 
     raw_datasets['val_tom'] += [{"content": s} for s in tinytom[cond][:offset]]
 
 
