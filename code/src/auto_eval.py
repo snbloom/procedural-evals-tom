@@ -329,7 +329,6 @@ for condition in ["true_belief", "false_belief"]:
                     count_inconsistent += 1
                     inconsistent_answers.append(eval_story + " " + prediction)
                 elif classification=="skip":
-                    s
                     continue
 
             else:
