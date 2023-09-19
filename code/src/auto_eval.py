@@ -1,4 +1,5 @@
 import os
+import copy
 import subprocess
 import argparse
 import json
@@ -180,6 +181,7 @@ RESULTS_DIR = os.path.join('../../data/results')
 if args.bigtom: data_dir = '../../data/conditions/bigtom'
 
 tb_answers, fb_answers = None, None
+skipped = []
 for condition in ["true_belief", "false_belief"]:
     DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories.csv"
     TRIMMED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories_trimmed.csv"
@@ -301,13 +303,18 @@ for condition in ["true_belief", "false_belief"]:
             if not args.no_print: print(user_prompt)
             grade = None
             if args.human:
-                while grade not in ["0", "1", "2", "3"]:
-                    grade = input("Is the completion correct? (0:correct, 1:incorrect, 2:unrelated, 3:inconsistent)")
+                if condition == "false_belief":
+                    if i in skipped:
+                        print(f"skipping {i}")
+                        continue
+                while grade not in ["0", "1", "2", "3", "4"]:
+                    grade = input("Is the completion correct? (0:correct, 1:incorrect, 2:unrelated, 3:inconsistent, 4:skip)")
 
                 if grade == "0": classification = "correct"
                 elif grade == "1": classification = "incorrect"
                 elif grade == "2": classification = "unrelated"
                 elif grade == "3": classification = "inconsistent"
+                elif grade == "4": classification = "skip"
                 
                 if classification=="correct":
                     count_correct += 1
@@ -321,7 +328,9 @@ for condition in ["true_belief", "false_belief"]:
                 elif classification=="inconsistent":
                     count_inconsistent += 1
                     inconsistent_answers.append(eval_story + " " + prediction)
-       
+                elif classification=="skip":
+                    s
+                    continue
 
             else:
                 system_message = SystemMessage(content=sys_prompt)
@@ -398,6 +407,7 @@ for condition in ["true_belief", "false_belief"]:
     else: th = "think"
     prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
     accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
+    skip_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_skipped_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
 
     print("WRITING OUTPUTS TO", prediction, accuracy_file)
     print(args.model_id, condition, args.init_belief, co)
@@ -419,9 +429,15 @@ for condition in ["true_belief", "false_belief"]:
 
     if "true" in condition:
         tb_answers = graded_answers
+        with open(skip_file, "w") as f:
+            writer = csv.writer(f, delimiter=";")
+            # write a new row per element in graded answers
+            for skipped_answer in skipped:
+                writer.writerow([skipped_answer])
     else:
         fb_answers = graded_answers
     
+# write skipped to file
 print()
 print("TB:",tb_answers.count('correct'), tb_answers.count('incorrect'), tb_answers.count('unrelated'), tb_answers.count('inconsistent'))
 print("FB:", fb_answers.count('correct'), fb_answers.count('incorrect'), fb_answers.count('unrelated'), fb_answers.count('inconsistent'))
