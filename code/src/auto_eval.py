@@ -193,16 +193,20 @@ skipped = []
 for condition in conditions:
     DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories.csv"
     TRIMMED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories_trimmed.csv"
-    if args.corrected:
-        CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/corrected.txt"
-    elif args.corrected_type == "in":
-        CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/corrected_in.txt"
-        DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories_in.csv"
-    elif args.corrected_type == "out":
-        CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/corrected_out.txt"
-        DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories_out.csv"
-    else:
-        CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/converted.txt"
+    if "percept" in condition:
+        CONVERTED_FILE = f"{data_dir}/0_percept_to_belief_true_belief/converted.txt"
+        DATA_FILE = f"{data_dir}/0_percept_to_belief_true_belief/stories.csv"
+    else:    
+        if args.corrected:
+            CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/corrected.txt"
+        elif args.corrected_type == "in":
+            CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/corrected_in.txt"
+            DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories_in.csv"
+        elif args.corrected_type == "out":
+            CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/corrected_out.txt"
+            DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories_out.csv"
+        else:
+            CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/converted.txt"
     if args.filter: FILTER_FILE = f"{data_dir}/ids_to_keep.txt"
 
     correct_answers = []
@@ -265,9 +269,18 @@ for condition in conditions:
             if args.believe:
                 eval_story = eval_story.replace("thought", "believed")
                 eval_story = eval_story.replace("think", "believe")
+                correct_answer = correct_answer.replace("thought", "believed")
+                correct_answer = correct_answer.replace("think", "believe")
+                wrong_answer = wrong_answer.replace("thought", "believed")
+                wrong_answer = wrong_answer.replace("think", "believe")
             else:
                 eval_story = eval_story.replace("believed", "thought")
                 eval_story = eval_story.replace("believe", "think")
+                correct_answer = correct_answer.replace("believed", "thought")
+                correct_answer = correct_answer.replace("believe", "think")
+                wrong_answer = wrong_answer.replace("believed", "thought")
+                wrong_answer = wrong_answer.replace("believe", "think")
+                
             # predict answer
             if model_id in open_ai_model_ids:
                 if model_id == "openai/text-davinci-003":
