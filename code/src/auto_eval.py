@@ -37,7 +37,7 @@ parser.add_argument("--human", action="store_true")
 # data args
 parser.add_argument('--data_dir', type=str, default='../../data/conditions/tinytom-v3', help='data directory')
 parser.add_argument('--variable', type=str, default='belief')
-# parser.add_argument('--condition', type=str, default='true_belief')
+parser.add_argument('--condition', type=str, default='true_belief')
 parser.add_argument('--init_belief', type=str, default="0_forward")
 parser.add_argument('--unconverted', action='store_true', help="whether to use unconverted (non tinystory-ified) versions")
 parser.add_argument('--bigtom', action='store_true', help="run auto eval on bigtom dataset")
@@ -180,9 +180,17 @@ else:
 RESULTS_DIR = os.path.join('../../data/results')
 if args.bigtom: data_dir = '../../data/conditions/bigtom'
 
-tb_answers, fb_answers = None, None
+if args.condition == "all":
+    conditions = ["true_belief", "false_belief"]
+    tb_answers, fb_answers = None, None
+elif args.condition == "percept":
+    conditions = ["percept_to_belief"]
+    tb_answers = None
+else:
+    raise Exception(f"Condition {args.condition} not recognized")
+    
 skipped = []
-for condition in ["true_belief", "false_belief"]:
+for condition in conditions:
     DATA_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories.csv"
     TRIMMED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/stories_trimmed.csv"
     if args.corrected:
@@ -430,7 +438,7 @@ for condition in ["true_belief", "false_belief"]:
         for graded_answer in graded_answers:
             writer.writerow([graded_answer])
 
-    if "true" in condition:
+    if "true" in condition or "percept" in condition:
         tb_answers = graded_answers
         with open(skip_file, "w") as f:
             writer = csv.writer(f, delimiter=";")
@@ -443,22 +451,22 @@ for condition in ["true_belief", "false_belief"]:
 # write skipped to file
 print()
 print("TB:",tb_answers.count('correct'), tb_answers.count('incorrect'), tb_answers.count('unrelated'), tb_answers.count('inconsistent'))
-print("FB:", fb_answers.count('correct'), fb_answers.count('incorrect'), fb_answers.count('unrelated'), fb_answers.count('inconsistent'))
-print()
+if args.condition == "all":
+    print("FB:", fb_answers.count('correct'), fb_answers.count('incorrect'), fb_answers.count('unrelated'), fb_answers.count('inconsistent'))
+    print()
+    for i in range(len(tb_answers)):
+        if tb_answers[i] == 'correct':
+            tb_answers[i] = True
+        else:
+            tb_answers[i] = False
+        if fb_answers[i] == 'correct':
+            fb_answers[i] = True
+        else:
+            fb_answers[i] = False
 
-for i in range(len(tb_answers)):
-    if tb_answers[i] == 'correct':
-        tb_answers[i] = True
-    else:
-        tb_answers[i] = False
-    if fb_answers[i] == 'correct':
-        fb_answers[i] = True
-    else:
-        fb_answers[i] = False
 
 
-
-print(f'True Accuracy: {np.mean(tb_answers)}')
-print(f'False Accuracy: {np.mean(fb_answers)}')
-# take intersection of true and false accuracy
-print(f'Intersection Accuracy: {np.mean(np.logical_and(tb_answers, fb_answers))}')
+    print(f'True Accuracy: {np.mean(tb_answers)}')
+    print(f'False Accuracy: {np.mean(fb_answers)}')
+    # take intersection of true and false accuracy
+    print(f'Intersection Accuracy: {np.mean(np.logical_and(tb_answers, fb_answers))}')
