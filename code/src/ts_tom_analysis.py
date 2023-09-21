@@ -3,9 +3,22 @@ from tqdm import tqdm
 
 data_file = "/scr/kanishkg/TinyStories/TinyStories-train.txt"
 
+def custom_reader(file_path):
+    # Open the file at the specified path
+    with open(file_path, 'r', encoding='utf-8') as file:
+        # Read the entire content of the file
+        text = file.read()
+        # Split the text by the |endoftext| delimiter to create individual examples
+        examples = text.split('<|endoftext|>')
+        dataset = []
+        if examples[-1] == '':
+            examples = examples[:-1]
+        for example in examples:
+            dataset.append(example.strip())
+        # Return all examples except the last one if it's empty (this may happen if the file ends with |endoftext|)
+        return dataset
 # Open the file and read its content
-with open(data_file, 'r') as file:
-    stories = file.readlines()
+stories = custom_reader(data_file)
 
 # Define the regex pattern
 pattern = re.compile(r'\b(thinks|thought|believes|believed)\b\s+\w+\s+\b(is|are|were|was)\b', re.IGNORECASE)
