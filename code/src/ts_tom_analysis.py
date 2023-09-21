@@ -1,4 +1,5 @@
 import re
+from tqdm import tqdm
 
 data_file = "/scr/kanishkg/TinyStories/TinyStories-train.txt"
 
@@ -13,7 +14,7 @@ num_tom_stories = 0
 num_tom_sentences = 0
 
 # Iterate over each line (story) in the file and find sentences that match the pattern
-for story in stories:
+for story in tqdm(stories):
     tom_detected = False
     for sentence in story.split('.'):
         matches = pattern.findall(sentence)
