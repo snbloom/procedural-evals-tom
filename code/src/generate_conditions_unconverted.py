@@ -150,7 +150,7 @@ def generate_conditions(completions):
 
                     # Write the row to the CSV file based on the condition and variable
                     if variable == "percept_to_belief":
-                        if condition == "true_belief" and init_belief == 1:
+                        if condition == "true_belief" and init_belief == 0:
 
                             # skip if already parsed this story
                             folder = f"{CONDITION_DIR}/{init_belief}_{variable}_{condition}/stories.csv"

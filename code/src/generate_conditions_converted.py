@@ -3,10 +3,10 @@ import csv
 import argparse
 from tqdm import tqdm
 
-# from langchain.chat_models import ChatOpenAI
-# from langchain.schema import (
-#     SystemMessage
-# )
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import (
+    SystemMessage
+)
 
 MODEL = "gpt-4-0613"
 DATA_DIR = '../../data'
@@ -19,7 +19,7 @@ FOLDER_NAMES = ["0_forward_belief_false_belief", "0_forward_belief_false_control
                 "1_forward_belief_false_belief", "1_forward_belief_false_control", "1_forward_belief_true_belief", "1_forward_belief_true_control"]
 BACKWARD_FOLDER_NAMES = ["0_backward_belief_false_belief", "0_backward_belief_false_control", "0_backward_belief_true_belief", "0_backward_belief_true_control",
                 "1_backward_belief_false_belief", "1_backward_belief_false_control", "1_backward_belief_true_belief", "1_backward_belief_true_control"]
-PERCEPT_TO_BELIEF_FOLDER_NAMES = ["1_percept_to_belief_true_belief"]
+PERCEPT_TO_BELIEF_FOLDER_NAMES = ["0_percept_to_belief_true_belief"]
 ALL_FOLDER_NAMES = FOLDER_NAMES + BACKWARD_FOLDER_NAMES + PERCEPT_TO_BELIEF_FOLDER_NAMES
 parser = argparse.ArgumentParser()
 parser.add_argument('--method', type=str, default="tinytom-v3", help="[tinytom, tinytom-v3]")
