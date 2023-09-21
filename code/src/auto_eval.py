@@ -196,6 +196,7 @@ for condition in conditions:
     if "percept" in condition:
         CONVERTED_FILE = f"{data_dir}/0_percept_to_belief_true_belief/converted.txt"
         DATA_FILE = f"{data_dir}/0_percept_to_belief_true_belief/stories.csv"
+        TRIMMED_FILE = f"{data_dir}/0_percept_to_belief_true_belief/stories_trimmed.csv"
     else:    
         if args.corrected:
             CONVERTED_FILE = f"{data_dir}/{args.init_belief}_{args.variable}_{condition}/corrected.txt"
