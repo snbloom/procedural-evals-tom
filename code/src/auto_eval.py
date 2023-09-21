@@ -394,31 +394,6 @@ for condition in conditions:
     elif data_dir == "../../data/conditions/tinytom-v3": dataset = "tinytom-v3"
     else: dataset = "tinytom"
 
-    run = {
-        "model_id":model_id,
-        "method":"auto",
-        "dataset": dataset,
-        "unconverted": args.unconverted,
-        "data_range":data_range,
-        "init_belief":args.init_belief,
-        "corrected": args.corrected,
-        "corrected_type": args.corrected_type,
-        "variable":args.variable,
-        "condition":condition,
-        "ending":"believe" if args.believe else "think",
-        "count_correct":count_correct,
-        "count_incorrect":count_incorrect,
-        "count_unrelated":count_unrelated,
-        "count_inconsistent":count_inconsistent,
-        "incorrect_stories": incorrect_answers,
-        "unrelated_stories": unrelated_answers,
-        "inconsistent_stories": inconsistent_answers
-    }
-
-    with open(LOG_FILE, "a") as f:
-        json.dump(run, f, indent=6)
-        f.write('\n')
-
     model_name = model_id.replace('/', '_')
     model_id = model_id.replace('/', '_')
     model_id += f"_{args.beams}"
@@ -429,9 +404,14 @@ for condition in conditions:
 
     if args.believe: th = "believe"
     else: th = "think"
-    prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
-    accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
-    skip_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_skipped_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
+    if args.condition == "all":
+        prediction = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
+        accuracy_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
+        skip_file = os.path.join(RESULTS_DIR, dataset, f'{args.init_belief}_{args.variable}_{condition}_{co}_{args.corrected_type}/auto_skipped_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}_{th}.csv')
+    elif args.condition == "percept":
+        prediction = os.path.join(RESULTS_DIR, dataset, f'0_percept_to_belief_true_belief/auto_prediction_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}.csv')
+        accuracy_file = os.path.join(RESULTS_DIR, dataset, f'0_percept_to_belief_true_belief/auto_accuracy_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}.csv')
+        skip_file = os.path.join(RESULTS_DIR, dataset, f'0_percept_to_belief_true_belief/auto_skipped_{model_id}_{args.temperature}_{args.variable}_{condition}_{args.offset}_{args.num}.csv')
 
     print("WRITING OUTPUTS TO", prediction, accuracy_file)
     print(args.model_id, condition, args.init_belief, co)
