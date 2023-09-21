@@ -281,6 +281,11 @@ for condition in conditions:
                 correct_answer = correct_answer.replace("believe", "think")
                 wrong_answer = wrong_answer.replace("believed", "thought")
                 wrong_answer = wrong_answer.replace("believe", "think")
+            if "percept" in args.condition:
+                # switch correct and wrong answer
+                temp = correct_answer
+                correct_answer = wrong_answer
+                wrong_answer = temp
                 
             # predict answer
             if model_id in open_ai_model_ids:
