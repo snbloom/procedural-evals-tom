@@ -17,6 +17,15 @@ from langchain.schema import (
     SystemMessage
 )
 
+def to_past(text):
+    text = text.replace("is", "was")
+    text = text.replace("are", "were")
+    text = text.replace("thinks", "thought")
+    text = text.replace("think", "thought")
+    text = text.replace("believes", "believed")
+    text = text.replace("believe", "believed")
+    return text
+
 parser = argparse.ArgumentParser()
 
 # model args
@@ -43,6 +52,7 @@ parser.add_argument('--unconverted', action='store_true', help="whether to use u
 parser.add_argument('--bigtom', action='store_true', help="run auto eval on bigtom dataset")
 parser.add_argument('--filter', action='store_true', help="whether to filter out stories that are too long")
 parser.add_argument('--believe', action='store_true', help="whether to use believe (vs think)")
+parser.add_argument('--past', action='store_true', help="whether to use past tense")
 parser.add_argument('--corrected', action='store_true', help="whether to use corrected stories")
 parser.add_argument('--corrected_type', type=str, default="none", help="which filtered, corrected dataset type to use [in, out, none]")
 
@@ -281,6 +291,13 @@ for condition in conditions:
                 correct_answer = correct_answer.replace("believe", "think")
                 wrong_answer = wrong_answer.replace("believed", "thought")
                 wrong_answer = wrong_answer.replace("believe", "think")
+            
+            if args.past:
+                eval_story = to_past(eval_story)
+                correct_answer = to_past(correct_answer)
+                wrong_answer = to_past(wrong_answer)
+
+            
             if "percept" in args.condition:
                 # switch correct and wrong answer
                 temp = correct_answer
