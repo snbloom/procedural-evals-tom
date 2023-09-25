@@ -26,6 +26,7 @@ LOG_NAME = 'tinytom/tinytom_settings'
 LOG_DISCARDED_NAME = 'tinytom/tinytom_discarded_settings'
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--seed', type=int, default=42, help='random seed')
 parser.add_argument('--model', type=str, default='gpt-4-0613', help='model name')
 parser.add_argument('--temperature', type=float, default=0.5, help='temperature')
 parser.add_argument('--max_tokens', type=int, default=450, help='max tokens')
@@ -33,6 +34,7 @@ parser.add_argument('--num', type=int, default=1, help='number of stories to gen
 parser.add_argument('--verbose', action='store_true', help='verbose')
 parser.add_argument('--no_print', action='store_true', help='when enabled, do not print anything except progress until the end')
 parser.add_argument('--simple_objects', action='store_true', default=True, help='when enabled, use the shorted object list, and store in tinytom/v3')
+parser.add_argument('--manual', action='store_true', default=False, help='when enabled, manually verify stories')
 
 # tinytom generation final method --> INCLUDE three words, INCLUDE object states, DON'T INCLUDE features
 # parser.add_argument('--features', action='store_true', default=False, help='whether or not to add features constraint to stories instruction')
@@ -79,6 +81,7 @@ def get_human_message1(args):
     prop = random.choice(states).strip().lower()
     prop = prop[0:prop.index(";")]
     msg = msg.replace('[object_property]', prop)
+    msg += "The event should not have a weather event nor an animal."
 
     if args.verbose: print(msg)
     return msg, {"noun": noun, "verb": verb, "adj": adj, "word": word, "features": features, "property": prop}
@@ -131,18 +134,29 @@ Object: {object}"""
 
         # get hand-picked example (at zeroeth position in csv)
         with open(csv_file, "r") as f:
-            l = f.readline()
-            params = l.split(';')
-            example_story = {k: params[v].strip() for v, k in enumerate(template_var)}
-            examples.append(example_story)
-        if not args.simple_objects: human_message0 = HumanMessage(content='Generate a story. The name must start with N. The story should use the verb "find", the noun "door" and the adjective "good".')        
-        else: human_message0 = HumanMessage(content='Generate a story. The name must start with T. The story should use the verb "cut", the noun "pasta" and the adjective "busy".')
-        ai_message = AIMessage(content=response_template.format(**examples[0]))
+            for i in range(3):
+                l = f.readline()
+                params = l.split(';')
+                example_story = {k: params[v].strip() for v, k in enumerate(template_var)}
+                examples.append(example_story)
+        if not args.simple_objects:
+            human_message0 = HumanMessage(content='Generate a story. The name must start with N. The story should use the verb "find", the noun "door" and the adjective "good".')        
+        else:
+            human_message00 = HumanMessage(content='Generate a story. The name must start with T. The story should use the verb "cut", the noun "pasta" and the adjective "busy".')
+            human_message01 = HumanMessage(content='Generate a story. The name must start with M. The story should use the verb "leave", the noun "lumber" and the adjective "clumsy".')
+            human_message02 = HumanMessage(content='Generate a story. The name must start with R. The story should use the verb "buy", the noun "package" and the adjective "amazing".')
+
+
+        ai_message00 = AIMessage(content=response_template.format(**examples[0]))
+        ai_message01 = AIMessage(content=response_template.format(**examples[1]))
+        ai_message02 = AIMessage(content=response_template.format(**examples[2]))
+
         s, settings = get_human_message1(args)
         human_message_1 = HumanMessage(content=s)
 
-        # 1-shot
-        messages = [system_message, human_message0, ai_message, human_message_1]
+        # 3-shot
+        # messages = [system_message, human_message0, ai_message, human_message_1]
+        messages = [system_message, human_message00, ai_message00, human_message01, ai_message01, human_message02, ai_message02, human_message_1]
         
         if args.verbose:
             print(f"------ messages ------")
@@ -188,6 +202,20 @@ Object: {object}"""
                 if not args.no_print: print(generation.text)
                 reasoning = generation.text.split('\n')[0].split("Reasoning:")[1]
                 eval = generation.text.split("Evaluation:")[1].strip().lower()
+                if eval == "valid":
+                    if args.manual:
+                        print("Valid story. Enter 'y' to accept, anything else to discard")
+                        if input() != 'y':
+                            eval = "invalid"
+                elif eval == "invalid":
+                    pass
+                else:
+                    print("Error: unrecognized evaluation")
+                    print("Enter 'y' to accept, anything else to discard")
+                    if input() != 'y':
+                        eval = "invalid"
+                    else:
+                        eval = "valid"
             if eval == "invalid":
                 invalid += 1
                 discarded_file = f'{DATA_DIR}/{DISCARDED_NAME}.csv'
@@ -215,13 +243,14 @@ Object: {object}"""
     
 if __name__ == "__main__":
     args = parser.parse_args()
+    random.seed(args.seed)
     if not args.no_print: print(f"Generating {args.num} stories")
     if args.verbose:
         print(args)
     if args.simple_objects:
-        CSV_NAME = 'tinytom/v3/tinytom'
-        OBJECT_STATES_CSV = 'tinytom/v3/object_states.csv'
-        DISCARDED_NAME = 'tinytom/v3/tinytom_discarded'
-        LOG_NAME = 'tinytom/v3/tinytom_settings'
-        LOG_DISCARDED_NAME = 'tinytom/v3/tinytom_discarded_settings'
+        CSV_NAME = 'tinytom/v4/tinytom'
+        OBJECT_STATES_CSV = 'tinytom/v4/object_states.csv'
+        DISCARDED_NAME = 'tinytom/v4/tinytom_discarded'
+        LOG_NAME = 'tinytom/v4/tinytom_settings'
+        LOG_DISCARDED_NAME = 'tinytom/v4/tinytom_discarded_settings'
     gen_chat(args)

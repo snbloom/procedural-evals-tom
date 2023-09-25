@@ -1,0 +1,36 @@
+Location (eg: where is the object);user
+Color (eg: what color is the object);user
+Physical orientation (eg: how is the object positioned or oriented);user
+Full or empty (eg: is a container full or empty);user
+On or off (eg: is a light or machine on or off);user
+Broken or intact (eg: is a piece of equipment or object broken or intact);user
+Visible or hidden (eg: is an object or material visible or hidden from view);user
+Open or closed (eg: is a door, window, or container open or closed);auto
+Wet or dry (e.g., a towel, a sponge);user
+Tangled or untangled (e.g., a necklace, a rope);user
+Inflated or deflated (e.g., a balloon, a tire);user
+Bent or straight (e.g., a paperclip, a straw);user
+Knotted or untied (e.g., shoelaces, a ribbon);user
+Stretched or unstretched (e.g., a rubber band, a string);user
+Melted or solid (e.g., an ice cream, a candle);user
+Spilled or contained (e.g., a drink, a container);user
+Flipped or unflipped (e.g., a switch, a pancake);user
+Clean or dirty (e.g., is a surface clean or dirty);user
+Fresh or spoiled (e.g., is food fresh or spoiled);user
+Organized or messy (e.g., is a space organized or messy);user
+Smooth or rough (e.g., is a surface smooth or rough);user
+Securely fastened or loose (e.g., is a lid securely fastened or loose);user
+Complete or incomplete (e.g., is a puzzle complete or incomplete);user
+Contained or spilled (e.g., is a liquid contained or spilled);user
+Stable or shaky (e.g., is a table stable or shaky);user
+Awake or asleep (e.g., is a creature awake or asleep);user
+Attached or detached (e.g., is a part attached or detached);user
+Smell (e.g., does the object smell pleasant, foul, or neutral);user
+Taste (e.g., does the object taste sweet, salty, bitter, or sour);user
+Texture (e.g., is the object smooth, rough, or bumpy);user
+Shape (e.g., is the object round, square, triangular, or irregular);user
+Size (e.g., is the object big, small, or medium-sized);user
+Weight (e.g., is the object heavy, light, or moderate);user
+State of Matter (e.g., is the object solid, liquid, or gas);user
+Rigidity (e.g., is the object hard, soft, or bendable);user
+Strength (e.g., is the object strong, weak, or okay strong);user
