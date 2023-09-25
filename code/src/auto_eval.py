@@ -110,6 +110,9 @@ if args.model_id == 'finetuned-neo28-no-think-believe-50-believe-ending': model_
 data_dir = args.data_dir
 if data_dir == "v1": data_dir = "../../data/conditions/tinytom-v1"
 if data_dir == "v3": data_dir = "../../data/conditions/tinytom-v3"
+if data_dir == "v4": data_dir = "../../data/conditions/tinytom-v4"
+
+
 
 data_range = f"{args.offset+1}-{args.offset + args.num}"
 

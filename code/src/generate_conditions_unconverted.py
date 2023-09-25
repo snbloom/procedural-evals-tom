@@ -18,7 +18,7 @@ VARIABLES = ['forward_belief', 'forward_action', 'backward_belief', 'percept_to_
 CONDITIONS = ['true_belief', 'false_belief', 'true_control', 'false_control']
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--method', type=str, default="tinytom-v3", help="[tinytom, bigtom, tinytom-v3]")
+parser.add_argument('--method', type=str, default="tinytom-v4", help="[tinytom, bigtom, tinytom-v4]")
 parser.add_argument('--verbose', action="store_true", help="verbose or not")
 
 def get_completions():
@@ -258,6 +258,9 @@ if __name__ == "__main__":
     elif args.method == "tinytom-v3":
         CONDITION_DIR += args.method
         CSV_NAME = CSV_NAME + "/v3/tinytom.csv"
+    elif args.method == "tinytom-v4":
+        CONDITION_DIR += args.method
+        CSV_NAME = CSV_NAME + "/v4/tinytom.csv"
     elif args.method == "bigtom":
         CONDITION_DIR += args.method
         CSV_NAME = os.path.join(DATA_DIR, 'bigtom/bigtom.csv')

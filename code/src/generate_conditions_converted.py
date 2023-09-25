@@ -22,7 +22,7 @@ BACKWARD_FOLDER_NAMES = ["0_backward_belief_false_belief", "0_backward_belief_fa
 PERCEPT_TO_BELIEF_FOLDER_NAMES = ["0_percept_to_belief_true_belief"]
 ALL_FOLDER_NAMES = FOLDER_NAMES + BACKWARD_FOLDER_NAMES + PERCEPT_TO_BELIEF_FOLDER_NAMES
 parser = argparse.ArgumentParser()
-parser.add_argument('--method', type=str, default="tinytom-v3", help="[tinytom, tinytom-v3]")
+parser.add_argument('--method', type=str, default="tinytom-v4", help="[tinytom, tinytom-v4]")
 parser.add_argument('--num', type=int, default=None, help="max number of stories to convert")
 parser.add_argument('--verbose', action='store_true', help="when enabled, print out unconverted and converted fragments")
 parser.add_argument('--no_print', action='store_true', help="when enabled, don't print anything to the console except tqdm progress")
@@ -30,14 +30,14 @@ parser.add_argument('--re_stitch', action='store_true', help="when enabled, re-s
 parser.add_argument('--output', type=str, default="converted", help="run for converted or corrected versions [converted, corrected]")
 
 
-# def get_llm():
-#     return ChatOpenAI(
-#         model=MODEL,
-#         temperature=0.0,
-#         max_tokens=450,
-#         n=1,
-#         request_timeout=180
-#     )
+def get_llm():
+    return ChatOpenAI(
+        model=MODEL,
+        temperature=0.0,
+        max_tokens=450,
+        n=1,
+        request_timeout=180
+    )
 
 def get_tinytom_stories():
     with open(CSV_NAME, "r") as f:
@@ -80,7 +80,7 @@ def get_num_already_stitched(method, folder_name, output_name):
     return start_idx       
 
 def convert_story_parts(stories, start_idx, args):
-    # llm = get_llm()
+    llm = get_llm()
     
     count = 1
     for i, story in enumerate(tqdm(stories)):
@@ -170,6 +170,7 @@ def stitch_stories(stories, end_idx, args, output_name):
 
         # get filename for converted parts
         if args.method == "tinytom-v3": filename = f'{DATA_DIR}/tinytom/v3/tinytom_converted_parts.txt'
+        elif args.method == "tinytom-v4": filename = f'{DATA_DIR}/tinytom/v4/tinytom_converted_parts.txt'
         elif args.method == "tinytom": filename = f"{DATA_DIR}/tinytom/tinytom_converted_parts.txt"
         else: raise Exception("Unexpected method. Expected [tinytom, tinytom-v3]")
 
@@ -250,6 +251,10 @@ if __name__ == "__main__":
         CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/tinytom-v3')
         CSV_NAME = os.path.join(DATA_DIR, 'tinytom/v3/tinytom.csv')
         CONVERTED_PARTS_NAME = 'tinytom/v3/tinytom_converted_parts.txt'
+    elif args.method == "tinytom-v4":
+        CONDITION_DIR = os.path.join(DATA_DIR, 'conditions/tinytom-v4')
+        CSV_NAME = os.path.join(DATA_DIR, 'tinytom/v4/tinytom.csv')
+        CONVERTED_PARTS_NAME = 'tinytom/v4/tinytom_converted_parts.txt'
     elif args.method != "tinytom": raise Exception("invalid method argument")
     
     stories = get_tinytom_stories()
