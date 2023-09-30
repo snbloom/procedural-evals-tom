@@ -32,7 +32,7 @@ llama_models = ["llama-43"]
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--config", type=str, default="../../configs/conf.json")
-parser.add_argument('--ending', type=str, default="think", help="['think', 'believe']")
+parser.add_argument('--ending', type=str, default="think", help="['think', 'believe', 'dax']")
 parser.add_argument("--condition", type=str, default=None, help="whether to use one condition only")
 parser.add_argument("--final", action='store_true')
 

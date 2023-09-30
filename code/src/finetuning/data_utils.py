@@ -28,9 +28,17 @@ def get_tiny_tom(config, ending, final=False):
                 elif ending=="believe" and 'think' in final_sentence:
                     final_sentence = final_sentence.replace('think', 'believe')
                     story = story.replace('think', 'believe')
+                elif ending=="dax":
+                    final_sentence = final_sentence.replace('think', 'dax')
+                    story = story.replace('think', 'dax')
+                    final_sentence = final_sentence.replace('believe', 'dax')
+                    story = story.replace('believe', 'dax')
+                else:
+                    raise Exception("Unexpected ending. Expected [think, believe, dax]")
+
                 if not final:
                     story = story + " " + final_sentence
-                elif final:
+                else:
                     story = final_sentence
                 tinytom[cond].append(story)
     # TODO: ensure all conditions are shuffled in the same order
