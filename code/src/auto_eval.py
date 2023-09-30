@@ -26,7 +26,7 @@ def to_past(text):
     text = text.replace("believe", "believed")
     return text
 
-def to_dax(text)
+def to_dax(text):
     text = text.replace("think", "dax")
     text = text.replace("believe", "dax")
     return text
