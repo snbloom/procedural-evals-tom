@@ -21,8 +21,11 @@ def custom_reader(file_path):
 stories = custom_reader(data_file)
 
 # Define the regex pattern
-pattern = re.compile(r'\b(think|thinks|thought|believe|believes|believed)\b\s+\w+\s+\b(is|are|were|was)\b', re.IGNORECASE)
+# pattern = re.compile(r'\b(think|thinks|thought|believe|believes|believed)\b\s+\w+\s+\b(is|are|were|was)\b', re.IGNORECASE)
+
+pattern = re.compile(r'\b(expects|expected)\b\s+(\w+\s+)?\w+\s+\b(to|is|are|were|was)\b', re.IGNORECASE)
 # pattern = re.compile(r'\b(thinks|thought|believes|believed)\b\s+(\w+\s+)?\w+\s+\b(is|are|were|was)\b', re.IGNORECASE)
+
 
 
 num_tom_stories = 0
@@ -46,7 +49,7 @@ for story in tqdm(stories):
 print("Number of stories with Tom: ", num_tom_stories)
 print("Number of sentences with Tom: ", num_tom_sentences)
 
-with open('/scr/kanishkg/TinyStories/ts-tom.txt','w') as f:
+with open('/scr/kanishkg/TinyStories/ts-tom-expect.txt','w') as f:
     f.writelines(stories_tom[:20])
-with open('/scr/kanishkg/TinyStories/ts-tom-sentences.txt','w') as f:
+with open('/scr/kanishkg/TinyStories/ts-tom-sentences-expect.txt','w') as f:
     f.writelines(sentences[:100])
