@@ -26,6 +26,11 @@ def to_past(text):
     text = text.replace("believe", "believed")
     return text
 
+def to_dax(text)
+    text = text.replace("think", "dax")
+    text = text.replace("believe", "dax")
+    return text
+
 parser = argparse.ArgumentParser()
 
 # model args
@@ -52,6 +57,7 @@ parser.add_argument('--unconverted', action='store_true', help="whether to use u
 parser.add_argument('--bigtom', action='store_true', help="run auto eval on bigtom dataset")
 parser.add_argument('--filter', action='store_true', help="whether to filter out stories that are too long")
 parser.add_argument('--believe', action='store_true', help="whether to use believe (vs think)")
+parser.add_argument('--dax', action='store_true', help="whether to use dax (vs think/believe)")
 parser.add_argument('--past', action='store_true', help="whether to use past tense")
 parser.add_argument('--corrected', action='store_true', help="whether to use corrected stories")
 parser.add_argument('--corrected_type', type=str, default="none", help="which filtered, corrected dataset type to use [in, out, none]")
@@ -299,6 +305,11 @@ for condition in conditions:
                 eval_story = to_past(eval_story)
                 correct_answer = to_past(correct_answer)
                 wrong_answer = to_past(wrong_answer)
+            
+            if args.dax:
+                eval_story = to_dax(eval_story)
+                correct_answer = to_dax(correct_answer)
+                wrong_answer = to_dax(wrong_answer)
 
             
             if "percept" in args.condition:
