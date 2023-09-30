@@ -3,13 +3,14 @@
     "seed": 42,
     "model": "n125",
     "tinystories_dir": "/scr/kanishkg/TinyStories/",
+    "replaced_tinystories_dir": "/scr/snbloom/TinyStories/",
     "context_length": 512,
-    "output_dir": "/scr/kanishkg/models/neo-training-125-1",
+    "output_dir": "/scr/kanishkg/models/neo-training-125-no_think_believe",
     "batch_size": 96,
     "eval_batch_size": 96,
     "eval_steps": 1000,
     "log_steps": 50,
-    "gradient_accumulation_steps": 4,
+    "gradient_accumulation_steps": 1,
     "num_train_epochs": 20,
     "weight_decay": 0.01,
     "warmup_steps": 200,
@@ -17,7 +18,7 @@
     "lr": 5e-4,
     "save_total_limit": 20,
     "save_steps": 500,
-    "data": "v1"
+    "data": "no_think_believe"
 }
 
 
