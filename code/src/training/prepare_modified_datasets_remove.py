@@ -5,7 +5,7 @@ import argparse
 
 # load data from hf datasets
 TS_DIR = "/scr/kanishkg/TinyStories/"
-TS_DIR_OUT = "/scr/snbloom/TinyStories/"
+TS_DIR_OUT = "/scr/kanishkg/TinyStories/"
 TINYSTORIES_V2 = "/scr/kanishkg/TinyStories/TinyStoriesV2-GPT4-train.txt"
 TINYSTORIES_V2_VAL = "/scr/kanishkg/TinyStories/TinyStoriesV2-GPT4-valid.txt"
 train_file = os.path.join(TS_DIR, "TinyStories-train.txt")
