@@ -3,6 +3,18 @@ from tqdm import tqdm
 
 data_file = "/scr/kanishkg/TinyStories/TinyStories-train.txt"
 
+keep_appraisal = True
+appraisal_list = [
+        "fun", "stupid", "interesting", "smart", "amazing", "awesome", "brilliant", "nice", "sweet", "best", "pretty","special", "good", "cool", "great", "crazy", "bad", "boring", "exciting", "surprising", "disgusting", "silly",
+            "thrilling", "unimpressive", "fantastic", "mediocre", "impressive", "dull", 
+                "enjoyable", "tedious", "lovely", "disturbing", "refreshing", "unpleasant", 
+                    "delightful", "monotonous", "stunning", "horrible", "mesmerizing", "annoying",
+                        "charming", "pathetic", "beautiful", "ugly", "invigorating", "troubling", 
+                            "gorgeous", "uninspiring", "lively", "dreary", "innovative", "outdated",
+                                "magnificent", "depressing", "spectacular", "lackluster", "intriguing", "tedious"
+                                ]
+
+
 def custom_reader(file_path):
     # Open the file at the specified path
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -21,9 +33,9 @@ def custom_reader(file_path):
 stories = custom_reader(data_file)
 
 # Define the regex pattern
-# pattern = re.compile(r'\b(think|thinks|thought|believe|believes|believed)\b\s+\w+\s+\b(is|are|were|was)\b', re.IGNORECASE)
+pattern = re.compile(r'\b(think|thinks|thought|believe|believes|believed)\b\s+\w+\s+\b(is|are|were|was)\b', re.IGNORECASE)
 
-pattern = re.compile(r'\b(expects|expected)\b\s+(\w+\s+)?\w+\s+\b(to|is|are|were|was)\b', re.IGNORECASE)
+# pattern = re.compile(r'\b(expects|expected)\b\s+(\w+\s+)?\w+\s+\b(to|is|are|were|was)\b', re.IGNORECASE)
 # pattern = re.compile(r'\b(thinks|thought|believes|believed)\b\s+(\w+\s+)?\w+\s+\b(is|are|were|was)\b', re.IGNORECASE)
 
 
@@ -38,6 +50,13 @@ for story in tqdm(stories):
     tom_detected = False
     for sentence in story.split('.'):
         matches = pattern.findall(sentence)
+
+        if matches:
+            if keep_appraisal:
+                for w in appraisal_list:
+                    if w in sentence:
+                        matches = False
+                        break
         if matches:
             tom_detected = True
             num_tom_sentences += 1
@@ -49,7 +68,7 @@ for story in tqdm(stories):
 print("Number of stories with Tom: ", num_tom_stories)
 print("Number of sentences with Tom: ", num_tom_sentences)
 
-with open('/scr/kanishkg/TinyStories/ts-tom-expect.txt','w') as f:
+with open('/scr/kanishkg/TinyStories/ts-tom.txt','w') as f:
     f.writelines(stories_tom[:20])
-with open('/scr/kanishkg/TinyStories/ts-tom-sentences-expect.txt','w') as f:
-    f.writelines(sentences[:100])
+with open('/scr/kanishkg/TinyStories/ts-tom-sentences.txt','w') as f:
+    f.writelines(sentences[:200])
