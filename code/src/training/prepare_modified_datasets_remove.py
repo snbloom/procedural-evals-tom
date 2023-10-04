@@ -1,4 +1,5 @@
 import os
+import re
 import json
 from tqdm import tqdm
 import argparse
@@ -16,6 +17,7 @@ val_file = os.path.join(TS_DIR, "TinyStories-valid.txt")
 parser = argparse.ArgumentParser()
 
 # model args
+parser.add_argument('--method', default='banned_words', help='[banned_words, regex++]')
 parser.add_argument('--banned_words', type=str, default="think_believe", help='[think_believe, know, think_and_know, learn, feel, prefer, want, plan, time]')
 
 banned_words = []
@@ -30,6 +32,19 @@ want_words = ["want", "wish"]
 plan_words = ["plan", "decide"]
 time_words = ["now", "lately", "earlier", "soon", "currently", "today", "tomorrow", "yesterday", "soon", "later", "always", "never", "forever", "before", "after", "during", "while", "when", "then", "suddenly", "frequently", "rarely", "sometimes", "often", "currently", "recently", "prior to", "subsequently", "simultaneously", "eventually", "in the meantime", "afterward", "previously"]
 
+appraisal_list = [
+        "fun", "stupid", "interesting", "smart", "amazing", "awesome", "brilliant",
+        "nice", "sweet", "best", "pretty","special", "good", "cool", "great", "crazy",
+        "bad", "boring", "exciting", "surprising", "disgusting", "silly",
+        "thrilling", "unimpressive", "fantastic", "mediocre", "impressive", "dull", 
+        "enjoyable", "tedious", "lovely", "disturbing", "refreshing", "unpleasant", 
+        "delightful", "monotonous", "stunning", "horrible", "mesmerizing", "annoying",
+        "charming", "pathetic", "beautiful", "ugly", "invigorating", "troubling", 
+        "gorgeous", "uninspiring", "lively", "dreary", "innovative",
+        "magnificent", "depressing", "spectacular", "lackluster", "intriguing", "tedious"
+                ]
+
+
 args = parser.parse_args()
 if args.banned_words == "think_believe": banned_words = think_words
 elif args.banned_words == "know": banned_words = know_words
@@ -42,10 +57,25 @@ elif args.banned_words == "plan": banned_words = plan_words
 elif args.banned_words == "time": banned_words = time_words
 else: raise Exception("Unexpected banned_words type. Expected: [think_believe, know, learn, feel, prefer, want, plan, time]")
 
-def has_no_banned_words(text):
+def has_banned_words(text):
     for word in banned_words:
-        if word.lower() in text.lower(): return False
-    return True
+        if word.lower() in text.lower(): return True
+    return False 
+
+def has_pattern(story, keep_appraisal=True):
+    pattern = re.compile(r'\b(think|thinks|thought|believe|believes|believed)\b\s+\w+\s+\b(is|are|were|was)\b', re.IGNORECASE)
+    tom_detected = False
+    for sentence in story.split('.'):
+        matches = pattern.findall(sentence)
+        if matches:
+            if keep_appraisal:
+                for w in appraisal_list:
+                    if w in sentence:
+                        matches = False
+                        break
+        if matches:
+            return True
+    return False 
 
 def filter_and_replace(ts, ts_v2):
 
@@ -55,13 +85,13 @@ def filter_and_replace(ts, ts_v2):
 
     for story in tqdm(ts):
         # append the story to the dataset if no banned words
-        if has_no_banned_words(story["text"]):
+        if not has_banned_words(story["text"]):
             dataset.append(story)
         # if has banned words, replace with a story from the other dataset (with no banned words)
         else: 
             num_replaced += 1
             replacement = ts_v2[replacement_idx] 
-            while not has_no_banned_words(replacement["text"]):
+            while has_banned_words(replacement["text"]):
                 replacement_idx += 1
                 if replacement_idx == len(ts_v2)-1: print("ERROR: replacement_idx at length of v2 stories")
                 replacement = ts_v2[replacement_idx] 
