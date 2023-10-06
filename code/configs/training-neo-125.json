@@ -1,11 +1,11 @@
 {
-    "name": "neo-training-125--no_think_believe-2",
+    "name": "neo-training-125-regex",
     "seed": 4,
     "model": "n125",
     "tinystories_dir": "/scr/kanishkg/TinyStories/",
     "replaced_tinystories_dir": "/scr/kanishkg/TinyStories/",
     "context_length": 512,
-    "output_dir": "/scr/kanishkg/models/neo-training-125-no_think_believe-2",
+    "output_dir": "/scr/kanishkg/models/neo-training-125-regex",
     "batch_size": 96,
     "eval_batch_size": 96,
     "eval_steps": 1000,
@@ -18,7 +18,7 @@
     "lr": 5e-4,
     "save_total_limit": 20,
     "save_steps": 500,
-    "data": "no_think_believe"
+    "data": "regex"
 }
 
 

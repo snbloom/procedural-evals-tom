@@ -17,7 +17,7 @@ val_file = os.path.join(TS_DIR, "TinyStories-valid.txt")
 parser = argparse.ArgumentParser()
 
 # model args
-parser.add_argument('--method', default='banned_words', help='[banned_words, regex++]')
+parser.add_argument('--method', default='banned_words', help='[banned_words, regex]')
 parser.add_argument('--banned_words', type=str, default="think_believe", help='[think_believe, know, think_and_know, learn, feel, prefer, want, plan, time]')
 
 banned_words = []
@@ -85,13 +85,13 @@ def filter_and_replace(ts, ts_v2):
 
     for story in tqdm(ts):
         # append the story to the dataset if no banned words
-        if not has_banned_words(story["text"]):
+        if (args.method == "banned_words" and not has_banned_words(story["text"])) or (args.method == "regex" and not has_pattern(story["text"])) :
             dataset.append(story)
         # if has banned words, replace with a story from the other dataset (with no banned words)
         else: 
             num_replaced += 1
             replacement = ts_v2[replacement_idx] 
-            while has_banned_words(replacement["text"]):
+            while (args.method == "banned_words" and has_banned_words(replacement["text"])) or (args.method == "regex" and has_pattern(replacement["text"])):
                 replacement_idx += 1
                 if replacement_idx == len(ts_v2)-1: print("ERROR: replacement_idx at length of v2 stories")
                 replacement = ts_v2[replacement_idx] 
@@ -129,8 +129,8 @@ if not os.path.exists(TS_DIR_OUT):
     os.makedirs(TS_DIR_OUT)
 
 print(f"Writing to json files: {TS_DIR_OUT}train_no_{args.banned_words}.json and {TS_DIR_OUT}val_no_{args.banned_words}.json")
-store_json(TS_DIR_OUT+f'train_no_{args.banned_words}.json', new_train)
-store_json(TS_DIR_OUT+f'val_no_{args.banned_words}.json', new_val)
+store_json(TS_DIR_OUT+f'train_{args.method}.json', new_train)
+store_json(TS_DIR_OUT+f'val_{args.method}.json', new_val)
 
-with open(TS_DIR_OUT+f'train_no_{args.banned_words}.json', 'r') as f:
+with open(TS_DIR_OUT+f'train_{args.method}.json', 'r') as f:
     print(f.read()[:2000])

@@ -1,7 +1,9 @@
 import re
+import json
 from tqdm import tqdm
 
-data_file = "/scr/kanishkg/TinyStories/TinyStories-train.txt"
+# data_file = "/scr/kanishkg/TinyStories/TinyStories-train.txt"
+data_file = "/scr/kanishkg/TinyStories/train_regex.json"
 
 keep_appraisal = True
 appraisal_list = [
@@ -17,9 +19,10 @@ appraisal_list = [
 
 def custom_reader(file_path):
     # Open the file at the specified path
-    with open(file_path, 'r', encoding='utf-8') as file:
-        # Read the entire content of the file
-        text = file.read()
+    if "txt" in file_path:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            # Read the entire content of the file
+            text = file.read()
         # Split the text by the |endoftext| delimiter to create individual examples
         examples = text.split('<|endoftext|>')
         dataset = []
@@ -27,8 +30,15 @@ def custom_reader(file_path):
             examples = examples[:-1]
         for example in examples:
             dataset.append(example.strip())
-        # Return all examples except the last one if it's empty (this may happen if the file ends with |endoftext|)
-        return dataset
+    elif "json" in file_path:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            json_list=list(file)
+        dataset = []
+        for json_str in json_list:
+            story = json.loads(json_str)
+            dataset.append(story["text"])
+    # Return all examples except the last one if it's empty (this may happen if the file ends with |endoftext|)
+    return dataset
 # Open the file and read its content
 stories = custom_reader(data_file)
 

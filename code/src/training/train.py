@@ -109,6 +109,18 @@ elif config["data"] == "no_think_believe":
             data_files={"train": train_file, "val": val_file}
                                                 )
 
+elif config["data"] == "regex":
+    # load data from hf datasets
+    train_file = os.path.join(config["replaced_tinystories_dir"], "train_regex.json")
+    val_file = os.path.join(config["replaced_tinystories_dir"], "val_regex.json")
+
+    hf_datasets = load_dataset(
+            "json", 
+            data_files={"train": train_file, "val": val_file}
+                                                )
+
+
+
 elif config["data"] == "no_know":
     # load data from hf datasets
     train_file = os.path.join(config["replaced_tinystories_dir"], "train_no_know.json")
