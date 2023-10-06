@@ -17,7 +17,7 @@ val_file = os.path.join(TS_DIR, "TinyStories-valid.txt")
 parser = argparse.ArgumentParser()
 
 # model args
-parser.add_argument('--method', default='banned_words', help='[banned_words, regex]')
+parser.add_argument('--method', default='banned_words', help='[banned_words, app_words, regex]')
 parser.add_argument('--banned_words', type=str, default="think_believe", help='[think_believe, know, think_and_know, learn, feel, prefer, want, plan, time]')
 
 banned_words = []
@@ -39,9 +39,8 @@ appraisal_list = [
         "thrilling", "unimpressive", "fantastic", "mediocre", "impressive", "dull", 
         "enjoyable", "tedious", "lovely", "disturbing", "refreshing", "unpleasant", 
         "delightful", "monotonous", "stunning", "horrible", "mesmerizing", "annoying",
-        "charming", "pathetic", "beautiful", "ugly", "invigorating", "troubling", 
-        "gorgeous", "uninspiring", "lively", "dreary", "innovative",
-        "magnificent", "depressing", "spectacular", "lackluster", "intriguing", "tedious"
+        "charming", "pathetic", "beautiful", "invigorating", "troubling", 
+        "gorgeous", "uninspiring", "lively",
                 ]
 
 
@@ -61,6 +60,19 @@ def has_banned_words(text):
     for word in banned_words:
         if word.lower() in text.lower(): return True
     return False 
+
+def has_app_words(text):
+    for word in appraisal_list:
+        if word.lower() in text.lower():
+            return True
+    return False
+
+def has_banned_no_app(text):
+    sentences = text.split('.')
+    for sentence in sentences:
+        if has_banned_words(sentence) and not has_app_words(sentence):
+            return True
+    return False
 
 def has_pattern(story, keep_appraisal=True):
     pattern = re.compile(r'\b(think|thinks|thought|believe|believes|believed)\b\s+\w+\s+\b(is|are|were|was)\b', re.IGNORECASE)
@@ -85,13 +97,17 @@ def filter_and_replace(ts, ts_v2):
 
     for story in tqdm(ts):
         # append the story to the dataset if no banned words
-        if (args.method == "banned_words" and not has_banned_words(story["text"])) or (args.method == "regex" and not has_pattern(story["text"])) :
+        if (args.method == "banned_words" and not has_banned_words(story["text"])) \
+            or (args.method == "regex" and not has_pattern(story["text"])) \
+            or (args.method == "appraisal" and not has_banned_no_app(story["text"])):
             dataset.append(story)
         # if has banned words, replace with a story from the other dataset (with no banned words)
         else: 
             num_replaced += 1
             replacement = ts_v2[replacement_idx] 
-            while (args.method == "banned_words" and has_banned_words(replacement["text"])) or (args.method == "regex" and has_pattern(replacement["text"])):
+            while (args.method == "banned_words" and has_banned_words(replacement["text"])) \
+                or (args.method == "regex" and has_pattern(replacement["text"])) \
+                or (args.method == "appraisal" and has_banned_no_app(replacement["text"])):
                 replacement_idx += 1
                 if replacement_idx == len(ts_v2)-1: print("ERROR: replacement_idx at length of v2 stories")
                 replacement = ts_v2[replacement_idx] 
