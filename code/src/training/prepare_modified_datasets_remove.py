@@ -17,7 +17,7 @@ val_file = os.path.join(TS_DIR, "TinyStories-valid.txt")
 parser = argparse.ArgumentParser()
 
 # model args
-parser.add_argument('--method', default='banned_words', help='[banned_words, app_words, regex]')
+parser.add_argument('--method', default='banned_words', help='[banned_words, appraisal, regex]')
 parser.add_argument('--banned_words', type=str, default="think_believe", help='[think_believe, know, think_and_know, learn, feel, prefer, want, plan, time]')
 
 banned_words = []
