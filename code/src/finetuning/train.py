@@ -67,6 +67,8 @@ elif config["model"] == "n28-no-think-believe":
     repo_id = "/scr/snbloom/models/neo-training-28-1/checkpoint-49500"
 elif config["model"] == "n125":
     repo_id = "/scr/kanishkg/models/neo-training-125-1/checkpoint-28000"
+elif config["model"] == "n125-nt":
+    repo_id = "/scr/kanishkg/models/neo-training-125-no_think_believe-2/checkpoint-28000"
 else: raise Exception("Unexpected config[model]. Expected [28, 33, llama-43]")
 
 # Load TinyLM Models

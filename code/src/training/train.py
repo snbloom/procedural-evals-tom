@@ -46,8 +46,8 @@ elif config["model"] == 'n28':
 elif config["model"] == 'n125':
     with open("../../configs/gpt-neo-125.json", "r") as f:
         model_config = json.load(f)
-elif config["model"] == 'n250':
-    with open("../../configs/gpt-neo-250.json", "r") as f:
+elif config["model"] == 'n300':
+    with open("../../configs/gpt-neo-300.json", "r") as f:
         model_config = json.load(f)
 else:
     raise ValueError("Invalid model name")
@@ -118,8 +118,6 @@ elif config["data"] == "regex":
             "json", 
             data_files={"train": train_file, "val": val_file}
                                                 )
-
-
 
 elif config["data"] == "no_know":
     # load data from hf datasets

@@ -68,6 +68,7 @@ def has_app_words(text):
     return False
 
 def has_banned_no_app(text):
+    text = text.replace('!', '.').replace('?','.')
     sentences = text.split('.')
     for sentence in sentences:
         if has_banned_words(sentence) and not has_app_words(sentence):

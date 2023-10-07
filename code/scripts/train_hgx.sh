@@ -31,5 +31,5 @@ conda activate tinytom
 
 # Run your script
 cd ~/procedural-evals-tom/code/src/training
-torchrun --standalone --nproc_per_node=8 train.py --config ../../configs/training-neo-125.json
+torchrun --standalone --nproc_per_node=8 train.py --config ../../configs/training-neo-300.json
 

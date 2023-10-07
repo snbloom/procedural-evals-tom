@@ -3,7 +3,7 @@ import json
 from tqdm import tqdm
 
 # data_file = "/scr/kanishkg/TinyStories/TinyStories-train.txt"
-data_file = "/scr/kanishkg/TinyStories/train_regex.json"
+data_file = "/scr/kanishkg/TinyStories/train_appraisal.json"
 
 keep_appraisal = True
 appraisal_list = [
