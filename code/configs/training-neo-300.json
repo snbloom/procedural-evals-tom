@@ -1,6 +1,6 @@
 {
     "name": "neo-training-300",
-    "seed": 42,
+    "seed": 4,
     "model": "n300",
     "tinystories_dir": "/scr/kanishkg/TinyStories/",
     "replaced_tinystories_dir": "/scr/kanishkg/TinyStories/",
@@ -10,7 +10,7 @@
     "eval_batch_size": 96,
     "eval_steps": 1000,
     "log_steps": 50,
-    "gradient_accumulation_steps": 1,
+    "gradient_accumulation_steps": 2,
     "num_train_epochs": 20,
     "weight_decay": 0.01,
     "warmup_steps": 200,
