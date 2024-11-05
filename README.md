@@ -1,3 +1,4 @@
+For a cleaner version of the dataset, see [Tinytom](https://github.com/snbloom/procedural-evals-tom/tree/main). Specifically, look at the `v4` version.
 ##  
 
 A Domain-Agnostic Method for Procedurally Generating LLM Evaluations
